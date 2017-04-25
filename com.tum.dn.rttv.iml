@@ -17,5 +17,7 @@
     <orderEntry type="library" name="Maven: io.datafx:flow:8.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.datafx:core:8.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.datafx:datafx:8.0.1" level="project" />
+    <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-commons:8.15" level="project" />
+    <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-fontawesome:4.7.0-5" level="project" />
   </component>
 </module>

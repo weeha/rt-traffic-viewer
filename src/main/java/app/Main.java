@@ -11,9 +11,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/mainFrame.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/mainFrame.fxml"));
         primaryStage.setTitle("RT Traffic Visualizer");
-        Scene scene = new Scene(root, 640, 400);
+        Scene scene = new Scene(root, 1024, 768);
         primaryStage.setScene(scene);
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("/css/jfoenix-fonts.css").toExternalForm(),

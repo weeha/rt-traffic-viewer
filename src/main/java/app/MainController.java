@@ -1,9 +1,17 @@
 package app;
 
-import javafx.embed.swing.JFXPanel;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXRippler;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.CenterMapListener;
@@ -16,6 +24,7 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,10 +32,40 @@ public class MainController implements Initializable {
 
     @FXML
     private SwingNode mapHolder;
+    @FXML
+    private JFXRippler optionsRippler;
+    @FXML
+    private StackPane optionsBurger;
+
+    private JFXPopup toolbarPopup;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
         this.createAndSetSwingContent(mapHolder);
+        this.createOptionsList();
+    }
+
+    private void createOptionsList(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/options.fxml"));
+        loader.setController(new InputController());
+        Region reg = null;
+        try {
+            reg = loader.load();
+        }catch(IOException ie){
+            System.out.println("Can not load popup");
+        }
+        if(reg != null) {
+            toolbarPopup = new JFXPopup(reg);
+            optionsBurger.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    toolbarPopup.show(optionsBurger, JFXPopup.PopupVPosition.TOP
+                            , JFXPopup.PopupHPosition.RIGHT
+                            , -12
+                            , 15);
+                }
+            });
+        }
     }
 
     private void createAndSetSwingContent(final SwingNode swingNode) {
@@ -60,5 +99,23 @@ public class MainController implements Initializable {
                 swingNode.setContent(mapViewer);
             }
         });
+    }
+
+    public static final class InputController {
+        @FXML
+        private JFXListView<?> toolbarPopupList;
+
+        @FXML
+        private void submit(){
+            switch(toolbarPopupList.getSelectionModel().getSelectedIndex()){
+                case 0:
+                    break;
+                case 1:
+                    Platform.exit();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
