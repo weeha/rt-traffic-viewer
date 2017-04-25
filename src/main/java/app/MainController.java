@@ -3,15 +3,19 @@ package app;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXRippler;
+import io.FileLoader;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import model.OpenLRFileHandler;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.CenterMapListener;
@@ -101,6 +105,14 @@ public class MainController implements Initializable {
         });
     }
 
+    private static void showFileChooser(){
+        FileLoader loader = new FileLoader();
+        loader.startFileChooser();
+
+        OpenLRFileHandler handler = new OpenLRFileHandler(loader.getDataFile());
+        handler.process();
+    }
+
     public static final class InputController {
         @FXML
         private JFXListView<?> toolbarPopupList;
@@ -109,6 +121,9 @@ public class MainController implements Initializable {
         private void submit(){
             switch(toolbarPopupList.getSelectionModel().getSelectedIndex()){
                 case 0:
+                    showFileChooser();
+                    // make popup disappear after selection
+                    toolbarPopupList.setExpanded(false);
                     break;
                 case 1:
                     Platform.exit();
