@@ -1,8 +1,30 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.embed.swing.*?>
+<?import com.jfoenix.controls.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<GridPane fx:controller="app.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<VBox fx:id="box" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.MainController">
+    <children>
+        <JFXToolbar fx:id="toolbar" prefHeight="51.0" prefWidth="640.0" style="-fx-background-color: teal;">
+            <leftItems>
+                <Label>Traffic Visualiser</Label>
+            </leftItems>
+            <Label>Material Design</Label>
+            <rightItems>
+                <JFXRippler fx:id="optionsRippler" maskType="CIRCLE"
+                            style="-fx-ripple-color:WHITE;">
+                    <StackPane fx:id="optionsBurger">
+                        <JFXHamburger styleClass="jfx-options-burger">
+                        </JFXHamburger>
+                    </StackPane>
+                </JFXRippler>
+            </rightItems>
+        </JFXToolbar>
+        <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                <SwingNode fx:id="mapHolder" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>
