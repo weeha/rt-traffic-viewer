@@ -23,6 +23,8 @@ public class OpenLRFileHandler {
             System.err.println("File not found");
         }catch(IOException ie){
             System.err.println("IO Error");
+        }finally{
+            reader.close()
         }
     }
 }
