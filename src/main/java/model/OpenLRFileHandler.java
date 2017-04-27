@@ -3,7 +3,7 @@ package model;
 import java.io.*;
 
 /**
- * Created by flori on 25.04.2017.
+ * Created by Florian Noack on 25.04.2017.
  */
 public class OpenLRFileHandler {
 
@@ -14,8 +14,9 @@ public class OpenLRFileHandler {
     }
 
     public void process(){
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             for (String line; (line = reader.readLine()) != null;) {
                 System.out.println(line);
             }
@@ -24,7 +25,9 @@ public class OpenLRFileHandler {
         }catch(IOException ie){
             System.err.println("IO Error");
         }finally{
-            reader.close()
+            try {
+                reader.close();
+            }catch(IOException ie){}
         }
     }
 }
