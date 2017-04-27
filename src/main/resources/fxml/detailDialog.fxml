@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.Label?>
+
+
+
+<JFXDialogLayout fx:id="layout" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.DetailController">
+    <heading>
+        <Label fx:id="headline">JFoenix Dialog</Label>
+    </heading>
+    <body>
+        <Label fx:id="content">
+            Placeholder
+        </Label>
+    </body>
+    <actions>
+        <JFXButton fx:id="closeButton" styleClass="dialog-accept">CLOSE
+        </JFXButton>
+    </actions>
+</JFXDialogLayout>
+

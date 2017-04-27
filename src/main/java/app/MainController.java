@@ -1,5 +1,6 @@
 package app;
 
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXRippler;
@@ -14,37 +15,39 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
-import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanKeyListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import model.location.CoordinateValue;
+import openlr.binary.data.FirstLRP;
+import openlr.binary.data.RawBinaryData;
+import org.jxmapviewer.viewer.*;
+import view.DetailDialog;
+import view.TrafficViewer;
+import view.openStreetMap.SwingWaypoint;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
 
     @FXML
     private SwingNode mapHolder;
     @FXML
-    private JFXRippler optionsRippler;
-    @FXML
     private StackPane optionsBurger;
+    @FXML
+    private StackPane root;
 
+    public static StackPane stackPaneHolder;
     private JFXPopup toolbarPopup;
+
+    private static TrafficViewer mapViewer = null;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
         this.createAndSetSwingContent(mapHolder);
         this.createOptionsList();
+        stackPaneHolder = root;
     }
 
     private void createOptionsList(){
@@ -70,34 +73,19 @@ public class MainController implements Initializable {
         }
     }
 
+    private static void showDiag(){
+        System.out.println(stackPaneHolder == null);
+        DetailDialog diag = new DetailDialog(stackPaneHolder, null);
+        diag.show();
+
+    }
+
     private void createAndSetSwingContent(final SwingNode swingNode) {
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JXMapViewer mapViewer = new JXMapViewer();
-
-                // Create a TileFactoryInfo for OpenStreetMap
-                TileFactoryInfo info = new OSMTileFactoryInfo();
-                DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-                mapViewer.setTileFactory(tileFactory);
-
-                // Use 8 threads in parallel to load the tiles
-                tileFactory.setThreadPoolSize(8);
-
-                // Set a first focus for startup
-                GeoPosition tum_campus = new GeoPosition(48.1486, 11.5687);
-
-                mapViewer.setZoom(7);
-                mapViewer.setAddressLocation(tum_campus);
-
-                MouseInputListener mia = new PanMouseInputListener(mapViewer);
-                mapViewer.addMouseListener(mia);
-                mapViewer.addMouseMotionListener(mia);
-                mapViewer.addMouseListener(new CenterMapListener(mapViewer));
-                mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
-                mapViewer.addKeyListener(new PanKeyListener(mapViewer));
-
+                mapViewer = new TrafficViewer();
                 swingNode.setContent(mapViewer);
             }
         });
@@ -108,7 +96,22 @@ public class MainController implements Initializable {
         loader.startFileChooser();
 
         OpenLRFileHandler handler = new OpenLRFileHandler(loader.getDataFile());
+        Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
         handler.process();
+
+        for(RawBinaryData d: handler.getLocationData()){
+            try {
+                FirstLRP lrp = d.getBinaryFirstLRP();
+                CoordinateValue val = new CoordinateValue(lrp.getLon(), lrp.getLat());
+                GeoPosition geoPos = new GeoPosition(val.getLatDeg(), val.getLonDeg());
+                //Point2D marker = mapViewer.convertGeoPositionToPoint(geoPos);
+
+                // Create a waypoint painter that takes all the waypoints
+                mapViewer.addWaypoint(new SwingWaypoint(geoPos, null));
+            }catch(NullPointerException ne){}
+        }
+        mapViewer.showWaipoints();
+
     }
 
     public static final class InputController {

@@ -13,6 +13,10 @@
             <name>bintray</name>
             <url>http://dl.bintray.com/jerady/maven</url>
         </repository>
+        <repository>
+            <id>openlr</id>
+            <url>http://www.openlr.org/nexus/content/repositories/releases</url>
+        </repository>
     </repositories>
 
     <build>
