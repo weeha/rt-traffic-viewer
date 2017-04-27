@@ -19,5 +19,8 @@
     <orderEntry type="library" name="Maven: io.datafx:datafx:8.0.1" level="project" />
     <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-commons:8.15" level="project" />
     <orderEntry type="library" name="Maven: de.jensd:fontawesomefx-fontawesome:4.7.0-5" level="project" />
+    <orderEntry type="library" name="Maven: openlr:map:1.4.2" level="project" />
+    <orderEntry type="library" name="Maven: openlr:decoder:1.4.2" level="project" />
+    <orderEntry type="library" name="Maven: openlr:binary:1.4.2" level="project" />
   </component>
 </module>

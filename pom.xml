@@ -63,6 +63,21 @@
             <artifactId>fontawesomefx-fontawesome</artifactId>
             <version>4.7.0-5</version>
         </dependency>
+        <dependency>
+            <groupId>openlr</groupId>
+            <artifactId>map</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>openlr</groupId>
+            <artifactId>decoder</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>openlr</groupId>
+            <artifactId>binary</artifactId>
+            <version>1.4.2</version>
+        </dependency>
     </dependencies>
 
 </project>
