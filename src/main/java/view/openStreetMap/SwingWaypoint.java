@@ -4,19 +4,15 @@ package view.openStreetMap;
  * Created by Florian Noack on 18.04.2017.
  */
 
-import app.DetailController;
 import app.MainController;
 import javafx.application.Platform;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import view.DetailDialog;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 
 public class SwingWaypoint extends DefaultWaypoint {
 
@@ -24,12 +20,16 @@ public class SwingWaypoint extends DefaultWaypoint {
     private final GeoPosition coord;
 
 
-    public SwingWaypoint(GeoPosition coord, ImageIcon icon) {
+    public SwingWaypoint(GeoPosition coord, Image icon) {
 
         super(coord);
         this.coord = coord;
-        if(icon != null)
-            button = new JButton(icon);
+        if(icon != null) {
+            button = new JButton(new ImageIcon(icon));
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            button.setFocusPainted(false);
+        }
         else
             button = new JButton("");
         button.setSize(24, 24);
