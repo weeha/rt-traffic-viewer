@@ -17,13 +17,10 @@ import java.awt.event.MouseListener;
 public class SwingWaypoint extends DefaultWaypoint {
 
     private final JButton button;
-    private final GeoPosition coord;
-
 
     public SwingWaypoint(GeoPosition coord, Image icon) {
 
         super(coord);
-        this.coord = coord;
         if(icon != null) {
             button = new JButton(new ImageIcon(icon));
             button.setBorderPainted(false);
@@ -49,12 +46,12 @@ public class SwingWaypoint extends DefaultWaypoint {
 
         public void mouseClicked(MouseEvent e) {
 
-            System.out.println(coord);
+            System.out.println(getPosition());
             if(MainController.stackPaneHolder != null){
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        DetailDialog diag = new DetailDialog(MainController.stackPaneHolder, coord);
+                        DetailDialog diag = new DetailDialog(MainController.stackPaneHolder, getPosition());
                         diag.show();
                     }
                 });
