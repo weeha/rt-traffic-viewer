@@ -9,7 +9,7 @@
         <children>
             <JFXToolbar fx:id="toolbar" prefHeight="51.0" prefWidth="640.0" style="-fx-background-color: #3f51b5;">
                 <leftItems>
-                    <Label>Traffic Visualiser</Label>
+                    <Label>Traffic Viewer</Label>
                 </leftItems>
                 <Label>Material Design</Label>
                 <rightItems>

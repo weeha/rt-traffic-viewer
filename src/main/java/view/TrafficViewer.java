@@ -43,6 +43,7 @@ public class TrafficViewer extends JXMapViewer {
         for (SwingWaypoint w : waypoints) {
             this.add(w.getButton());
         }
+        this.repaint();
     }
 
     public void hideWaypoints(){

@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
+import model.OpenLRXMLHandler;
 import model.location.CoordinateValue;
 import openlr.binary.data.FirstLRP;
 import openlr.binary.data.RawBinaryData;
@@ -100,6 +101,7 @@ public class MainController implements Initializable {
             public void run() {
                 mapViewer = new TrafficViewer();
                 swingNode.setContent(mapViewer);
+                mapViewer.repaint();
             }
         });
     }
@@ -107,8 +109,8 @@ public class MainController implements Initializable {
     private static void showFileChooser(){
         FileLoader loader = new FileLoader();
         loader.startFileChooser();
+        OpenLRXMLHandler handler = new OpenLRXMLHandler(loader.getDataFile());
 
-        OpenLRFileHandler handler = new OpenLRFileHandler(loader.getDataFile());
         Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
         handler.process();
 
