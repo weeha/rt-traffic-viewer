@@ -7,6 +7,8 @@ import org.jxmapviewer.input.PanKeyListener;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
 import org.jxmapviewer.viewer.*;
+import view.openStreetMap.SelectionAdapter;
+import view.openStreetMap.SelectionPainter;
 import view.openStreetMap.SwingWaypoint;
 import view.openStreetMap.SwingWaypointOverlayPainter;
 import javax.swing.event.MouseInputListener;
@@ -28,6 +30,7 @@ public class TrafficViewer extends JXMapViewer {
         this.setMouseListener();
         this.setZoom(7);
         this.setAddressLocation(tum_campus);
+        this.setSelectionViewer();
     }
 
     public void addWaypoint(SwingWaypoint point){
@@ -47,6 +50,16 @@ public class TrafficViewer extends JXMapViewer {
 
     public void hideWaypoints(){
         //todo
+    }
+
+    private void setSelectionViewer(){
+        // Add a selection painter
+
+        SelectionAdapter sa = new SelectionAdapter(this);
+        SelectionPainter sp = new SelectionPainter(sa);
+        this.addMouseListener(sa);
+        this.addMouseMotionListener(sa);
+        this.setOverlayPainter(sp);
     }
 
     private void setMouseListener(){
