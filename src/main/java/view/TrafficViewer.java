@@ -2,10 +2,7 @@ package view;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.input.CenterMapListener;
-import org.jxmapviewer.input.PanKeyListener;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
+import org.jxmapviewer.input.*;
 import org.jxmapviewer.viewer.*;
 import view.openStreetMap.SelectionAdapter;
 import view.openStreetMap.SelectionPainter;
@@ -67,7 +64,7 @@ public class TrafficViewer extends JXMapViewer {
         this.addMouseListener(mia);
         this.addMouseMotionListener(mia);
         this.addMouseListener(new CenterMapListener(this));
-        this.addMouseWheelListener(new ZoomMouseWheelListenerCenter(this));
+        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
         this.addKeyListener(new PanKeyListener(this));
     }
 

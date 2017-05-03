@@ -23,7 +23,9 @@ import view.DetailDialog;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URL;
@@ -42,12 +44,14 @@ public class MainController implements Initializable {
     private JFXPopup toolbarPopup;
 
     private static TrafficViewer mapViewer = null;
+    private static Image icon;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
         this.createAndSetSwingContent(mapHolder);
         this.createOptionsList();
         stackPaneHolder = root;
+        this.icon = loadIcon();
     }
 
     private void createOptionsList(){
@@ -73,11 +77,20 @@ public class MainController implements Initializable {
         }
     }
 
+    private Image loadIcon(){
+        Image img = null;
+        try {
+            img = ImageIO.read(getClass().getResource("/png/ic_place_black_24dp.png"));
+        }catch(IOException ie){
+            System.out.println("Error loading icon");
+        }
+        return img;
+    }
+
     private static void showDiag(){
         System.out.println(stackPaneHolder == null);
         DetailDialog diag = new DetailDialog(stackPaneHolder, null);
         diag.show();
-
     }
 
     private void createAndSetSwingContent(final SwingNode swingNode) {
@@ -107,7 +120,7 @@ public class MainController implements Initializable {
                 //Point2D marker = mapViewer.convertGeoPositionToPoint(geoPos);
 
                 // Create a waypoint painter that takes all the waypoints
-                mapViewer.addWaypoint(new SwingWaypoint(geoPos, null));
+                mapViewer.addWaypoint(new SwingWaypoint(geoPos, icon));
             }catch(NullPointerException ne){}
         }
         mapViewer.showWaipoints();

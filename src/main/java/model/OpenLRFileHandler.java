@@ -27,25 +27,28 @@ public class OpenLRFileHandler {
     }
 
     public void process(){
-        BufferedReader reader = null;
-        try {
-             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            for (String line; (line = reader.readLine()) != null;) {
-                ByteArray bytes = new ByteArray(line);
-                data.add(bDecoder.resolveBinaryData("", bytes));
-                System.out.println((bDecoder.resolveBinaryData("", bytes)));
-            }
-        }catch(FileNotFoundException fe){
-            System.err.println("File not found");
-        }catch(IOException ie){
-            System.err.println("IO Error");
-        }catch(openlr.PhysicalFormatException pe){
-            System.err.println("Decoding error");
-        }
-        finally{
+        if(file != null) {
+            BufferedReader reader = null;
             try {
-                reader.close();
-            }catch(IOException ie){}
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+                for (String line; (line = reader.readLine()) != null; ) {
+                    ByteArray bytes = new ByteArray(line);
+                    data.add(bDecoder.resolveBinaryData("", bytes));
+                    System.out.println((bDecoder.resolveBinaryData("", bytes)));
+                }
+            } catch (FileNotFoundException fe) {
+                System.err.println("File not found");
+            } catch (IOException ie) {
+                System.err.println("IO Error");
+            } catch (openlr.PhysicalFormatException pe) {
+                System.err.println("Decoding error");
+            } finally {
+                try {
+                    if(reader != null)
+                        reader.close();
+                } catch (IOException ie) {
+                }
+            }
         }
     }
 }
