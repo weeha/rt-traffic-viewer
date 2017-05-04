@@ -27,5 +27,11 @@
     <orderEntry type="library" name="Maven: openlr:data:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: openlr:binary:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.7" level="project" />
+    <orderEntry type="library" name="Maven: com.graphhopper:graphhopper-core:0.8.2" level="project" />
+    <orderEntry type="library" name="Maven: com.graphhopper:graphhopper-tools-lgpl:0.8.2" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.trove4j:trove4j:3.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.xmlgraphics:xmlgraphics-commons:2.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:1.3.1" level="project" />
   </component>
 </module>

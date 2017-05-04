@@ -114,5 +114,10 @@
             <artifactId>binary</artifactId>
             <version>1.4.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.graphhopper</groupId>
+            <artifactId>graphhopper-core</artifactId>
+            <version>0.8.2</version>
+        </dependency>
     </dependencies>
 </project>
