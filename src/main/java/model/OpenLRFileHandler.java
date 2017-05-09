@@ -3,6 +3,8 @@ package model;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.location.CoordinateValue;
 import openlr.binary.*;
 import openlr.binary.data.RawBinaryData;
 
@@ -14,6 +16,11 @@ public class OpenLRFileHandler {
     private final File file;
     private List<RawBinaryData> data;
     private final  OpenLRBinaryDecoder bDecoder;
+
+    private final double VERONA_NE_LAT = 45.463246;
+    private final double VERONA_NE_LON = 11.006842;
+    private final double VERONA_SW_LAT = 45.448255;
+    private final double VERONA_SW_LON = 10.968218;
 
     public OpenLRFileHandler(File file){
 
@@ -33,8 +40,11 @@ public class OpenLRFileHandler {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
                 for (String line; (line = reader.readLine()) != null; ) {
                     ByteArray bytes = new ByteArray(line);
-                    data.add(bDecoder.resolveBinaryData("", bytes));
-                    System.out.println((bDecoder.resolveBinaryData("", bytes)));
+                    RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
+                    if(rawWithin(raw)) {
+                        data.add(raw);
+                    }
+                    //System.out.println((bDecoder.resolveBinaryData("", bytes)));
                 }
             } catch (FileNotFoundException fe) {
                 System.err.println("File not found");
@@ -50,5 +60,17 @@ public class OpenLRFileHandler {
                 }
             }
         }
+    }
+
+    private boolean rawWithin(RawBinaryData data){
+        CoordinateValue val = new CoordinateValue(data.getBinaryFirstLRP().getLon(), data.getBinaryFirstLRP().getLat());
+        return isWithin(val.getLatDeg(), val.getLonDeg());
+    }
+
+    private boolean isWithin(double lat, double lon){
+        return lat >= VERONA_SW_LAT &&
+                lat <= VERONA_NE_LAT &&
+                lon >= VERONA_SW_LON &&
+                lon <= VERONA_NE_LON;
     }
 }

@@ -1,5 +1,7 @@
 package view;
 
+import model.traffic.Traffic;
+import model.traffic.TrafficIncident;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.*;
@@ -9,7 +11,9 @@ import view.openStreetMap.SelectionPainter;
 import view.openStreetMap.SwingWaypoint;
 import view.openStreetMap.SwingWaypointOverlayPainter;
 import javax.swing.event.MouseInputListener;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,10 +23,12 @@ public class TrafficViewer extends JXMapViewer {
 
     private Set<SwingWaypoint> waypoints;
     private final GeoPosition tum_campus = new GeoPosition(48.1486, 11.5687);
+    private List<Traffic> incidents;
 
     public TrafficViewer(){
         super();
         waypoints = new HashSet<SwingWaypoint>();
+        incidents = new ArrayList<Traffic>();
         this.setTileFactoryHelper();
         this.setMouseListener();
         this.setZoom(7);
@@ -32,6 +38,15 @@ public class TrafficViewer extends JXMapViewer {
 
     public void addWaypoint(SwingWaypoint point){
         waypoints.add(point);
+    }
+
+    public void addTrafficIncident(TrafficIncident incident){
+        if(incident instanceof TrafficIncident)
+            incidents.add(incident);
+    }
+
+    public void showTrafficIncidents(){
+        //TODO
     }
 
     public void showWaipoints(){

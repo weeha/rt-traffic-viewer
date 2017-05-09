@@ -1,42 +1,28 @@
 package view.openStreetMap;
 
-/**
- * Created by Florian Noack on 18.04.2017.
- */
-
+import model.location.LocationReferencePointImpl;
+import model.traffic.Traffic;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
-import org.jxmapviewer.viewer.GeoPosition;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Created by Florian Noack on 04.05.2017.
+ */
+public class TrafficPainter implements Painter<JXMapViewer> {
 
-
-public class RoutePainter implements Painter<JXMapViewer>
-
-{
-
-    private Color color = Color.RED;
+    private Traffic traffic;
     private boolean antiAlias = true;
-    private List<GeoPosition> track;
+    Color color = new Color(204,0,0, 128);
 
-    /**
-     * @param track the track
-
-     */
-    public RoutePainter(List<GeoPosition> track){
-        // copy the list so that changes in the
-        // original list do not have an effect here
-        this.track = new ArrayList<GeoPosition>(track);
+    public TrafficPainter(Traffic traffic){
+        this.traffic = traffic;
     }
 
-
-
+    @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
-        /*
         g = (Graphics2D) g.create();
         // convert from viewport to world bitmap
         Rectangle rect = map.getViewportBounds();
@@ -45,7 +31,7 @@ public class RoutePainter implements Painter<JXMapViewer>
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // do the drawing
-        g.setColor(Color.BLACK);
+        g.setColor(color);
         g.setStroke(new BasicStroke(4));
         drawRoute(g, map);
         // do the drawing again
@@ -54,7 +40,7 @@ public class RoutePainter implements Painter<JXMapViewer>
         g.setStroke(new BasicStroke(2));
         drawRoute(g, map);
         g.dispose();
-        */
+
     }
 
 
@@ -69,9 +55,9 @@ public class RoutePainter implements Painter<JXMapViewer>
         int lastX = 0;
         int lastY = 0;
         boolean first = true;
-        for (GeoPosition gp : track){
-            // convert geo-coordinate to world bitmap pixel
-            Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
+        //Point2D pt = map.getTileFactory().geoToPixel(traffic.getFirstLRP().getGeoPosition(), map.getZoom());
+        for(LocationReferencePointImpl point : traffic.getAllLRPs()){
+            Point2D pt = map.getTileFactory().geoToPixel(point.getGeoPosition(), map.getZoom());
             if (first){
                 first = false;
             }

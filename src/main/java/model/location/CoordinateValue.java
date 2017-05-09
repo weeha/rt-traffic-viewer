@@ -10,11 +10,24 @@ public class CoordinateValue {
     private final int lon;
     private final int lat;
 
-    public CoordinateValue(int longitude, int latitude){
+    public CoordinateValue(int latitude, int longitude){
         this.lon = longitude;
         this.lat = latitude;
         this.lonDeg = get32BitRepresentation(longitude);
         this.latDeg = get32BitRepresentation(latitude);
+    }
+
+    public CoordinateValue(int latitude, int longitude, int prevLatitude, int prevLongitude){
+        //double lon = prevLon + (double)lrp.getLon() / 100000.0;
+        //double lat = prevLat + (double)lrp.getLat() / 100000.0;
+        this.lat = latitude;
+        this.lon = longitude;
+        this.lonDeg = get32BitRepresentation(prevLongitude) + (double)longitude / 100000.0;
+        this.latDeg = get32BitRepresentation(prevLatitude) + (double)latitude / 100000.0;
+    }
+
+    private double colculateCoord(double prevValue, int newValue){
+        return 0.0;
     }
 
     public double getLonDeg(){
@@ -34,11 +47,10 @@ public class CoordinateValue {
     @Override
     public String toString(){
         String result = "";
-        result += "lon: " + lonDeg;
-        result += "\nlat: " + latDeg;
+        result += "lat: " + latDeg;
+        result += "\nlon: " + lonDeg;
         result += "\nlon(raw): " + lon;
         result += "\nlat(raw): " + lat;
         return result;
     }
-
 }

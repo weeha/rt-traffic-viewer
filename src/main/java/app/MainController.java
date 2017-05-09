@@ -17,20 +17,26 @@ import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
 import model.OpenLRXMLHandler;
 import model.location.CoordinateValue;
+import model.traffic.TrafficIncident;
 import openlr.binary.data.FirstLRP;
 import openlr.binary.data.RawBinaryData;
+import org.jxmapviewer.JXMapViewer;
+import org.jxmapviewer.painter.*;
 import org.jxmapviewer.viewer.*;
 import view.DetailDialog;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
+import view.openStreetMap.TrafficPainter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Painter;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class MainController implements Initializable {
 
@@ -113,7 +119,15 @@ public class MainController implements Initializable {
 
         Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
         handler.process();
+        List<org.jxmapviewer.painter.Painter<JXMapViewer>> painters = new ArrayList<org.jxmapviewer.painter.Painter<JXMapViewer>>();
+        for(TrafficIncident incident : handler.getIncidents()){
+            System.out.println(incident);
+            painters.add(new TrafficPainter(incident));
+        }
 
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        mapViewer.setOverlayPainter(painter);
+        /*
         for(RawBinaryData d: handler.getLocationData()){
             try {
                 FirstLRP lrp = d.getBinaryFirstLRP();
@@ -126,7 +140,7 @@ public class MainController implements Initializable {
             }catch(NullPointerException ne){}
         }
         mapViewer.showWaipoints();
-
+        */
     }
 
     public static final class InputController {
