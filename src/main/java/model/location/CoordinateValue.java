@@ -17,13 +17,11 @@ public class CoordinateValue {
         this.latDeg = get32BitRepresentation(latitude);
     }
 
-    public CoordinateValue(int latitude, int longitude, int prevLatitude, int prevLongitude){
-        //double lon = prevLon + (double)lrp.getLon() / 100000.0;
-        //double lat = prevLat + (double)lrp.getLat() / 100000.0;
-        this.lat = latitude;
-        this.lon = longitude;
-        this.lonDeg = get32BitRepresentation(prevLongitude) + (double)longitude / 100000.0;
-        this.latDeg = get32BitRepresentation(prevLatitude) + (double)latitude / 100000.0;
+    public CoordinateValue(double latDegValue, double lonDegValue, int latValue, int lonValue){
+        this.lonDeg = lonDegValue;
+        this.latDeg = latDegValue;
+        this.lon = lonValue;
+        this.lat = latValue;
     }
 
     private double colculateCoord(double prevValue, int newValue){

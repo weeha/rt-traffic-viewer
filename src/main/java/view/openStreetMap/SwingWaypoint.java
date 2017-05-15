@@ -6,6 +6,8 @@ package view.openStreetMap;
 
 import app.MainController;
 import javafx.application.Platform;
+import model.traffic.Traffic;
+import model.traffic.TrafficIncident;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import view.DetailDialog;
@@ -17,6 +19,7 @@ import java.awt.event.MouseListener;
 public class SwingWaypoint extends DefaultWaypoint {
 
     private final JButton button;
+    private TrafficIncident incident;
 
     public SwingWaypoint(GeoPosition coord, Image icon) {
 
@@ -36,10 +39,31 @@ public class SwingWaypoint extends DefaultWaypoint {
 
     }
 
+    public SwingWaypoint(TrafficIncident traffic, Image icon){
+        super(traffic.getFirstLRP().getGeoPosition());
+        this.incident = traffic;
+        if(icon != null) {
+            button = new JButton(new ImageIcon(icon));
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            button.setFocusPainted(false);
+        }
+        else
+            button = new JButton("");
+        button.setSize(24, 24);
+        button.setPreferredSize(new Dimension(24, 24));
+        button.addMouseListener(new SwingWaypointMouseListener());
+        button.setVisible(true);
+    }
+
     public JButton getButton() {
 
         return button;
 
+    }
+
+    public TrafficIncident getIncident(){
+        return this.incident;
     }
 
     private class SwingWaypointMouseListener implements MouseListener {
@@ -51,7 +75,7 @@ public class SwingWaypoint extends DefaultWaypoint {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        DetailDialog diag = new DetailDialog(MainController.stackPaneHolder, getPosition());
+                        DetailDialog diag = new DetailDialog(MainController.stackPaneHolder, getIncident());
                         diag.show();
                     }
                 });

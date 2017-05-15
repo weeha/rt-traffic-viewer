@@ -57,6 +57,11 @@ public class OpenLRXMLHandler {
     public void process(){
         boolean rawBinary =false;
         TrafficIncident incident = null;
+        boolean creationTime = false;
+        boolean trafficType = false;
+        boolean averageSpeed = false;
+        boolean delayTime = false;
+        /*
         TrafficIncident holland = new TrafficIncident("Hi");
         ByteArray b = new ByteArray("Cwd26yEAdCOacgBO9vojleEDouEDI4leAtb50yMY");
         try {
@@ -66,6 +71,7 @@ public class OpenLRXMLHandler {
 
         }
         incidents.add(holland);
+        */
         if(file != null){
             BufferedReader reader = null;
             try{
@@ -83,7 +89,16 @@ public class OpenLRXMLHandler {
                                 Attribute id = startElement.getAttributeByName(ID);
                                 if(id != null)
                                     incident = new TrafficIncident(id.getValue());
+                            }else if(qName.equals("situationRecordCreationTime")){
+                                creationTime = true;
+                            }else if(qName.equals("abnormalTrafficType")){
+                                trafficType = true;
+                            }else if(qName.equals("averageSpeed")){
+                                averageSpeed = true;
+                            }else if(qName.equals("delayTimeValue")){
+                                delayTime = true;
                             }
+
                             break;
                         case XMLStreamConstants.CHARACTERS:
                             Characters characters = event.asCharacters();
@@ -99,6 +114,26 @@ public class OpenLRXMLHandler {
                                     System.err.println("Decoding problem occurred");
                                 }
                                 rawBinary = false;
+                            }else if(creationTime){
+                                if(incident != null) {
+                                    incident.setCreationTime(characters.getData());
+                                }
+                                creationTime = false;
+                            }else if(trafficType){
+                                if(incident != null) {
+                                    incident.setTrafficType(characters.getData());
+                                }
+                                trafficType = false;
+                            }else if(averageSpeed){
+                                if(incident != null) {
+                                    incident.setAverageSpeed(characters.getData());
+                                }
+                                averageSpeed = false;
+                            }else if(delayTime){
+                                if(incident != null) {
+                                    incident.setDelayTime(characters.getData());
+                                }
+                                delayTime = false;
                             }
                             break;
                         case XMLStreamConstants.END_ELEMENT:

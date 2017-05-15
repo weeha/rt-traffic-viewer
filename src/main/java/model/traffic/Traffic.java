@@ -1,6 +1,7 @@
 package model.traffic;
 
 import model.location.FirstLocationReferencePoint;
+import model.location.ILocationReferencePoint;
 import model.location.LastLocationReferencePoint;
 import model.location.LocationReferencePointImpl;
 import openlr.binary.data.AbstractLRP;
@@ -16,6 +17,10 @@ public abstract class Traffic {
 
     private RawBinaryData rawData;
     private String rawString = "";
+    private String creationTime="";
+    private String trafficType="";
+    private String averageSpeed="";
+    private String delayTime="";
     private final String id;
     private FirstLocationReferencePoint firstLRP = null;
     private LastLocationReferencePoint lastLRP = null;
@@ -32,20 +37,58 @@ public abstract class Traffic {
         this.rawData = data;
         firstLRP = new FirstLocationReferencePoint(data.getBinaryFirstLRP());
         lrps.add(firstLRP);
+        ILocationReferencePoint prevLRP = firstLRP;
         if(data.getBinaryIntermediates() != null) {
             for (AbstractLRP lrp : data.getBinaryIntermediates()) {
-                LocationReferencePointImpl point = new LocationReferencePointImpl(lrp, firstLRP.getLRP());
+                LocationReferencePointImpl point = new LocationReferencePointImpl(lrp, prevLRP);
                 intermediatePoints.add(point);
                 lrps.add(point);
+                prevLRP = point;
             }
         }
         // LastLRP = prevLRP - BinaryLastLRP
-        lastLRP = new LastLocationReferencePoint(data.getBinaryLastLRP(), firstLRP.getLRP());
+        lastLRP = new LastLocationReferencePoint(data.getBinaryLastLRP(), prevLRP);
         lrps.add(lastLRP);
+    }
+
+    public void setCreationTime(String creationTime){
+        this.creationTime = creationTime;
+    }
+
+    public String getCreationTime(){
+        return this.creationTime;
+    }
+
+    public void setTrafficType(String trafficType){
+        this.trafficType = trafficType;
+    }
+
+    public String getTrafficType(){
+        return this.trafficType;
+    }
+
+    public void setDelayTime (String delayTime){
+        this.delayTime = delayTime;
+    }
+
+    public String getDelayTime(){
+        return this.delayTime;
+    }
+
+    public void setAverageSpeed(String averageSpeed){
+        this.averageSpeed = averageSpeed;
+    }
+
+    public String getAverageSpeed(){
+        return this.averageSpeed;
     }
 
     public void setRawAsString(String raw){
         rawString = raw;
+    }
+
+    public String getRawString(){
+        return this.rawString;
     }
 
     public String getId(){
@@ -77,10 +120,13 @@ public abstract class Traffic {
         String result = "";
         result += "ID: " + id + "\n";
         result += "RAW-Data: " + rawString + "\n";
-        result += "First LRP: " + firstLRP + "\n";
+        result += "TrafficType:" + trafficType +"\n";
+        result += "Average Speed:" + averageSpeed +"\n";
+        result += "Delay Time:" + delayTime +"\n";
+        result += "First LRP: \n" + firstLRP + "\n";
         for(LocationReferencePointImpl point : intermediatePoints)
-            result += "Intermediate LRP: " + point+ "\n";
-        result += "Last LRP: " + lastLRP + "\n";
+            result += "Intermediate LRP: \n" + point+ "\n";
+        result += "Last LRP: \n" + lastLRP + "\n";
         return result;
     }
 }

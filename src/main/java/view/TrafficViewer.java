@@ -5,11 +5,11 @@ import model.traffic.TrafficIncident;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.*;
+import org.jxmapviewer.painter.CompoundPainter;
+import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.*;
-import view.openStreetMap.SelectionAdapter;
-import view.openStreetMap.SelectionPainter;
-import view.openStreetMap.SwingWaypoint;
-import view.openStreetMap.SwingWaypointOverlayPainter;
+import view.openStreetMap.*;
+
 import javax.swing.event.MouseInputListener;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,12 +23,12 @@ public class TrafficViewer extends JXMapViewer {
 
     private Set<SwingWaypoint> waypoints;
     private final GeoPosition tum_campus = new GeoPosition(48.1486, 11.5687);
-    private List<Traffic> incidents;
+    private List<TrafficIncident> incidents;
 
     public TrafficViewer(){
         super();
         waypoints = new HashSet<SwingWaypoint>();
-        incidents = new ArrayList<Traffic>();
+        incidents = new ArrayList<TrafficIncident>();
         this.setTileFactoryHelper();
         this.setMouseListener();
         this.setZoom(7);
@@ -46,7 +46,20 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void showTrafficIncidents(){
-        //TODO
+        WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
+        swingWaypointPainter.setWaypoints(waypoints);
+        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+        for(TrafficIncident incident : incidents){
+            painters.add(new TrafficPainter(incident));
+        }
+
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        painter.addPainter(swingWaypointPainter);
+        this.setOverlayPainter(painter);
+        for (SwingWaypoint w : waypoints) {
+            this.add(w.getButton());
+        }
+        this.repaint();
     }
 
     public void showWaipoints(){

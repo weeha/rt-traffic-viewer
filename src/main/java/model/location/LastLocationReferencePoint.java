@@ -15,7 +15,7 @@ public class LastLocationReferencePoint extends LocationReferencePointImpl{
         super(lrp);
     }
 
-    public LastLocationReferencePoint(AbstractLRP lrp, AbstractLRP prevLrp){
+    public LastLocationReferencePoint(AbstractLRP lrp, ILocationReferencePoint prevLrp){
         super(lrp, prevLrp);
     }
 }

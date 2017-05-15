@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.traffic.TrafficIncident;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.xml.soap.Detail;
@@ -27,12 +28,12 @@ public class DetailDialog{
     private Region reg;
     private JFXDialog diag;
     private final StackPane pane;
-    private final GeoPosition coords;
+    private GeoPosition coords;
     private final DetailController controller;
 
-    public DetailDialog(StackPane pane, GeoPosition coords){
+    public DetailDialog(StackPane pane, TrafficIncident incident){
         this.pane = pane;
-        this.coords = coords;
+        this.coords = incident.getFirstLRP().getGeoPosition();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/detailDialog.fxml"));
         reg = null;
         try {
@@ -41,7 +42,7 @@ public class DetailDialog{
             System.out.println("Can not load popup");
         }
         controller = loader.<DetailController>getController();
-        controller.setCoords(coords);
+        controller.setIncident(incident);
     }
 
     public void show(){

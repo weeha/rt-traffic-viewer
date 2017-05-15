@@ -2,17 +2,30 @@
 
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.Label?>
-
+<?import javafx.scene.layout.VBox?>
 
 
 <JFXDialogLayout fx:id="layout" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.DetailController">
     <heading>
-        <Label fx:id="headline">JFoenix Dialog</Label>
+        <Label fx:id="headline">Traffic</Label>
     </heading>
     <body>
-        <Label fx:id="content">
-            Placeholder
-        </Label>
+        <VBox prefWidth="400" spacing="50" maxWidth="500" maxHeight="300">
+            <Label fx:id="id" styleClass="title-label">ID</Label>
+            <JFXTextField fx:id="raw" promptText="OpenLR RAW-Data" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+            <JFXTextField fx:id="creationTime" promptText="Record Creation Time" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+            <JFXTextField fx:id="trafficType" promptText="Abnormal Traffic Type" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+            <JFXTextField fx:id="averageSpeed" promptText="Average Speed (km/h)" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+            <JFXTextField fx:id="delayTime" promptText="Delay Time (min)" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+            <JFXTextField fx:id="distance" promptText="Distance (Meters)" text="Placeholder" labelFloat="true">
+            </JFXTextField>
+
+        </VBox>
     </body>
     <actions>
         <JFXButton fx:id="closeButton" styleClass="dialog-accept">CLOSE

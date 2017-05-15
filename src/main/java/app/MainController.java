@@ -26,6 +26,7 @@ import org.jxmapviewer.viewer.*;
 import view.DetailDialog;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
+import view.openStreetMap.SwingWaypointOverlayPainter;
 import view.openStreetMap.TrafficPainter;
 
 import javax.imageio.ImageIO;
@@ -94,12 +95,6 @@ public class MainController implements Initializable {
         return img;
     }
 
-    private static void showDiag(){
-        System.out.println(stackPaneHolder == null);
-        DetailDialog diag = new DetailDialog(stackPaneHolder, null);
-        diag.show();
-    }
-
     private void createAndSetSwingContent(final SwingNode swingNode) {
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -119,14 +114,16 @@ public class MainController implements Initializable {
 
         Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
         handler.process();
-        List<org.jxmapviewer.painter.Painter<JXMapViewer>> painters = new ArrayList<org.jxmapviewer.painter.Painter<JXMapViewer>>();
-        for(TrafficIncident incident : handler.getIncidents()){
-            System.out.println(incident);
-            painters.add(new TrafficPainter(incident));
+        //List<org.jxmapviewer.painter.Painter<JXMapViewer>> painters = new ArrayList<org.jxmapviewer.painter.Painter<JXMapViewer>>();
+            for(TrafficIncident incident : handler.getIncidents()){
+            mapViewer.addTrafficIncident(incident);
+            mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
         }
 
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        mapViewer.setOverlayPainter(painter);
+        //CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        //mapViewer.setOverlayPainter(painter);
+        mapViewer.showTrafficIncidents();
+        //mapViewer.showWaipoints();
         /*
         for(RawBinaryData d: handler.getLocationData()){
             try {

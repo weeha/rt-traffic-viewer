@@ -3,11 +3,13 @@ package app;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
+import model.traffic.TrafficIncident;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import java.net.URL;
@@ -25,7 +27,19 @@ public class DetailController implements Initializable {
     @FXML
     private Label headline;
     @FXML
-    private Label content;
+    private Label id;
+    @FXML
+    private JFXTextField raw;
+    @FXML
+    private JFXTextField creationTime;
+    @FXML
+    private JFXTextField trafficType;
+    @FXML
+    private JFXTextField averageSpeed;
+    @FXML
+    private JFXTextField delayTime;
+    @FXML
+    private JFXTextField distance;
 
     private GeoPosition coords = null;
 
@@ -33,7 +47,7 @@ public class DetailController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        headline.setText("OpenLR-Data");
+        headline.setText("Traffic Incident");
         closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -45,6 +59,19 @@ public class DetailController implements Initializable {
 
     public void setCoords(GeoPosition coords){
         if(coords != null)
-            content.setText(coords.toString());
+            id.setText("Hallow");
+    }
+
+    public void setIncident(TrafficIncident incident){
+        if(incident != null){
+			System.out.println(incident);
+            id.setText(incident.getId());
+            raw.setText(incident.getRawString());
+            creationTime.setText(incident.getCreationTime());
+            trafficType.setText(incident.getTrafficType());
+            averageSpeed.setText(incident.getAverageSpeed());
+            delayTime.setText(incident.getDelayTime());
+            distance.setText("0.0");
+        }
     }
 }
