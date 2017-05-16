@@ -5,8 +5,11 @@ import model.location.ILocationReferencePoint;
 import model.location.LastLocationReferencePoint;
 import model.location.LocationReferencePointImpl;
 import openlr.binary.data.AbstractLRP;
+import openlr.binary.data.FirstLRP;
+import openlr.binary.data.IntermediateLRP;
 import openlr.binary.data.RawBinaryData;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +116,30 @@ public abstract class Traffic {
 
     public List<LocationReferencePointImpl> getAllLRPs(){
         return this.lrps;
+    }
+
+    public String getDistance(){
+        int dnp;
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+        dnp = ((FirstLRP)firstLRP.getLRP()).getAttrib3().getDnp();
+        for(LocationReferencePointImpl intermediate : intermediatePoints)
+            dnp += ((IntermediateLRP)intermediate.getLRP()).getAttrib3().getDnp();
+
+        return "[" + formatter.format(getLowerBoundDistance(dnp)) + "m - " + formatter.format(getupperBoundDistance(dnp)) + "m]";
+    }
+
+    private double getLowerBoundDistance(int dnpValue){
+        if (dnpValue >= 0 && dnpValue <= 255) {
+            return ((double)((float)dnpValue * 58.6f));
+        }
+        return 0.0;
+    }
+
+    private double getupperBoundDistance(int dnpValue){
+        if (dnpValue >= 0 && dnpValue <= 255) {
+            return ((double)((float)(dnpValue + 1) * 58.6f));
+        }
+        return 0.0;
     }
 
     @Override

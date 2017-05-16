@@ -57,11 +57,6 @@ public class DetailController implements Initializable {
         });
     }
 
-    public void setCoords(GeoPosition coords){
-        if(coords != null)
-            id.setText("Hallow");
-    }
-
     public void setIncident(TrafficIncident incident){
         if(incident != null){
 			System.out.println(incident);
@@ -71,7 +66,7 @@ public class DetailController implements Initializable {
             trafficType.setText(incident.getTrafficType());
             averageSpeed.setText(incident.getAverageSpeed());
             delayTime.setText(incident.getDelayTime());
-            distance.setText("0.0");
+            distance.setText(incident.getDistance());
         }
     }
 }
