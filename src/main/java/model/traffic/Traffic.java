@@ -125,7 +125,7 @@ public abstract class Traffic {
         for(LocationReferencePointImpl intermediate : intermediatePoints)
             dnp += ((IntermediateLRP)intermediate.getLRP()).getAttrib3().getDnp();
 
-        return "[" + formatter.format(getLowerBoundDistance(dnp)) + "m - " + formatter.format(getupperBoundDistance(dnp)) + "m]";
+        return "[" + formatter.format(getLowerBoundDistance(dnp)) + "m - " + formatter.format(getUpperBoundDistance(dnp)) + "m]";
     }
 
     private double getLowerBoundDistance(int dnpValue){
@@ -135,7 +135,7 @@ public abstract class Traffic {
         return 0.0;
     }
 
-    private double getupperBoundDistance(int dnpValue){
+    private double getUpperBoundDistance(int dnpValue){
         if (dnpValue >= 0 && dnpValue <= 255) {
             return ((double)((float)(dnpValue + 1) * 58.6f));
         }
