@@ -11,6 +11,7 @@
     -fx-font-size: 15.0;
     -fx-font-weight: NORMAL;
     -fx-text-fill: #444;
+    -fx-background-color: rgba(66, 66, 66, 0.8);
 }
 
 .title-label {
