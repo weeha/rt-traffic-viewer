@@ -131,12 +131,7 @@ public abstract class Traffic {
             lowerBound += getLowerBoundDistance(dnp);
             upperBound += getUpperBoundDistance(dnp);
         }
-
-<<<<<<< HEAD
-        return "[" + formatter.format(getLowerBoundDistance(dnp)) + "m - " + formatter.format(getUpperBoundDistance(dnp)) + "m]";
-=======
         return "[" + formatter.format(lowerBound) + "m - " + formatter.format(upperBound) + "m]";
->>>>>>> 03697987043458d0a5f7bb1149fd476397352349
     }
 
     private double getLowerBoundDistance(int dnpValue){

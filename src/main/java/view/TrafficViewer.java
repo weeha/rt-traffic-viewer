@@ -45,6 +45,13 @@ public class TrafficViewer extends JXMapViewer {
             incidents.add(incident);
     }
 
+    public void showTrafficFlow(){
+        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        this.setOverlayPainter(painter);
+        this.repaint();
+    }
+
     public void showTrafficIncidents(){
         WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
         swingWaypointPainter.setWaypoints(waypoints);
@@ -56,9 +63,9 @@ public class TrafficViewer extends JXMapViewer {
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
         painter.addPainter(swingWaypointPainter);
         this.setOverlayPainter(painter);
-        for (SwingWaypoint w : waypoints) {
-            this.add(w.getButton());
-        }
+        //for (SwingWaypoint w : waypoints) {
+        //    this.add(w.getButton());
+        //}
         this.repaint();
     }
 
