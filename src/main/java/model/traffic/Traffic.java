@@ -120,12 +120,23 @@ public abstract class Traffic {
 
     public String getDistance(){
         int dnp;
+        double lowerBound;
+        double upperBound;
         DecimalFormat formatter = new DecimalFormat("#0.00");
         dnp = ((FirstLRP)firstLRP.getLRP()).getAttrib3().getDnp();
-        for(LocationReferencePointImpl intermediate : intermediatePoints)
-            dnp += ((IntermediateLRP)intermediate.getLRP()).getAttrib3().getDnp();
+        lowerBound = getLowerBoundDistance(dnp);
+        upperBound = getUpperBoundDistance(dnp);
+        for(LocationReferencePointImpl intermediate : intermediatePoints) {
+            dnp = ((IntermediateLRP) intermediate.getLRP()).getAttrib3().getDnp();
+            lowerBound += getLowerBoundDistance(dnp);
+            upperBound += getUpperBoundDistance(dnp);
+        }
 
+<<<<<<< HEAD
         return "[" + formatter.format(getLowerBoundDistance(dnp)) + "m - " + formatter.format(getUpperBoundDistance(dnp)) + "m]";
+=======
+        return "[" + formatter.format(lowerBound) + "m - " + formatter.format(upperBound) + "m]";
+>>>>>>> 03697987043458d0a5f7bb1149fd476397352349
     }
 
     private double getLowerBoundDistance(int dnpValue){

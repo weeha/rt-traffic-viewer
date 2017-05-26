@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.embed.swing.*?>
 <?import com.jfoenix.controls.*?>
+<?import java.lang.String?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
            xmlns="http://javafx.com/javafx/2.2" fx:controller="app.MainController">
     <VBox fx:id="box" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
@@ -26,6 +27,12 @@
                 <children>
                     <SwingNode fx:id="mapHolder" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 </children>
+                <StackPane fx:id="sideMenu" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="765.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+                    <styleClass>
+                        <String fx:value="side-menu"/>
+                    </styleClass>
+
+                </StackPane>
             </AnchorPane>
         </children>
     </VBox>
