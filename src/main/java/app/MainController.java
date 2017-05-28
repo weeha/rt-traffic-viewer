@@ -14,7 +14,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import model.OpenLRFileHandler;
+import model.OpenLRProtoHandler;
 import model.OpenLRXMLHandler;
+import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
@@ -129,7 +132,6 @@ public class MainController implements Initializable {
                         default:
                             System.out.println("Unknown Tab selected");
                     }
-                    System.out.println(selectedTab);
                 }
             });
 
@@ -151,17 +153,28 @@ public class MainController implements Initializable {
 
     private static void showFileChooser(){
         FileLoader loader = new FileLoader();
+        OpenLRFileHandler handler;
         loader.startFileChooser();
-        OpenLRXMLHandler handler = new OpenLRXMLHandler(loader.getDataFile());
+        if(loader.getDataFormat().equals("xml")){
+            handler = new OpenLRXMLHandler(loader.getDataFile());
+            handler.process();
+            for(TrafficIncident incident : ((OpenLRXMLHandler)handler).getIncidents()){
+                mapViewer.addTrafficIncident(incident);
+                mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
+            }
+            mapViewer.showTrafficIncidents();
+            return;
+        }else if(loader.getDataFormat().equals("proto")){
+            handler = new OpenLRProtoHandler(loader.getDataFile());
+            handler.process();
+            for(TrafficFlow flow : ((OpenLRProtoHandler)handler).getFlows()){
+                mapViewer.addTrafficFlow(flow);
+            }
+            return;
+        }else{
 
-        Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
-        handler.process();
-            for(TrafficIncident incident : handler.getIncidents()){
-            mapViewer.addTrafficIncident(incident);
-            mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
         }
 
-        mapViewer.showTrafficIncidents();
     }
 
     public static final class InputController {

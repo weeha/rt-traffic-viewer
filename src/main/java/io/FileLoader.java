@@ -3,6 +3,8 @@ package io;
 import com.jfoenix.controls.JFXPopup;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
+import org.apache.commons.io.FilenameUtils;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +25,13 @@ public class FileLoader {
 
     public File getDataFile(){
         return this.dataFile;
+    }
+
+    public String getDataFormat(){
+        if(dataFile != null)
+            return FilenameUtils.getExtension(dataFile.getAbsolutePath());
+        else
+            return null;
     }
 
     public void startFileChooser(){

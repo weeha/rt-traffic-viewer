@@ -13,10 +13,14 @@ import openlr.binary.data.RawBinaryData;
  */
 public class OpenLRFileHandler {
 
-    private final File file;
+    protected final File file;
     private List<RawBinaryData> data;
-    private final  OpenLRBinaryDecoder bDecoder;
+    protected final  OpenLRBinaryDecoder bDecoder;
 
+    private final double VERONA_NW_LAT = 45.467219;
+    private final double VERONA_NW_LON = 10.969248;
+    private final double VERONA_SE_LAT = 45.446207;
+    private final double VERONA_SE_LON = 10.995855;
     private final double VERONA_NE_LAT = 45.463246;
     private final double VERONA_NE_LON = 11.006842;
     private final double VERONA_SW_LAT = 45.448255;
@@ -62,12 +66,13 @@ public class OpenLRFileHandler {
         }
     }
 
-    private boolean rawWithin(RawBinaryData data){
-        CoordinateValue val = new CoordinateValue(data.getBinaryFirstLRP().getLon(), data.getBinaryFirstLRP().getLat());
-        return isWithin(val.getLatDeg(), val.getLonDeg());
+    protected boolean rawWithin(RawBinaryData data){
+        return true;
+        //CoordinateValue val = new CoordinateValue(data.getBinaryFirstLRP().getLon(), data.getBinaryFirstLRP().getLat());
+        //return isWithin(val.getLatDeg(), val.getLonDeg());
     }
 
-    private boolean isWithin(double lat, double lon){
+    protected boolean isWithin(double lat, double lon){
         return lat >= VERONA_SW_LAT &&
                 lat <= VERONA_NE_LAT &&
                 lon >= VERONA_SW_LON &&

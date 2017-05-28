@@ -19,19 +19,16 @@ import java.util.List;
 public abstract class Traffic {
 
     private RawBinaryData rawData;
-    private String rawString = "";
     private String creationTime="";
     private String trafficType="";
     private String averageSpeed="";
     private String delayTime="";
-    private final String id;
     private FirstLocationReferencePoint firstLRP = null;
     private LastLocationReferencePoint lastLRP = null;
     private List<LocationReferencePointImpl> intermediatePoints;
     private List<LocationReferencePointImpl> lrps;
 
-    public Traffic(String id){
-        this.id = id;
+    public Traffic(){
         intermediatePoints = new ArrayList<LocationReferencePointImpl>();
         lrps = new ArrayList<LocationReferencePointImpl>();
     }
@@ -86,18 +83,6 @@ public abstract class Traffic {
         return this.averageSpeed;
     }
 
-    public void setRawAsString(String raw){
-        rawString = raw;
-    }
-
-    public String getRawString(){
-        return this.rawString;
-    }
-
-    public String getId(){
-        return this.id;
-    }
-
     public RawBinaryData getRawData(){
         return this.rawData;
     }
@@ -148,11 +133,13 @@ public abstract class Traffic {
         return 0.0;
     }
 
+    public boolean hasGeoData(){
+        return rawData != null;
+    }
+
     @Override
     public String toString(){
         String result = "";
-        result += "ID: " + id + "\n";
-        result += "RAW-Data: " + rawString + "\n";
         result += "TrafficType:" + trafficType +"\n";
         result += "Average Speed:" + averageSpeed +"\n";
         result += "Delay Time:" + delayTime +"\n";

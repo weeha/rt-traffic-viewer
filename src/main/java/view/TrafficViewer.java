@@ -1,6 +1,7 @@
 package view;
 
 import model.traffic.Traffic;
+import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -23,12 +24,14 @@ public class TrafficViewer extends JXMapViewer {
 
     private Set<SwingWaypoint> waypoints;
     private final GeoPosition tum_campus = new GeoPosition(48.1486, 11.5687);
-    private List<TrafficIncident> incidents;
+    private List<Traffic> incidents;
+    private List<Traffic> flows;
 
     public TrafficViewer(){
         super();
         waypoints = new HashSet<SwingWaypoint>();
-        incidents = new ArrayList<TrafficIncident>();
+        incidents = new ArrayList<Traffic>();
+        flows = new ArrayList<Traffic>();
         this.setTileFactoryHelper();
         this.setMouseListener();
         this.setZoom(7);
@@ -45,19 +48,25 @@ public class TrafficViewer extends JXMapViewer {
             incidents.add(incident);
     }
 
+    public void addTrafficFlow(TrafficFlow flow){
+        if(flow instanceof TrafficFlow)
+            flows.add(flow);
+    }
+
     public void showTrafficFlow(){
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
-        this.repaint();
+        paintRoutes(flows);
     }
 
     public void showTrafficIncidents(){
+        paintRoutes(incidents);
+    }
+
+    private void paintRoutes(List<Traffic> routes){
         WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
         swingWaypointPainter.setWaypoints(waypoints);
         List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        for(TrafficIncident incident : incidents){
-            painters.add(new TrafficPainter(incident));
+        for(Traffic traffic : routes){
+            painters.add(new TrafficPainter(traffic));
         }
 
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
