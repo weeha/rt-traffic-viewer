@@ -5,9 +5,9 @@ import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.xml.stream.*;
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 
 /**
@@ -18,6 +18,7 @@ public class FileLoader {
     private final FileChooser fileChooser;
     private Desktop desktop = Desktop.getDesktop();
     private File dataFile = null;
+    private final String FLOW_IDENTIFIER = "elaboratedData";
 
     public FileLoader(){
         fileChooser = new FileChooser();
@@ -31,7 +32,32 @@ public class FileLoader {
         if(dataFile != null)
             return FilenameUtils.getExtension(dataFile.getAbsolutePath());
         else
-            return null;
+            return "";
+    }
+
+    public boolean isFlowFile(){
+        if(getDataFormat().equals("xml")){
+            BufferedReader reader = null;
+            XMLStreamReader xml = null;
+            try{
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(dataFile)));
+                XMLInputFactory factory;
+                xml = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+                while(xml.hasNext()){
+                    if (xml.next() == XMLStreamConstants.START_ELEMENT
+                            && FLOW_IDENTIFIER.equals(xml.getLocalName())) {
+                        return true;
+                    }
+                }
+            }catch(FileNotFoundException fe){}
+            catch (XMLStreamException xe){}
+            finally{
+                try {
+                    xml.close();
+                }catch(XMLStreamException e){}
+            }
+        }
+        return false;
     }
 
     public void startFileChooser(){

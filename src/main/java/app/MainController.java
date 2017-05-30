@@ -16,6 +16,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
 import model.OpenLRProtoHandler;
+import model.OpenLRXMLFlowHandler;
 import model.OpenLRXMLHandler;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
@@ -156,23 +157,38 @@ public class MainController implements Initializable {
         OpenLRFileHandler handler;
         loader.startFileChooser();
         if(loader.getDataFormat().equals("xml")){
-            handler = new OpenLRXMLHandler(loader.getDataFile());
-            handler.process();
-            for(TrafficIncident incident : ((OpenLRXMLHandler)handler).getIncidents()){
-                mapViewer.addTrafficIncident(incident);
-                mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
+            // now we have to discern between flow and incidents
+            if(!loader.isFlowFile()) {
+                handler = new OpenLRXMLHandler(loader.getDataFile());
+                handler.process();
+                mapViewer.resetIncidents();
+                for (TrafficIncident incident : ((OpenLRXMLHandler) handler).getIncidents()) {
+                    mapViewer.addTrafficIncident(incident);
+                    mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
+                }
+                mapViewer.showTrafficIncidents();
+                return;
             }
-            mapViewer.showTrafficIncidents();
-            return;
+            else{
+                handler = new OpenLRXMLFlowHandler(loader.getDataFile());
+                handler.process();
+                mapViewer.resetFlows();
+                for (TrafficFlow flow : ((OpenLRXMLFlowHandler) handler).getFlows()) {
+                    mapViewer.addTrafficFlow(flow);
+                }
+                mapViewer.showTrafficFlow();
+                return;
+                }
         }else if(loader.getDataFormat().equals("proto")){
             handler = new OpenLRProtoHandler(loader.getDataFile());
             handler.process();
+            mapViewer.resetFlows();
             for(TrafficFlow flow : ((OpenLRProtoHandler)handler).getFlows()){
                 mapViewer.addTrafficFlow(flow);
             }
             return;
         }else{
-
+            System.out.println("Unknown data format!");
         }
 
     }

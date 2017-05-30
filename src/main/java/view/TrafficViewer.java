@@ -39,6 +39,14 @@ public class TrafficViewer extends JXMapViewer {
         this.setSelectionViewer();
     }
 
+    public void resetFlows(){
+        flows = new ArrayList<Traffic>();
+    }
+
+    public void resetIncidents(){
+        incidents = new ArrayList<Traffic>();
+    }
+
     public void addWaypoint(SwingWaypoint point){
         waypoints.add(point);
     }
