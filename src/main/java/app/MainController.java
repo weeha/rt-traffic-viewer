@@ -2,6 +2,9 @@ package app;
 
 import com.jfoenix.controls.*;
 import io.FileLoader;
+import io.FlowClient;
+import io.IncidentClient;
+import io.TrafficClient;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.event.*;
@@ -11,7 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
@@ -30,7 +32,6 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 public class MainController implements Initializable {
 
@@ -45,6 +46,10 @@ public class MainController implements Initializable {
 
     private static final String INCIDENT_TAB = "Incidents";
     private static final String FLOW_TAB = "Traffic Flow";
+    private static final String SETTINGS = "Settings";
+    private final static String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/41.848994,12.609140:41.852834,12.598690?key=XEPi5PqA9rSiJ6ZYYZKJ68Us1exG4YKH";
+    private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
+    private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
 
     public static StackPane stackPaneHolder;
     private JFXPopup toolbarPopup;
@@ -52,8 +57,12 @@ public class MainController implements Initializable {
     private static Image icon;
     private Tab incidents = null;
     private Tab flows = null;
+    private Tab settings = null;
     private JFXTabPane tabPane = null;
+    private JFXToggleButton liveButton;
     private int selectedTab = 1;
+    private TrafficClient trafficClient;
+    private boolean apiSupport = false;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
@@ -121,16 +130,36 @@ public class MainController implements Initializable {
             incidents.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
                 @Override
                 public void handle(Event event) {
+                    if(trafficClient != null){
+                        trafficClient.stop();
+                    }
                     switch(selectedTab){
                         case 0:
                             selectedTab = 1;
-                            mapViewer.showTrafficFlow();
+                            if(apiSupport){
+                                trafficClient = new FlowClient(FLOWS_API);
+                                trafficClient.setCallIntervall(60000);
+                                trafficClient.setMap(mapViewer);
+                                trafficClient.start();
+                            }else {
+                                mapViewer.showTrafficFlow();
+                            }
+                            tabPane.getSelectionModel().select(1);
                             break;
                         case 1:
                             selectedTab = 0;
-                            mapViewer.showTrafficIncidents();
+                            if(apiSupport){
+                                trafficClient = new IncidentClient(INCIDENTS_API);
+                                trafficClient.setCallIntervall(60000);
+                                trafficClient.setMap(mapViewer);
+                                trafficClient.start();
+                            }else {
+                                mapViewer.showTrafficIncidents();
+                            }
+                            tabPane.getSelectionModel().select(0);
                             break;
                         default:
+                            tabPane.getSelectionModel().select(2);
                             System.out.println("Unknown Tab selected");
                     }
                 }
@@ -147,6 +176,11 @@ public class MainController implements Initializable {
             noFlowDataLabel.setTextFill(Color.web("#FFFFFF"));
             flows.setContent(noFlowDataLabel);
             tabPane.getTabs().add(flows);
+            settings = new Tab();
+            settings.setText(SETTINGS);
+            liveButton = createLiveButton();
+            settings.setContent(liveButton);
+            tabPane.getTabs().add(settings);
             tabPane.setPrefWidth(sideMenu.getWidth());
             sideMenu.getChildren().add(tabPane);
         }
@@ -159,7 +193,8 @@ public class MainController implements Initializable {
         if(loader.getDataFormat().equals("xml")){
             // now we have to discern between flow and incidents
             if(!loader.isFlowFile()) {
-                handler = new OpenLRXMLHandler(loader.getDataFile());
+                handler = new OpenLRXMLHandler();
+                handler.setData(loader.getDataFile());
                 handler.process();
                 mapViewer.resetIncidents();
                 for (TrafficIncident incident : ((OpenLRXMLHandler) handler).getIncidents()) {
@@ -170,7 +205,8 @@ public class MainController implements Initializable {
                 return;
             }
             else{
-                handler = new OpenLRXMLFlowHandler(loader.getDataFile());
+                handler = new OpenLRXMLFlowHandler();
+                handler.setData(loader.getDataFile());
                 handler.process();
                 mapViewer.resetFlows();
                 for (TrafficFlow flow : ((OpenLRXMLFlowHandler) handler).getFlows()) {
@@ -180,7 +216,8 @@ public class MainController implements Initializable {
                 return;
                 }
         }else if(loader.getDataFormat().equals("proto")){
-            handler = new OpenLRProtoHandler(loader.getDataFile());
+            handler = new OpenLRProtoHandler();
+            loader.getDataFile();
             handler.process();
             mapViewer.resetFlows();
             for(TrafficFlow flow : ((OpenLRProtoHandler)handler).getFlows()){
@@ -191,6 +228,37 @@ public class MainController implements Initializable {
             System.out.println("Unknown data format!");
         }
 
+    }
+
+    private JFXToggleButton createLiveButton(){
+        final JFXToggleButton button = new JFXToggleButton();
+        button.setText("Live Mode");
+        button.setTextFill(Color.web("#FFFFFF"));
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(button.isSelected()  ){
+                    Label incidentApiLabel = new Label("Connected to TomTom-API");
+                    incidentApiLabel.setTextFill(Color.web("#FFFFFF"));
+                    incidents.setContent(incidentApiLabel);
+                    Label flowtApiLabel = new Label("Connected to TomTom-API");
+                    flowtApiLabel.setTextFill(Color.web("#FFFFFF"));
+                    flows.setContent(flowtApiLabel);
+                    apiSupport = true;
+                }else{
+                    trafficClient.stop();
+                    Label noFlowDataLabel = new Label("Please load traffic flow data!");
+                    noFlowDataLabel.setTextFill(Color.web("#FFFFFF"));
+                    flows.setContent(noFlowDataLabel);
+                    Label noIncidentDataLabel = new Label("Please load traffic incident data!");
+                    noIncidentDataLabel.setTextFill(Color.web("#FFFFFF"));
+                    incidents.setContent(noIncidentDataLabel);
+                    apiSupport = false;
+                }
+
+            }
+        });
+        return button;
     }
 
     public static final class InputController {

@@ -1,7 +1,6 @@
 package model;
 
 import model.traffic.TrafficFlow;
-import model.traffic.TrafficIncident;
 import openlr.PhysicalFormatException;
 import openlr.binary.ByteArray;
 import openlr.binary.data.RawBinaryData;
@@ -26,8 +25,7 @@ public class OpenLRXMLFlowHandler extends OpenLRFileHandler{
     XMLEventReader eventReader;
     private final QName ID = new QName("id");
 
-    public OpenLRXMLFlowHandler(File file){
-        super(file);
+    public OpenLRXMLFlowHandler(){
         flows = new ArrayList<TrafficFlow>();
         factory = XMLInputFactory.newInstance();
     }
@@ -38,8 +36,7 @@ public class OpenLRXMLFlowHandler extends OpenLRFileHandler{
 
     @Override
     public void process(){
-        if(file != null){
-            BufferedReader reader = null;
+        if(reader != null){
             TrafficFlow flow = null;
             boolean rawBinary =false;
             boolean averageSpeed = false;
@@ -47,7 +44,6 @@ public class OpenLRXMLFlowHandler extends OpenLRFileHandler{
             boolean trafficCondition = false;
             boolean travelTime = false;
             try{
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
                 eventReader = factory.createXMLEventReader(reader);
                 while(eventReader.hasNext()){
                     XMLEvent event = eventReader.nextEvent();
@@ -115,8 +111,6 @@ public class OpenLRXMLFlowHandler extends OpenLRFileHandler{
                             break;
                     }
                 }
-            } catch (FileNotFoundException fe) {
-                System.err.println("File not found");
             } catch(XMLStreamException se){
                 System.err.println("Error while processing XML document");
             }finally {

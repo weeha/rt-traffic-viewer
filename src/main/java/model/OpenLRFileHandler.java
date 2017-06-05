@@ -13,9 +13,10 @@ import openlr.binary.data.RawBinaryData;
  */
 public class OpenLRFileHandler {
 
-    protected final File file;
+    protected Reader reader = null;
     private List<RawBinaryData> data;
     protected final  OpenLRBinaryDecoder bDecoder;
+    private File file;
 
     private final double VERONA_NW_LAT = 45.467219;
     private final double VERONA_NW_LON = 10.969248;
@@ -26,11 +27,25 @@ public class OpenLRFileHandler {
     private final double VERONA_SW_LAT = 45.448255;
     private final double VERONA_SW_LON = 10.968218;
 
-    public OpenLRFileHandler(File file){
+    public OpenLRFileHandler(){
 
-        this.file = file;
         this.data = new ArrayList<RawBinaryData>();
         bDecoder = new OpenLRBinaryDecoder();
+    }
+
+    public void setData(Object data){
+        if(data instanceof File){
+            try {
+                this.file = file;
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream((File) data)));
+            }catch(FileNotFoundException fe){
+                reader = null;
+            }
+        }else if(data instanceof String){
+            reader = new StringReader((String)data);
+        }else{
+            System.err.println("Unknown data format to process: " + data.getClass());
+        }
     }
 
     public List<RawBinaryData> getLocationData(){
@@ -38,32 +53,22 @@ public class OpenLRFileHandler {
     }
 
     public void process(){
-        if(file != null) {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-                for (String line; (line = reader.readLine()) != null; ) {
-                    ByteArray bytes = new ByteArray(line);
-                    RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
-                    if(rawWithin(raw)) {
-                        data.add(raw);
-                    }
-                    //System.out.println((bDecoder.resolveBinaryData("", bytes)));
-                }
-            } catch (FileNotFoundException fe) {
-                System.err.println("File not found");
-            } catch (IOException ie) {
-                System.err.println("IO Error");
-            } catch (openlr.PhysicalFormatException pe) {
-                System.err.println("Decoding error");
-            } finally {
-                try {
-                    if(reader != null)
-                        reader.close();
-                } catch (IOException ie) {
-                }
-            }
+        if(reader != null) {
+            // Nothing to do here
         }
+    }
+
+    protected boolean hasFile(){
+        if(file != null)
+            return file.exists();
+        return false;
+    }
+
+    protected File getDataFile(){
+        if (hasFile())
+            return file;
+        else
+            return null;
     }
 
     protected boolean rawWithin(RawBinaryData data){

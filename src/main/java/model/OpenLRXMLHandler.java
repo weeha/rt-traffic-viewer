@@ -26,8 +26,7 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
 
     private final QName ID = new QName("id");
 
-    public OpenLRXMLHandler(File file){
-        super(file);
+    public OpenLRXMLHandler(){
         bDecoder = new OpenLRBinaryDecoder();
         this.incidents = new ArrayList<TrafficIncident>();
         factory = XMLInputFactory.newInstance();
@@ -45,10 +44,8 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
         boolean trafficType = false;
         boolean averageSpeed = false;
         boolean delayTime = false;
-        if(file != null){
-            BufferedReader reader = null;
+        if(reader != null){
             try{
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
                 eventReader = factory.createXMLEventReader(reader);
                 while(eventReader.hasNext()){
                     XMLEvent event = eventReader.nextEvent();
@@ -120,10 +117,6 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                             break;
                     }
                 }
-            } catch (FileNotFoundException fe) {
-                System.err.println("File not found");
-            } catch (IOException ie) {
-                System.err.println("IO Error");
             } catch(XMLStreamException se){
                 System.err.println("Error while processing XML document");
             }finally {

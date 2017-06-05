@@ -19,8 +19,7 @@ public class OpenLRProtoHandler extends OpenLRFileHandler{
 
     private List<TrafficFlow> flows;
 
-    public OpenLRProtoHandler(File file){
-        super(file);
+    public OpenLRProtoHandler(){
         flows = new ArrayList<TrafficFlow>();
     }
 
@@ -33,26 +32,28 @@ public class OpenLRProtoHandler extends OpenLRFileHandler{
         FileInputStream input = null;
         TrafficFlow tFlow = null;
         try {
-            input = new FileInputStream(file);
-            ProtobufTrafficFlowV5.TrafficFlowGroup tGroup =
-                    ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
-            for(ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()){
-                tFlow = new TrafficFlow();
-                ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
-                try {
-                    RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
-                    tFlow.setRawData(raw);
-                }catch(PhysicalFormatException pe){
-                    System.out.println(pe);
+            if(this.hasFile()) {
+                input = new FileInputStream(getDataFile());
+                ProtobufTrafficFlowV5.TrafficFlowGroup tGroup =
+                        ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
+                for (ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()) {
+                    tFlow = new TrafficFlow();
+                    ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
+                    try {
+                        RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
+                        tFlow.setRawData(raw);
+                    } catch (PhysicalFormatException pe) {
+                        System.out.println(pe);
+                    }
+                    if (tFlow.hasGeoData())
+                        this.flows.add(tFlow);
                 }
-                if(tFlow.hasGeoData())
-                    this.flows.add(tFlow);
             }
         }catch(IOException ie){
             System.out.println("Something went wrong while processing protocol buffer...");
         }finally{
             try {
-                if (file != null)
+                if (getDataFile() != null)
                     input.close();
             }catch(IOException oe){}
         }
