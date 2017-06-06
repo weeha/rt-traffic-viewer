@@ -2,6 +2,7 @@ package view.openStreetMap;
 
 import model.location.LocationReferencePointImpl;
 import model.traffic.Traffic;
+import model.traffic.TrafficFlow;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
 
@@ -15,7 +16,9 @@ public class TrafficPainter implements Painter<JXMapViewer> {
 
     private Traffic traffic;
     private boolean antiAlias = true;
-    Color color = new Color(204,0,0, 128);
+    private final Color HEAVY_TRAFFIC = new Color(204,0,0, 128);
+    private final Color FREE_TRAFFIC = new Color(100,221,23, 128);
+    private final Color UNKNOWN = new Color(117,117,117, 128);
 
     public TrafficPainter(Traffic traffic){
         this.traffic = traffic;
@@ -23,6 +26,8 @@ public class TrafficPainter implements Painter<JXMapViewer> {
 
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
+        Color color = UNKNOWN;
+
         g = (Graphics2D) g.create();
         // convert from viewport to world bitmap
         Rectangle rect = map.getViewportBounds();

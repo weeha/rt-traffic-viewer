@@ -1,11 +1,14 @@
 package app;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.validation.RequiredFieldValidator;
 import io.FileLoader;
 import io.FlowClient;
 import io.IncidentClient;
 import io.TrafficClient;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingNode;
 import javafx.event.*;
 import javafx.event.Event;
@@ -60,7 +63,9 @@ public class MainController implements Initializable {
     private Tab settings = null;
     private JFXTabPane tabPane = null;
     private JFXToggleButton liveButton;
-    private int selectedTab = 1;
+    private JFXTextField trafficKeyField;
+    private JFXTextField routingKeyField;
+    private int selectedTab = 0;
     private TrafficClient trafficClient;
     private boolean apiSupport = false;
 
@@ -123,48 +128,27 @@ public class MainController implements Initializable {
             tabPane = new JFXTabPane();
             incidents = new Tab();
             incidents.setText(INCIDENT_TAB);
-            /*
-            Workaround to get selected Tab.
-            Somehow JFoenix-API hasn't implemented this right.
-             */
+
             incidents.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
                 @Override
                 public void handle(Event event) {
-                    if(trafficClient != null){
-                        trafficClient.stop();
+                    if(incidents.isSelected()){
+                        if(apiSupport){
+                            trafficClient = new IncidentClient(INCIDENTS_API);
+                            trafficClient.setCallIntervall(60000);
+                            trafficClient.setMap(mapViewer);
+                            trafficClient.start();
+                        }else {
+                            mapViewer.showTrafficIncidents();
+                        }
+                    }else{
+                        if(trafficClient != null){
+                            trafficClient.stop();
+                        }
                     }
-                    switch(selectedTab){
-                        case 0:
-                            selectedTab = 1;
-                            if(apiSupport){
-                                trafficClient = new FlowClient(FLOWS_API);
-                                trafficClient.setCallIntervall(60000);
-                                trafficClient.setMap(mapViewer);
-                                trafficClient.start();
-                            }else {
-                                mapViewer.showTrafficFlow();
-                            }
-                            tabPane.getSelectionModel().select(1);
-                            break;
-                        case 1:
-                            selectedTab = 0;
-                            if(apiSupport){
-                                trafficClient = new IncidentClient(INCIDENTS_API);
-                                trafficClient.setCallIntervall(60000);
-                                trafficClient.setMap(mapViewer);
-                                trafficClient.start();
-                            }else {
-                                mapViewer.showTrafficIncidents();
-                            }
-                            tabPane.getSelectionModel().select(0);
-                            break;
-                        default:
-                            tabPane.getSelectionModel().select(2);
-                            System.out.println("Unknown Tab selected");
-                    }
+
                 }
             });
-
             Label noIncidentDataLabel = new Label("Please load traffic incident data!");
             noIncidentDataLabel.setTextFill(Color.web("#FFFFFF"));
             incidents.setContent(noIncidentDataLabel);
@@ -172,18 +156,64 @@ public class MainController implements Initializable {
             tabPane.setPrefSize(300, 200);
             flows = new Tab();
             flows.setText(FLOW_TAB);
+            flows.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    if(flows.isSelected()){
+                        if(apiSupport){
+                            trafficClient = new FlowClient(FLOWS_API);
+                            trafficClient.setCallIntervall(60000);
+                            trafficClient.setMap(mapViewer);
+                            trafficClient.start();
+                        }else {
+                            mapViewer.showTrafficFlow();
+                        }
+                    }else{
+                        if(trafficClient != null){
+                            trafficClient.stop();
+                        }
+                    }
+                }
+            });
+
             Label noFlowDataLabel = new Label("Please load traffic flow data!");
             noFlowDataLabel.setTextFill(Color.web("#FFFFFF"));
             flows.setContent(noFlowDataLabel);
             tabPane.getTabs().add(flows);
             settings = new Tab();
             settings.setText(SETTINGS);
+            settings.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                    //TODO
+                }
+            });
             liveButton = createLiveButton();
             settings.setContent(liveButton);
+            trafficKeyField = createTextField("Traffic Key", true);
             tabPane.getTabs().add(settings);
             tabPane.setPrefWidth(sideMenu.getWidth());
             sideMenu.getChildren().add(tabPane);
         }
+    }
+
+    private JFXTextField createTextField(String desc, boolean validation){
+        final JFXTextField field = new JFXTextField();
+        field.setPromptText(desc);
+        if(validation){
+            RequiredFieldValidator validator = new RequiredFieldValidator();
+            validator.setMessage(desc + " required!");
+            field.getValidators().add(validator);
+            field.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if (!newValue) {
+                        field.validate();
+                    }
+                }
+            });
+        }
+        return field;
     }
 
     private static void showFileChooser(){
