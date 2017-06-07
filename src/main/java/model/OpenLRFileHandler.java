@@ -36,7 +36,7 @@ public class OpenLRFileHandler {
     public void setData(Object data){
         if(data instanceof File){
             try {
-                this.file = file;
+                this.file = (File)data;
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream((File) data)));
             }catch(FileNotFoundException fe){
                 reader = null;

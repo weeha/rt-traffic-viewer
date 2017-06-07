@@ -247,12 +247,13 @@ public class MainController implements Initializable {
                 }
         }else if(loader.getDataFormat().equals("proto")){
             handler = new OpenLRProtoHandler();
-            loader.getDataFile();
+            handler.setData(loader.getDataFile());
             handler.process();
             mapViewer.resetFlows();
             for(TrafficFlow flow : ((OpenLRProtoHandler)handler).getFlows()){
                 mapViewer.addTrafficFlow(flow);
             }
+            mapViewer.showTrafficFlow();
             return;
         }else{
             System.out.println("Unknown data format!");
