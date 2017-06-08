@@ -1,8 +1,6 @@
 package model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,39 +13,39 @@ import openlr.binary.data.RawBinaryData;
 /**
  * Created by Florian Noack on 27.05.2017.
  */
-public class OpenLRProtoHandler extends OpenLRFileHandler{
+public class OpenLRProtoHandler extends FlowHandler{
 
-    private List<TrafficFlow> flows;
 
     public OpenLRProtoHandler(){
-        flows = new ArrayList<TrafficFlow>();
     }
 
-    public List<TrafficFlow> getFlows(){
-        return flows;
-    }
 
     @Override
     public void process(){
-        FileInputStream input = null;
+        InputStream input = null;
         TrafficFlow tFlow = null;
         try {
             if(this.hasFile()) {
                 input = new FileInputStream(getDataFile());
-                ProtobufTrafficFlowV5.TrafficFlowGroup tGroup =
-                        ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
-                for (ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()) {
-                    tFlow = new TrafficFlow();
-                    ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
-                    try {
-                        RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
-                        tFlow.setRawData(raw);
-                    } catch (PhysicalFormatException pe) {
-                        System.out.println(pe);
-                    }
-                    if (tFlow.hasGeoData())
-                        this.flows.add(tFlow);
+            }else if(!this.hasFile() && getInputData() != null){
+                //input = new ByteArrayInputStream(getInputData());
+            }
+            else {
+                return;
+            }
+            ProtobufTrafficFlowV5.TrafficFlowGroup tGroup =
+                    ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
+            for (ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()) {
+                tFlow = new TrafficFlow();
+                ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
+                try {
+                    RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
+                    tFlow.setRawData(raw);
+                } catch (PhysicalFormatException pe) {
+                    System.out.println(pe);
                 }
+                if (tFlow.hasGeoData())
+                    this.flows.add(tFlow);
             }
         }catch(IOException ie){
             System.out.println("Something went wrong while processing protocol buffer...");

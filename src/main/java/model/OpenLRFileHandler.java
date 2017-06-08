@@ -14,9 +14,10 @@ import openlr.binary.data.RawBinaryData;
 public class OpenLRFileHandler {
 
     protected Reader reader = null;
-    private List<RawBinaryData> data;
+    private List<RawBinaryData> rawData;
     protected final  OpenLRBinaryDecoder bDecoder;
     private File file;
+    private Object inputData = null;
 
     private final double VERONA_NW_LAT = 45.467219;
     private final double VERONA_NW_LON = 10.969248;
@@ -29,7 +30,7 @@ public class OpenLRFileHandler {
 
     public OpenLRFileHandler(){
 
-        this.data = new ArrayList<RawBinaryData>();
+        rawData = new ArrayList<RawBinaryData>();
         bDecoder = new OpenLRBinaryDecoder();
     }
 
@@ -43,19 +44,24 @@ public class OpenLRFileHandler {
             }
         }else if(data instanceof String){
             reader = new StringReader((String)data);
+            inputData = data;
         }else{
             System.err.println("Unknown data format to process: " + data.getClass());
         }
     }
 
     public List<RawBinaryData> getLocationData(){
-        return data;
+        return rawData;
     }
 
     public void process(){
         if(reader != null) {
             // Nothing to do here
         }
+    }
+
+    public Object getInputData(){
+        return inputData;
     }
 
     protected boolean hasFile(){

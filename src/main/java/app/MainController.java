@@ -17,6 +17,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import model.OpenLRFileHandler;
@@ -34,6 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.*;
 
 public class MainController implements Initializable {
@@ -51,7 +54,9 @@ public class MainController implements Initializable {
     private static final String FLOW_TAB = "Traffic Flow";
     private static final String SETTINGS = "Settings";
     private final static String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/41.848994,12.609140:41.852834,12.598690?key=XEPi5PqA9rSiJ6ZYYZKJ68Us1exG4YKH";
-    private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/bd200f72-3871-42bf-a65b-3e792386e702/content.xml";
+    //private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/bd200f72-3871-42bf-a65b-3e792386e702/content.xml";
+    private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
+    private final static String FLOWS_API_DETAILD ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
     private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
 
     public static StackPane stackPaneHolder;
@@ -63,9 +68,8 @@ public class MainController implements Initializable {
     private Tab settings = null;
     private JFXTabPane tabPane = null;
     private JFXToggleButton liveButton;
-    private JFXTextField trafficKeyField;
-    private JFXTextField routingKeyField;
-    private int selectedTab = 0;
+    private JFXTextField trafficKeyField = null;
+    private JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
     private boolean apiSupport = false;
 
@@ -161,10 +165,15 @@ public class MainController implements Initializable {
                 public void handle(Event event) {
                     if(flows.isSelected()){
                         if(apiSupport){
-                            trafficClient = new FlowClient(FLOWS_API);
-                            trafficClient.setCallIntervall(60000);
-                            trafficClient.setMap(mapViewer);
-                            trafficClient.start();
+                            if(trafficKeyField != null) {
+                                String url = MessageFormat.format(FLOWS_API, trafficKeyField.getText());
+                                trafficClient = new FlowClient(url);
+                                trafficClient.setCallIntervall(60000);
+                                trafficClient.setMap(mapViewer);
+                                trafficClient.start();
+                            }else{
+                                //TODO
+                            }
                         }else {
                             mapViewer.showTrafficFlow();
                         }
@@ -188,9 +197,9 @@ public class MainController implements Initializable {
                     //TODO
                 }
             });
-            liveButton = createLiveButton();
-            settings.setContent(liveButton);
-            trafficKeyField = createTextField("Traffic Key", true);
+            //liveButton = createLiveButton();
+            settings.setContent(createSettingsPane());
+            //trafficKeyField = createTextField("Traffic Key", true);
             tabPane.getTabs().add(settings);
             tabPane.setPrefWidth(sideMenu.getWidth());
             sideMenu.getChildren().add(tabPane);
@@ -261,8 +270,8 @@ public class MainController implements Initializable {
 
     }
 
-    private JFXToggleButton createLiveButton(){
-        final JFXToggleButton button = new JFXToggleButton();
+    private void createLiveButton(final JFXToggleButton button){
+        //final JFXToggleButton button = new JFXToggleButton();
         button.setText("Live Mode");
         button.setTextFill(Color.web("#FFFFFF"));
         button.setOnAction(new EventHandler<ActionEvent>() {
@@ -289,7 +298,20 @@ public class MainController implements Initializable {
 
             }
         });
-        return button;
+    }
+
+    private Pane createSettingsPane(){
+        Pane settings = null;
+        try {
+            settings = (AnchorPane)FXMLLoader.load(getClass().getResource("/fxml/settings.fxml"));
+            JFXToggleButton liveButton = (JFXToggleButton)settings.lookup("#liveMode");
+            createLiveButton(liveButton);
+            trafficKeyField = (JFXTextField)settings.lookup("#trafficKeyField");
+            routingKeyField = (JFXTextField)settings.lookup("#routingKeyField");
+        }catch(IOException ie){
+            System.err.println("Can not load settings pane");
+        }
+        return settings;
     }
 
     public static final class InputController {

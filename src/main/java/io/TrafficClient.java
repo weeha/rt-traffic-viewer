@@ -1,8 +1,6 @@
 package io;
 
-import model.OpenLRFileHandler;
-import model.OpenLRXMLFlowHandler;
-import model.OpenLRXMLHandler;
+import model.*;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import org.apache.http.HttpEntity;
@@ -34,8 +32,12 @@ public class TrafficClient extends HttpClient{
                 HttpEntity entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity, "UTF-8");
                 OpenLRFileHandler handler = null;
-                if(this instanceof FlowClient)
-                    handler = new OpenLRXMLFlowHandler();
+                if(this instanceof FlowClient) {
+                    if(URL.endsWith(".xml"))
+                        handler = new OpenLRXMLFlowHandler();
+                    else if(URL.endsWith(".proto"))
+                        handler = new OpenLRProtoHandler();
+                }
                 else
                     handler = new OpenLRXMLHandler();
                 handler.setData(responseString);
@@ -43,7 +45,7 @@ public class TrafficClient extends HttpClient{
                 if(viewer != null){
                     if(this instanceof FlowClient) {
                         viewer.resetFlows();
-                        for (TrafficFlow f : ((OpenLRXMLFlowHandler)handler).getFlows()) {
+                        for (TrafficFlow f : ((FlowHandler)handler).getFlows()) {
                             viewer.addTrafficFlow(f);
                         }
                         viewer.showTrafficFlow();

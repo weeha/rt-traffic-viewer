@@ -18,15 +18,14 @@ import java.util.List;
 /**
  * Created by Florian Noack on 29.05.2017.
  */
-public class OpenLRXMLFlowHandler extends OpenLRFileHandler{
+public class OpenLRXMLFlowHandler extends FlowHandler{
 
-    private List<TrafficFlow> flows;
     XMLInputFactory factory;
     XMLEventReader eventReader;
     private final QName ID = new QName("id");
 
     public OpenLRXMLFlowHandler(){
-        flows = new ArrayList<TrafficFlow>();
+        super();
         factory = XMLInputFactory.newInstance();
     }
 
