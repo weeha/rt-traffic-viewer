@@ -23,12 +23,12 @@ public class TrafficClient extends HttpClient{
 
     public TrafficClient(String url){
         super(url);
+            client = HttpClientBuilder.create().build();
     }
 
     public void run(){
         while(active){
             System.out.println("Connecting to " + URL);
-            client = HttpClientBuilder.create().build();
             try {
                 response = client.execute(request);
                 HttpEntity entity = response.getEntity();

@@ -1,5 +1,7 @@
 package view.openStreetMap;
 
+import io.RoutingClient;
+import io.TrafficClient;
 import model.location.LocationReferencePointImpl;
 import model.traffic.Traffic;
 import model.traffic.TrafficFlow;
@@ -60,7 +62,7 @@ public class TrafficPainter implements Painter<JXMapViewer> {
         int lastX = 0;
         int lastY = 0;
         boolean first = true;
-        //Point2D pt = map.getTileFactory().geoToPixel(traffic.getFirstLRP().getGeoPosition(), map.getZoom());
+
         for(LocationReferencePointImpl point : traffic.getAllLRPs()){
             Point2D pt = map.getTileFactory().geoToPixel(point.getGeoPosition(), map.getZoom());
             if (first){

@@ -11,9 +11,9 @@ public class HttpClient implements Runnable{
 
     private Thread t;
     protected org.apache.http.client.HttpClient client;
-    protected final HttpGet request;
+    protected HttpGet request;
     HttpResponse response;
-    protected final String URL;
+    protected String URL;
     protected boolean active = true;
     protected int callIntervall = 1000;
 
@@ -32,6 +32,10 @@ public class HttpClient implements Runnable{
         request.setConfig(config);
     }
 
+    public HttpClient(){
+
+    }
+
     public void run(){
 
     }
@@ -41,7 +45,6 @@ public class HttpClient implements Runnable{
     }
 
     public void start(){
-        System.out.println("Getting new Traffic Data");
         if(t == null){
             t = new Thread(this);
             t.setDaemon(true);
