@@ -51,7 +51,7 @@ public class MainController implements Initializable {
     private static final String FLOW_TAB = "Traffic Flow";
     private static final String SETTINGS = "Settings";
     private final static String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/41.848994,12.609140:41.852834,12.598690?key=XEPi5PqA9rSiJ6ZYYZKJ68Us1exG4YKH";
-    private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
+    private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/bd200f72-3871-42bf-a65b-3e792386e702/content.xml";
     private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
 
     public static StackPane stackPaneHolder;

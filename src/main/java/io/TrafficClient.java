@@ -6,11 +6,13 @@ import model.OpenLRXMLHandler;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.TrafficViewer;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 /**
  * Created by Florian Noack on 05.06.2017.
@@ -54,9 +56,14 @@ public class TrafficClient extends HttpClient{
                     }
                 }
 
+            }catch(ClientProtocolException ce){
+
+            }catch(ConnectException cpe){
+
             }catch(IOException ie){
                 ie.printStackTrace();
-            }finally {
+            }
+            finally {
                 try {
                     Thread.sleep(callIntervall);
                 }catch(InterruptedException ie){}
