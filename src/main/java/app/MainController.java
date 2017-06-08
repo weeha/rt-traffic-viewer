@@ -56,7 +56,7 @@ public class MainController implements Initializable {
     private final static String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/41.848994,12.609140:41.852834,12.598690?key=XEPi5PqA9rSiJ6ZYYZKJ68Us1exG4YKH";
     //private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/bd200f72-3871-42bf-a65b-3e792386e702/content.xml";
     private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
-    private final static String FLOWS_API_DETAILD ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
+    private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
     private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
 
     public static StackPane stackPaneHolder;
@@ -67,7 +67,7 @@ public class MainController implements Initializable {
     private Tab flows = null;
     private Tab settings = null;
     private JFXTabPane tabPane = null;
-    private JFXToggleButton liveButton;
+    private JFXToggleButton detailedFlow;
     private JFXTextField trafficKeyField = null;
     private JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
@@ -166,7 +166,11 @@ public class MainController implements Initializable {
                     if(flows.isSelected()){
                         if(apiSupport){
                             if(trafficKeyField != null) {
-                                String url = MessageFormat.format(FLOWS_API, trafficKeyField.getText());
+                                String url = "";
+                                if(detailedFlow.isSelected())
+                                    url = MessageFormat.format(FLOWS_API_DETAILED, trafficKeyField.getText());
+                                else
+                                    url = MessageFormat.format(FLOWS_API, trafficKeyField.getText());
                                 trafficClient = new FlowClient(url);
                                 trafficClient.setCallIntervall(60000);
                                 trafficClient.setMap(mapViewer);
@@ -197,9 +201,7 @@ public class MainController implements Initializable {
                     //TODO
                 }
             });
-            //liveButton = createLiveButton();
             settings.setContent(createSettingsPane());
-            //trafficKeyField = createTextField("Traffic Key", true);
             tabPane.getTabs().add(settings);
             tabPane.setPrefWidth(sideMenu.getWidth());
             sideMenu.getChildren().add(tabPane);
@@ -305,6 +307,7 @@ public class MainController implements Initializable {
         try {
             settings = (AnchorPane)FXMLLoader.load(getClass().getResource("/fxml/settings.fxml"));
             JFXToggleButton liveButton = (JFXToggleButton)settings.lookup("#liveMode");
+            detailedFlow = (JFXToggleButton)settings.lookup("#detailedFlow");
             createLiveButton(liveButton);
             trafficKeyField = (JFXTextField)settings.lookup("#trafficKeyField");
             routingKeyField = (JFXTextField)settings.lookup("#routingKeyField");

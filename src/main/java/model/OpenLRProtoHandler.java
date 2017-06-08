@@ -28,7 +28,7 @@ public class OpenLRProtoHandler extends FlowHandler{
             if(this.hasFile()) {
                 input = new FileInputStream(getDataFile());
             }else if(!this.hasFile() && getInputData() != null){
-                //input = new ByteArrayInputStream(getInputData());
+                input = new StringBufferInputStream((String)getInputData());//InputStream(((String)getInputData()).getBytes());
             }
             else {
                 return;
