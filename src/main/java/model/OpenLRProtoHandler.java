@@ -23,18 +23,19 @@ public class OpenLRProtoHandler extends FlowHandler{
     @Override
     public void process(){
         InputStream input = null;
-        TrafficFlow tFlow = null;
+        TrafficFlow tFlow;
         try {
+            ProtobufTrafficFlowV5.TrafficFlowGroup tGroup = null;
             if(this.hasFile()) {
                 input = new FileInputStream(getDataFile());
+                tGroup = ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
             }else if(!this.hasFile() && getInputData() != null){
-                input = new StringBufferInputStream((String)getInputData());//InputStream(((String)getInputData()).getBytes());
+                tGroup = ProtobufTrafficFlowV5.TrafficFlowGroup
+                        .parseFrom(((String) getInputData()).getBytes("ISO-8859-1"));
             }
             else {
                 return;
             }
-            ProtobufTrafficFlowV5.TrafficFlowGroup tGroup =
-                    ProtobufTrafficFlowV5.TrafficFlowGroup.parseFrom(input);
             for (ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()) {
                 tFlow = new TrafficFlow();
                 ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
@@ -42,6 +43,7 @@ public class OpenLRProtoHandler extends FlowHandler{
                     RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
                     tFlow.setRawData(raw);
                 } catch (PhysicalFormatException pe) {
+                    System.err.println("OpenLR decoding error");
                     System.out.println(pe);
                 }
                 if (tFlow.hasGeoData())
@@ -49,6 +51,7 @@ public class OpenLRProtoHandler extends FlowHandler{
             }
         }catch(IOException ie){
             System.out.println("Something went wrong while processing protocol buffer...");
+            System.out.println(ie.getStackTrace());
         }finally{
             try {
                 if (getDataFile() != null)

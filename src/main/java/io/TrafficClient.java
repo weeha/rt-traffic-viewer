@@ -9,7 +9,10 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.TrafficViewer;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
 
 /**
@@ -30,7 +33,7 @@ public class TrafficClient extends HttpClient{
             try {
                 response = client.execute(request);
                 HttpEntity entity = response.getEntity();
-                String responseString = EntityUtils.toString(entity, "UTF-8");
+                String responseString = EntityUtils.toString(entity, "ISO-8859-1");
                 OpenLRFileHandler handler = null;
                 if(this instanceof FlowClient) {
                     if(URL.endsWith(".xml"))
@@ -72,6 +75,27 @@ public class TrafficClient extends HttpClient{
             }
         }
     }
+
+    public void storeTraffic(){
+        if(response != null){
+            //TODO
+            /*
+            try {
+                InputStream data = response.getEntity().getContent();
+                OutputStream output = new FileOutputStream("C:\\Users\\flori\\Documents\\Development\\openlr\\Decompile\\p.proto");
+                try {
+                    ByteStreams.copy(data, output);
+                } finally {
+                    Closeables.closeQuietly(output);
+                }
+
+            }catch(IOException ie){
+
+            }
+            */
+        }
+    }
+
     public void setMap(TrafficViewer viewer){
         this.viewer = viewer;
     }
