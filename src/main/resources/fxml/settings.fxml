@@ -4,13 +4,13 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane fx:id="settings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="304.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXToggleButton fx:id="liveMode" layoutX="26.0" layoutY="14.0" text="Live Mode" textFill="WHITE" toggleColor="#00e5ff" />
-      <JFXTextField fx:id="trafficKeyField" focusColor="#00e5ff" layoutX="32.0" layoutY="110.0" prefHeight="25.0" prefWidth="203.0" promptText="Traffic Key" unFocusColor="#e0f7fa" />
-      <JFXTextField fx:id="routingKeyField" focusColor="#00e5ff" layoutX="29.0" layoutY="166.0" prefHeight="25.0" prefWidth="203.0" promptText="Routing Key" unFocusColor="#e0f7fa" />
-      <JFXSlider layoutX="32.0" layoutY="240.0" max="12.0" min="1.0" prefHeight="14.0" prefWidth="203.0" value="2.0" />
+      <JFXTextField fx:id="trafficKeyField" focusColor="#00e5ff" layoutX="29.0" layoutY="156.0" prefHeight="25.0" prefWidth="203.0" promptText="Traffic Key" unFocusColor="#e0f7fa" />
+      <JFXTextField fx:id="routingKeyField" focusColor="#00e5ff" layoutX="26.0" layoutY="212.0" prefHeight="25.0" prefWidth="203.0" promptText="Routing Key" unFocusColor="#e0f7fa" />
+      <JFXSlider layoutX="29.0" layoutY="286.0" max="12.0" min="1.0" prefHeight="14.0" prefWidth="203.0" value="2.0" />
       <JFXToggleButton fx:id="detailedFlow" layoutX="152.0" layoutY="14.0" text="Detailed Flow" textFill="WHITE" toggleColor="#00e5ff" />
+      <JFXToggleButton fx:id="storeData" layoutX="29.0" layoutY="61.0" text="Store Data" textFill="WHITE" toggleColor="#00e5ff" />
    </children>
 </AnchorPane>

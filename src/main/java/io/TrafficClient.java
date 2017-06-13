@@ -4,6 +4,7 @@ import app.MainController;
 import model.*;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -23,10 +24,15 @@ import java.net.ConnectException;
 public class TrafficClient extends HttpClient{
 
     protected TrafficViewer viewer = null;
+    private boolean store = false;
 
     public TrafficClient(String url){
         super(url);
         client = HttpClientBuilder.create().build();
+    }
+
+    public void storeData(boolean store){
+        this.store = store;
     }
 
     public void run(){
@@ -64,6 +70,9 @@ public class TrafficClient extends HttpClient{
                         viewer.showTrafficIncidents();
                     }
                 }
+                if(store){
+                    storeTraffic();
+                }
 
             }catch(ClientProtocolException ce){
 
@@ -80,23 +89,23 @@ public class TrafficClient extends HttpClient{
         }
     }
 
-    public void storeTraffic(){
+    private void storeTraffic(){
         if(response != null){
             //TODO
-            /*
+
             try {
                 InputStream data = response.getEntity().getContent();
                 OutputStream output = new FileOutputStream("C:\\Users\\flori\\Documents\\Development\\openlr\\Decompile\\p.proto");
                 try {
-                    ByteStreams.copy(data, output);
+                    IOUtils.copy(data, output);
                 } finally {
-                    Closeables.closeQuietly(output);
+                    output.close();
                 }
 
             }catch(IOException ie){
 
             }
-            */
+
         }
     }
 

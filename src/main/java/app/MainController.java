@@ -51,15 +51,16 @@ public class MainController implements Initializable {
     private static final String INCIDENT_TAB = "Incidents";
     private static final String FLOW_TAB = "Traffic Flow";
     private static final String SETTINGS = "Settings";
-    private final static String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/41.848994,12.609140:41.852834,12.598690?key=XEPi5PqA9rSiJ6ZYYZKJ68Us1exG4YKH";
-    //private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/bd200f72-3871-42bf-a65b-3e792386e702/content.xml";
-    //private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
-    private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
-    //private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
-    private final static String FLOWS_API_DETAILED ="http://localhost/test/detailed_all.proto";
-    private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_nff.proto";
-    private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_ff.proto";
-    private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
+    private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
+    //private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
+    private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
+    //private final static String FLOWS_API_DETAILED ="http://localhost/test/detailed_all.proto";
+    //private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_nff.proto";
+    //private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto"";
+    private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=ff";
+    private static final String FLOWS_API_DETAILED_NFF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=nff";
+    //private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
+    private final static String INCIDENTS_API ="https://traffic.tomtom.com/tsq/hdt/ITA-HDT-OPENLR/{0}/content.xml";
 
     public static StackPane stackPaneHolder;
     private JFXPopup toolbarPopup;
@@ -72,6 +73,7 @@ public class MainController implements Initializable {
     private Tab settings = null;
     private JFXTabPane tabPane = null;
     private JFXToggleButton detailedFlow;
+    private JFXToggleButton storeData;
     private JFXTextField trafficKeyField = null;
     private JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
@@ -378,6 +380,7 @@ public class MainController implements Initializable {
             settings = (AnchorPane)FXMLLoader.load(getClass().getResource("/fxml/settings.fxml"));
             JFXToggleButton liveButton = (JFXToggleButton)settings.lookup("#liveMode");
             detailedFlow = (JFXToggleButton)settings.lookup("#detailedFlow");
+            storeData = (JFXToggleButton)settings.lookup("#storeData");
             createLiveButton(liveButton);
             trafficKeyField = (JFXTextField)settings.lookup("#trafficKeyField");
             routingKeyField = (JFXTextField)settings.lookup("#routingKeyField");
