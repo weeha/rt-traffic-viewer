@@ -9,6 +9,7 @@ import openlr.binary.data.FirstLRP;
 import openlr.binary.data.IntermediateLRP;
 import openlr.binary.data.RawBinaryData;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,9 @@ public abstract class Traffic {
     private RawBinaryData rawData;
     private String creationTime="";
     private String trafficType="";
-    private String averageSpeed="";
+    protected String averageSpeed="";
     private String delayTime="";
+    private Shape shape;
     private FirstLocationReferencePoint firstLRP = null;
     private LastLocationReferencePoint lastLRP = null;
     private List<LocationReferencePointImpl> intermediatePoints;
@@ -135,6 +137,14 @@ public abstract class Traffic {
 
     public boolean hasGeoData(){
         return rawData != null;
+    }
+
+    public Shape getShape(){
+        return shape;
+    }
+
+    public void setShape(Shape s){
+        shape = shape;
     }
 
     @Override

@@ -17,6 +17,10 @@ public class TrafficFlow extends Traffic{
 
     public TrafficFlow(ProtobufTrafficFlowV5.TrafficFlow pFLow){
         this.pFLow = pFLow;
+        if(pFLow.getSpeed() != null) {
+            travelTime = pFLow.getSpeed().getTravelTimeSeconds() + " Seconds";
+            averageSpeed = pFLow.getSpeed().getAverageSpeedKmph() + " km/h";
+        }
     }
 
     public void setTravelTime(String travelTime){
@@ -25,6 +29,10 @@ public class TrafficFlow extends Traffic{
 
     public String getTravelTime(){
         return travelTime;
+    }
+
+    public String getConfidence(){
+        return (this.pFLow.getSpeed() == null) ? "" : Integer.toString(this.pFLow.getSpeed().getConfidence());
     }
 
     public void setRelativeSpeed(String relSpeed){
@@ -49,5 +57,9 @@ public class TrafficFlow extends Traffic{
 
     public boolean isRoadCosed(){
         return roadClosure;
+    }
+
+    public ProtobufTrafficFlowV5.TrafficFlow getTrafficFlow(){
+        return this.pFLow;
     }
 }

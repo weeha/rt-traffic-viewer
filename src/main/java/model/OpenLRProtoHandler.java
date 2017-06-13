@@ -37,7 +37,7 @@ public class OpenLRProtoHandler extends FlowHandler{
                 return;
             }
             for (ProtobufTrafficFlowV5.TrafficFlow flow : tGroup.getTrafficFlowList()) {
-                tFlow = new TrafficFlow();
+                tFlow = new TrafficFlow(flow);
                 ByteArray bytes = new ByteArray(flow.getLocation().getOpenlr().toByteArray());
                 try {
                     RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);

@@ -5,12 +5,12 @@ package view.openStreetMap;
  */
 
 import app.MainController;
-import javafx.application.Platform;
 import model.traffic.Traffic;
+import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
-import view.DetailDialog;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -19,7 +19,7 @@ import java.awt.event.MouseListener;
 public class SwingWaypoint extends DefaultWaypoint {
 
     private final JButton button;
-    private TrafficIncident incident;
+    private Traffic traffic;
 
     public SwingWaypoint(GeoPosition coord, Image icon) {
 
@@ -39,9 +39,9 @@ public class SwingWaypoint extends DefaultWaypoint {
 
     }
 
-    public SwingWaypoint(TrafficIncident traffic, Image icon){
+    public SwingWaypoint(Traffic traffic, Image icon){
         super(traffic.getFirstLRP().getGeoPosition());
-        this.incident = traffic;
+        this.traffic = traffic;
         if(icon != null) {
             button = new JButton(new ImageIcon(icon));
             button.setBorderPainted(false);
@@ -62,25 +62,18 @@ public class SwingWaypoint extends DefaultWaypoint {
 
     }
 
-    public TrafficIncident getIncident(){
-        return this.incident;
+    public Traffic getTraffic(){
+        return this.traffic;
     }
 
     private class SwingWaypointMouseListener implements MouseListener {
 
         public void mouseClicked(MouseEvent e) {
 
-            System.out.println(getPosition());
-            if(MainController.stackPaneHolder != null){
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        DetailDialog diag = new DetailDialog(MainController.stackPaneHolder, getIncident());
-                        diag.show();
-                    }
-                });
-
-            }
+            if(traffic instanceof TrafficFlow)
+                MainController.setSidePanelContent(1, traffic);
+            else if(traffic instanceof TrafficIncident)
+                MainController.setSidePanelContent(0, traffic);
         }
 
         public void mousePressed(MouseEvent e) {

@@ -29,10 +29,22 @@ public class TrafficPainter implements Painter<JXMapViewer> {
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
         Color color = UNKNOWN;
+        if(traffic instanceof TrafficFlow){
+            if(((TrafficFlow) traffic).getTrafficCondition() != null){
+                if(((TrafficFlow) traffic).getTrafficCondition().equals("FREE_FLOW")){
+                    color = FREE_TRAFFIC;
+                }
+                else{
+                    color = HEAVY_TRAFFIC;
+                }
+            }
+        }
+
 
         g = (Graphics2D) g.create();
         // convert from viewport to world bitmap
         Rectangle rect = map.getViewportBounds();
+        traffic.setShape(rect);
         g.translate(-rect.x, -rect.y);
         if (antiAlias)
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

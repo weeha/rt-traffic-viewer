@@ -1,5 +1,6 @@
 package io;
 
+import app.MainController;
 import model.*;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
@@ -8,6 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.TrafficViewer;
+import view.openStreetMap.SwingWaypoint;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,11 +22,11 @@ import java.net.ConnectException;
  */
 public class TrafficClient extends HttpClient{
 
-    private TrafficViewer viewer = null;
+    protected TrafficViewer viewer = null;
 
     public TrafficClient(String url){
         super(url);
-            client = HttpClientBuilder.create().build();
+        client = HttpClientBuilder.create().build();
     }
 
     public void run(){
@@ -50,12 +52,14 @@ public class TrafficClient extends HttpClient{
                         viewer.resetFlows();
                         for (TrafficFlow f : ((FlowHandler)handler).getFlows()) {
                             viewer.addTrafficFlow(f);
+                            viewer.addWaypoint(new SwingWaypoint(f, MainController.incidentIcon));
                         }
                         viewer.showTrafficFlow();
                     }else if(this instanceof IncidentClient){
                         viewer.resetIncidents();
                         for (TrafficIncident i : ((OpenLRXMLHandler)handler).getIncidents()) {
                             viewer.addTrafficIncident(i);
+                            viewer.addWaypoint(new SwingWaypoint(i, MainController.incidentIcon));
                         }
                         viewer.showTrafficIncidents();
                     }

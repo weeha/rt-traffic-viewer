@@ -41,10 +41,19 @@ public class TrafficViewer extends JXMapViewer {
 
     public void resetFlows(){
         flows = new ArrayList<Traffic>();
+        removeButtons();
     }
 
     public void resetIncidents(){
         incidents = new ArrayList<Traffic>();
+        removeButtons();
+    }
+
+    private void removeButtons(){
+        for (SwingWaypoint w : waypoints) {
+            this.remove(w.getButton());
+        }
+        waypoints = new HashSet<SwingWaypoint>();
     }
 
     public void addWaypoint(SwingWaypoint point){
@@ -80,9 +89,9 @@ public class TrafficViewer extends JXMapViewer {
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
         painter.addPainter(swingWaypointPainter);
         this.setOverlayPainter(painter);
-        //for (SwingWaypoint w : waypoints) {
-        //    this.add(w.getButton());
-        //}
+        for (SwingWaypoint w : waypoints) {
+            this.add(w.getButton());
+        }
         this.repaint();
     }
 
@@ -113,7 +122,7 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     private void setMouseListener(){
-        MouseInputListener mia = new PanMouseInputListener(this);
+        MouseInputListener mia = new TrafficMouseInputListener(this);
         this.addMouseListener(mia);
         this.addMouseMotionListener(mia);
         this.addMouseListener(new CenterMapListener(this));

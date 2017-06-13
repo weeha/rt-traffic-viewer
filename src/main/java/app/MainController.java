@@ -2,10 +2,7 @@ package app;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.validation.RequiredFieldValidator;
-import io.FileLoader;
-import io.FlowClient;
-import io.IncidentClient;
-import io.TrafficClient;
+import io.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +22,7 @@ import model.OpenLRFileHandler;
 import model.OpenLRProtoHandler;
 import model.OpenLRXMLFlowHandler;
 import model.OpenLRXMLHandler;
+import model.traffic.Traffic;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
 import view.TrafficViewer;
@@ -66,23 +64,41 @@ public class MainController implements Initializable {
     public static StackPane stackPaneHolder;
     private JFXPopup toolbarPopup;
     private static TrafficViewer mapViewer = null;
-    private static Image icon;
-    private Tab incidents = null;
-    private Tab flows = null;
+    public static Image incidentIcon;
+    public static Image ffFlowIcon;
+    public static Image nffFlowIcon;
+    private static Tab incidents = null;
+    private static Tab flows = null;
     private Tab settings = null;
     private JFXTabPane tabPane = null;
     private JFXToggleButton detailedFlow;
     private JFXTextField trafficKeyField = null;
     private JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
+    private static Pane flowDetailPane = null;
+    private static Pane incidentDetailPane = null;
     private boolean apiSupport = false;
+    private static FlowDetailController flowController = null;
+    private static IncidentDetailController incidentController = null;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
         this.createAndSetSwingContent(mapHolder);
         this.createOptionsList();
         stackPaneHolder = root;
-        this.icon = loadIcon();
+        this.incidentIcon = loadIcon(0);
+        this.ffFlowIcon = loadIcon(1);
+        this.nffFlowIcon = loadIcon(2);
+        try {
+            FXMLLoader flowDetailLoader = new FXMLLoader(getClass().getResource("/fxml/flowDetail.fxml"));
+            flowDetailPane = (AnchorPane) flowDetailLoader.load();
+            flowController = flowDetailLoader.<FlowDetailController>getController();
+            FXMLLoader incidentDetailLoader = new FXMLLoader(getClass().getResource("/fxml/incidentDetail.fxml"));
+            incidentDetailPane = (AnchorPane) incidentDetailLoader.load();
+            incidentController = incidentDetailLoader.<IncidentDetailController>getController();
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }
         this.setSidePanelContent();
     }
 
@@ -109,12 +125,24 @@ public class MainController implements Initializable {
         }
     }
 
-    private Image loadIcon(){
+    private Image loadIcon(int id){
         Image img = null;
         try {
-            img = ImageIO.read(getClass().getResource("/png/ic_place_black_24dp.png"));
+            switch(id){
+                case 0:
+                    img = ImageIO.read(getClass().getResource("/png/ic_place_black_24dp.png"));
+                    break;
+                case 1:
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_green.png"));
+                    break;
+                case 2:
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_red.png"));
+                    break;
+                default:
+                    System.out.println("Unknown Icon requested...");
+            }
         }catch(IOException ie){
-            System.out.println("Error loading icon");
+            System.out.println("Error loading incidentIcon");
         }
         return img;
     }
@@ -129,6 +157,34 @@ public class MainController implements Initializable {
                 mapViewer.repaint();
             }
         });
+    }
+
+    public static void setSidePanelContent(int tab, final Traffic traffic){
+        switch(tab){
+            case 0:
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        incidents.setContent(incidentDetailPane);
+                        if(incidentController != null){
+                            incidentController.setIncident((TrafficIncident)traffic);
+                        }
+                    }
+                });
+                break;
+            case 1:
+                // flow tab
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        flows.setContent(flowDetailPane);
+                        if(flowController != null){
+                            flowController.setFlow((TrafficFlow)traffic);
+                        }
+                    }
+                });
+                break;
+        }
     }
 
     private void setSidePanelContent(){
@@ -171,14 +227,22 @@ public class MainController implements Initializable {
                         if(apiSupport){
                             if(trafficKeyField != null) {
                                 String url = "";
-                                if(detailedFlow.isSelected())
-                                    url = MessageFormat.format(FLOWS_API_DETAILED, trafficKeyField.getText());
-                                else
+                                if(detailedFlow.isSelected()) {
+                                    String url1 = MessageFormat.format(FLOWS_API_DETAILED_FF, trafficKeyField.getText());
+                                    String url2 = MessageFormat.format(FLOWS_API_DETAILED_NFF, trafficKeyField.getText());
+                                    trafficClient = new FlowDetailedClient(url1);
+                                    ((FlowDetailedClient)trafficClient).setSecondFlow(url2);
+                                    trafficClient.setCallIntervall(60000);
+                                    trafficClient.setMap(mapViewer);
+                                    trafficClient.start();
+                                }else {
                                     url = MessageFormat.format(FLOWS_API, trafficKeyField.getText());
-                                trafficClient = new FlowClient(url);
-                                trafficClient.setCallIntervall(60000);
-                                trafficClient.setMap(mapViewer);
-                                trafficClient.start();
+                                    trafficClient = new FlowClient(url);
+                                    trafficClient.setCallIntervall(60000);
+                                    trafficClient.setMap(mapViewer);
+                                    trafficClient.start();
+                                }
+
                             }else{
                                 //TODO
                             }
@@ -244,7 +308,7 @@ public class MainController implements Initializable {
                 mapViewer.resetIncidents();
                 for (TrafficIncident incident : ((OpenLRXMLHandler) handler).getIncidents()) {
                     mapViewer.addTrafficIncident(incident);
-                    mapViewer.addWaypoint(new SwingWaypoint(incident, icon));
+                    mapViewer.addWaypoint(new SwingWaypoint(incident, incidentIcon));
                 }
                 mapViewer.showTrafficIncidents();
                 return;
@@ -256,6 +320,7 @@ public class MainController implements Initializable {
                 mapViewer.resetFlows();
                 for (TrafficFlow flow : ((OpenLRXMLFlowHandler) handler).getFlows()) {
                     mapViewer.addTrafficFlow(flow);
+                    mapViewer.addWaypoint(new SwingWaypoint(flow, incidentIcon));
                 }
                 mapViewer.showTrafficFlow();
                 return;
@@ -267,6 +332,7 @@ public class MainController implements Initializable {
             mapViewer.resetFlows();
             for(TrafficFlow flow : ((OpenLRProtoHandler)handler).getFlows()){
                 mapViewer.addTrafficFlow(flow);
+                mapViewer.addWaypoint(new SwingWaypoint(flow, incidentIcon));
             }
             mapViewer.showTrafficFlow();
             return;
