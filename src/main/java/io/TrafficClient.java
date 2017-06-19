@@ -4,19 +4,19 @@ import app.MainController;
 import model.*;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ConnectException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Florian Noack on 05.06.2017.
@@ -24,7 +24,8 @@ import java.net.ConnectException;
 public class TrafficClient extends HttpClient{
 
     protected TrafficViewer viewer = null;
-    private boolean store = false;
+    protected boolean store = false;
+    public static final String DATE_FORMAT_NOW = "yyyy_MM_dd_HH_mm_ss";
 
     public TrafficClient(String url){
         super(url);
@@ -42,6 +43,10 @@ public class TrafficClient extends HttpClient{
                 response = client.execute(request);
                 HttpEntity entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity, "ISO-8859-1");
+                if(store)
+                    FileUtils.writeStringToFile(new File(
+                            generateFileString(URL)),
+                            responseString);
                 OpenLRFileHandler handler = null;
                 if(this instanceof FlowClient) {
                     if(URL.endsWith(".xml"))
@@ -70,9 +75,6 @@ public class TrafficClient extends HttpClient{
                         viewer.showTrafficIncidents();
                     }
                 }
-                if(store){
-                    storeTraffic();
-                }
 
             }catch(ClientProtocolException ce){
 
@@ -89,24 +91,29 @@ public class TrafficClient extends HttpClient{
         }
     }
 
-    private void storeTraffic(){
-        if(response != null){
-            //TODO
+    protected String generateFileString(String url){
 
-            try {
-                InputStream data = response.getEntity().getContent();
-                OutputStream output = new FileOutputStream("C:\\Users\\flori\\Documents\\Development\\openlr\\Decompile\\p.proto");
-                try {
-                    IOUtils.copy(data, output);
-                } finally {
-                    output.close();
-                }
+        String fileName = "";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
 
-            }catch(IOException ie){
-
+        Pattern p = Pattern.compile("[^/]*$");
+        Matcher m = p.matcher(url);
+        if(m.find()){
+            fileName = m.group(0);
+            fileName.replace("?", "_");
+            fileName += sdf.format(cal.getTime());
+            if(fileName.contains(".proto")){
+                fileName.replace(".proto", "_");
+                fileName += ".proto";
             }
-
+            else if(fileName.contains(".xml")){
+                fileName.replace(".xml", "_");
+                fileName += ".xml";
+            }
         }
+
+        return MainController.DATA_DIR + fileName;
     }
 
     public void setMap(TrafficViewer viewer){

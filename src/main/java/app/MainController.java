@@ -32,6 +32,8 @@ import javax.swing.*;
 import java.awt.*;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -51,12 +53,13 @@ public class MainController implements Initializable {
     private static final String INCIDENT_TAB = "Incidents";
     private static final String FLOW_TAB = "Traffic Flow";
     private static final String SETTINGS = "Settings";
+    public static final String DATA_DIR = System.getProperty("user.dir") + "\\data\\";
     private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
     //private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
-    private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto";
+    //private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.xml";
     //private final static String FLOWS_API_DETAILED ="http://localhost/test/detailed_all.proto";
     //private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_nff.proto";
-    //private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto"";
+    //private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_ff.proto";
     private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=ff";
     private static final String FLOWS_API_DETAILED_NFF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=nff";
     //private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
@@ -102,6 +105,14 @@ public class MainController implements Initializable {
             ie.printStackTrace();
         }
         this.setSidePanelContent();
+        checkForDataDir();
+    }
+
+    private void checkForDataDir(){
+        File dataFolder = new File(DATA_DIR);
+        if(!dataFolder.exists()){
+            dataFolder.mkdirs();
+        }
     }
 
     private void createOptionsList(){
@@ -201,6 +212,7 @@ public class MainController implements Initializable {
                     if(incidents.isSelected()){
                         if(apiSupport){
                             trafficClient = new IncidentClient(INCIDENTS_API);
+                            trafficClient.storeData(storeData.isSelected());
                             trafficClient.setCallIntervall(60000);
                             trafficClient.setMap(mapViewer);
                             trafficClient.start();
@@ -233,6 +245,7 @@ public class MainController implements Initializable {
                                     String url1 = MessageFormat.format(FLOWS_API_DETAILED_FF, trafficKeyField.getText());
                                     String url2 = MessageFormat.format(FLOWS_API_DETAILED_NFF, trafficKeyField.getText());
                                     trafficClient = new FlowDetailedClient(url1);
+                                    trafficClient.storeData(storeData.isSelected());
                                     ((FlowDetailedClient)trafficClient).setSecondFlow(url2);
                                     trafficClient.setCallIntervall(60000);
                                     trafficClient.setMap(mapViewer);

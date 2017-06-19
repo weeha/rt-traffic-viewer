@@ -5,6 +5,7 @@ import model.FlowHandler;
 import model.OpenLRFileHandler;
 import model.OpenLRProtoHandler;
 import model.traffic.TrafficFlow;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -13,6 +14,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import view.openStreetMap.SwingWaypoint;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 
@@ -57,6 +59,10 @@ public class FlowDetailedClient extends TrafficClient{
                     response = client.execute(request);
                     HttpEntity entity = response.getEntity();
                     String responseString = EntityUtils.toString(entity, "ISO-8859-1");
+                    if(store)
+                        FileUtils.writeStringToFile(new File(
+                                generateFileString(u)),
+                                responseString);
                     OpenLRFileHandler handler = null;
                     handler = new OpenLRProtoHandler();
                     handler.setData(responseString);
