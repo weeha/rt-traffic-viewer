@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MainController implements Initializable {
@@ -54,12 +55,14 @@ public class MainController implements Initializable {
     private static final String FLOW_TAB = "Traffic Flow";
     private static final String SETTINGS = "Settings";
     public static final String DATA_DIR = System.getProperty("user.dir") + "\\data\\";
+    public static final String INCIDENTS_DIR = DATA_DIR + "Incidents\\";
+    public static final String FlOWS_DIR = DATA_DIR + "Flows\\";
+    public static final String DATE_TIME_FORMAT_NOW = "yyyy_MM_dd_HH_mm_ss";
+    public static final String DATE_FORMAT_NOW = "yyyy_MM_dd";
     private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
+    //private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_flowType=nff.proto";
+    //private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_flowType=ff.proto";
     //private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
-    //private final static String FLOWS_API_DETAILED ="https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.xml";
-    //private final static String FLOWS_API_DETAILED ="http://localhost/test/detailed_all.proto";
-    //private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_nff.proto";
-    //private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_ff.proto";
     private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=ff";
     private static final String FLOWS_API_DETAILED_NFF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=nff";
     //private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
@@ -109,10 +112,18 @@ public class MainController implements Initializable {
     }
 
     private void checkForDataDir(){
-        File dataFolder = new File(DATA_DIR);
-        if(!dataFolder.exists()){
-            dataFolder.mkdirs();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+
+        File incidentsDir = new File(INCIDENTS_DIR + sdf.format(cal.getTime()));
+        if(!incidentsDir.exists()){
+            incidentsDir.mkdirs();
         }
+        File flowsDir = new File(FlOWS_DIR + sdf.format(cal.getTime()));
+        if(!flowsDir.exists()){
+            flowsDir.mkdirs();
+        }
+
     }
 
     private void createOptionsList(){
@@ -211,7 +222,8 @@ public class MainController implements Initializable {
                 public void handle(Event event) {
                     if(incidents.isSelected()){
                         if(apiSupport){
-                            trafficClient = new IncidentClient(INCIDENTS_API);
+                            String url = MessageFormat.format(INCIDENTS_API, trafficKeyField.getText());
+                            trafficClient = new IncidentClient(url);
                             trafficClient.storeData(storeData.isSelected());
                             trafficClient.setCallIntervall(60000);
                             trafficClient.setMap(mapViewer);
@@ -253,6 +265,7 @@ public class MainController implements Initializable {
                                 }else {
                                     url = MessageFormat.format(FLOWS_API, trafficKeyField.getText());
                                     trafficClient = new FlowClient(url);
+                                    trafficClient.storeData(storeData.isSelected());
                                     trafficClient.setCallIntervall(60000);
                                     trafficClient.setMap(mapViewer);
                                     trafficClient.start();

@@ -17,6 +17,8 @@ import view.openStreetMap.SwingWaypoint;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by Florian Noack on 10.06.2017.
@@ -97,5 +99,22 @@ public class FlowDetailedClient extends TrafficClient{
                 }catch(InterruptedException ie){}
             }
         }
+    }
+
+    @Override
+    public String generateFileString(String url){
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(MainController.DATE_FORMAT_NOW);
+
+        String fileName = "";
+        fileName += MainController.FlOWS_DIR + sdf.format(cal.getTime()) + "\\";
+        fileName += "Detailed_Flow_";
+        if(url.contains("flowType=ff"))
+            fileName += "flowType_ff_";
+        if(url.contains("flowType=nff"))
+            fileName += "flowType_nff_";
+        System.out.println(fileName + super.generateFileString(url) + ".proto");
+        return fileName + super.generateFileString(url) + ".proto";
     }
 }

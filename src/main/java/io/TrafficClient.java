@@ -15,8 +15,6 @@ import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
 import java.io.*;
 import java.net.ConnectException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Florian Noack on 05.06.2017.
@@ -25,7 +23,6 @@ public class TrafficClient extends HttpClient{
 
     protected TrafficViewer viewer = null;
     protected boolean store = false;
-    public static final String DATE_FORMAT_NOW = "yyyy_MM_dd_HH_mm_ss";
 
     public TrafficClient(String url){
         super(url);
@@ -93,27 +90,10 @@ public class TrafficClient extends HttpClient{
 
     protected String generateFileString(String url){
 
-        String fileName = "";
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        SimpleDateFormat sdf = new SimpleDateFormat(MainController.DATE_TIME_FORMAT_NOW);
 
-        Pattern p = Pattern.compile("[^/]*$");
-        Matcher m = p.matcher(url);
-        if(m.find()){
-            fileName = m.group(0);
-            fileName.replace("?", "_");
-            fileName += sdf.format(cal.getTime());
-            if(fileName.contains(".proto")){
-                fileName.replace(".proto", "_");
-                fileName += ".proto";
-            }
-            else if(fileName.contains(".xml")){
-                fileName.replace(".xml", "_");
-                fileName += ".xml";
-            }
-        }
-
-        return MainController.DATA_DIR + fileName;
+        return sdf.format(cal.getTime());
     }
 
     public void setMap(TrafficViewer viewer){
