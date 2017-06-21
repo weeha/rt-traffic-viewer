@@ -29,6 +29,7 @@ public abstract class Traffic {
     private LastLocationReferencePoint lastLRP = null;
     private List<LocationReferencePointImpl> intermediatePoints;
     private List<LocationReferencePointImpl> lrps;
+    private String rawString = "";
 
     public Traffic(){
         intermediatePoints = new ArrayList<LocationReferencePointImpl>();
@@ -51,6 +52,14 @@ public abstract class Traffic {
         // LastLRP = prevLRP - BinaryLastLRP
         lastLRP = new LastLocationReferencePoint(data.getBinaryLastLRP(), prevLRP);
         lrps.add(lastLRP);
+    }
+
+    public void setRawAsString(String raw){
+        rawString = raw;
+    }
+
+    public String getRawString(){
+        return this.rawString;
     }
 
     public void setCreationTime(String creationTime){

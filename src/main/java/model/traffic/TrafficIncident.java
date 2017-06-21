@@ -7,7 +7,6 @@ public class TrafficIncident extends Traffic{
 
     private int averageNumberOfStops;
     private final String ID;
-    private String rawString = "";
 
     public TrafficIncident(String id){
 
@@ -26,19 +25,11 @@ public class TrafficIncident extends Traffic{
         averageNumberOfStops = stops;
     }
 
-    public void setRawAsString(String raw){
-        rawString = raw;
-    }
-
-    public String getRawString(){
-        return this.rawString;
-    }
-
     @Override
     public String toString(){
         String result = "";
         result += "ID: " + ID + "\n";
-        result += "RAW-Data: " + rawString + "\n";
+        result += "RAW-Data: " + getRawString() + "\n";
         return result + super.toString();
     }
 }

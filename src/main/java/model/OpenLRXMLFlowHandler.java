@@ -72,6 +72,7 @@ public class OpenLRXMLFlowHandler extends FlowHandler{
                                     RawBinaryData raw = bDecoder.resolveBinaryData("", bytes);
                                     if(flow != null) {
                                         flow.setRawData(raw);
+                                        flow.setRawAsString(characters.getData());
                                     }
                                 }catch(PhysicalFormatException pe){
                                     System.err.println("Decoding problem occurred");

@@ -16,6 +16,7 @@
                 <JFXTextField fx:id="creationTime" focusColor="#00e5ff" labelFloat="true" prefHeight="25.0" prefWidth="389.0" promptText="Creation Time" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
                 <JFXTextField fx:id="trafficType" focusColor="#00e5ff" labelFloat="true" promptText="Traffic Type" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
                 <JFXTextField fx:id="distance" focusColor="#00e5ff" labelFloat="true" promptText="Distance (Meters)" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
+                <JFXTextField fx:id="openLR" focusColor="#00e5ff" labelFloat="true" promptText="OpenLR" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             </children>
         </VBox>
     </children>

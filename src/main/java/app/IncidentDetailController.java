@@ -23,6 +23,8 @@ public class IncidentDetailController implements Initializable {
     private JFXTextField delayTime;
     @FXML
     private JFXTextField distance;
+    @FXML
+    private JFXTextField openLR;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,6 +38,7 @@ public class IncidentDetailController implements Initializable {
             averageSpeed.setText(incident.getAverageSpeed());
             delayTime.setText(incident.getDelayTime());
             distance.setText(incident.getDistance());
+            openLR.setText(incident.getRawString());
         }
     }
 }

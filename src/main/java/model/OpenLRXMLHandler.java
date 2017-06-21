@@ -79,7 +79,7 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                                     if(incident != null) {
                                         incident.setRawData(raw);
                                         incident.setRawAsString(characters.getData());
-                                    }
+                                }
                                 }catch(PhysicalFormatException pe){
                                     System.err.println("Decoding problem occurred");
                                 }
