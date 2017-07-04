@@ -21,6 +21,8 @@ public class TrafficPainter implements Painter<JXMapViewer> {
     private final Color HEAVY_TRAFFIC = new Color(204,0,0, 128);
     private final Color FREE_TRAFFIC = new Color(100,221,23, 128);
     private final Color UNKNOWN = new Color(117,117,117, 128);
+    protected final int WIDTH_FIRST = 4;
+    protected final int WIDTH_SECOND = 2;
 
     public TrafficPainter(Traffic traffic){
         this.traffic = traffic;
@@ -51,12 +53,12 @@ public class TrafficPainter implements Painter<JXMapViewer> {
 
         // do the drawing
         g.setColor(color);
-        g.setStroke(new BasicStroke(4));
+        g.setStroke(new BasicStroke(WIDTH_FIRST));
         drawRoute(g, map);
         // do the drawing again
 
         g.setColor(color);
-        g.setStroke(new BasicStroke(2));
+        g.setStroke(new BasicStroke(WIDTH_SECOND));
         drawRoute(g, map);
         g.dispose();
 

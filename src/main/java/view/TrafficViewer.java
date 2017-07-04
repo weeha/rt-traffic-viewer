@@ -140,4 +140,8 @@ public class TrafficViewer extends JXMapViewer {
         tileFactory.setThreadPoolSize(8);
     }
 
+    public void higlightTraffic(Traffic traffic){
+        this.setOverlayPainter(new TrafficSelectionPainter(traffic));
+    }
+
 }

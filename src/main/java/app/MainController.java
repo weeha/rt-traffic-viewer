@@ -60,13 +60,13 @@ public class MainController implements Initializable {
     public static final String DATE_TIME_FORMAT_NOW = "yyyy_MM_dd_HH_mm_ss";
     public static final String DATE_FORMAT_NOW = "yyyy_MM_dd";
     private final static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
-    //private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_flowType=nff.proto";
-    //private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_flowType=ff.proto";
+    private static final String FLOWS_API_DETAILED_NFF = "http://localhost/test/detailed_flowType=nff.proto";
+    private static final String FLOWS_API_DETAILED_FF = "http://localhost/test/detailed_flowType=ff.proto";
     //private final static String FLOWS_API ="http://localhost/test/Flow_OpenLR_20170404_052012.xml";
-    private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=ff";
-    private static final String FLOWS_API_DETAILED_NFF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=nff";
-    //private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
-    private final static String INCIDENTS_API ="https://traffic.tomtom.com/tsq/hdt/ITA-HDT-OPENLR/{0}/content.xml";
+    //private static final String FLOWS_API_DETAILED_FF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=ff";
+    //private static final String FLOWS_API_DETAILED_NFF = "https://traffic.tomtom.com/tsq/hdf-detailed/ITA-HDF_DETAILED-OPENLR/{0}/content.proto?flowType=nff";
+    private final static String INCIDENTS_API ="http://localhost/test/Incidents_OpenLR_20170404_052032.xml";
+    //private final static String INCIDENTS_API ="https://traffic.tomtom.com/tsq/hdt/ITA-HDT-OPENLR/{0}/content.xml";
 
     public static StackPane stackPaneHolder;
     private JFXPopup toolbarPopup;
@@ -209,6 +209,7 @@ public class MainController implements Initializable {
                 });
                 break;
         }
+        mapViewer.higlightTraffic(traffic);
     }
 
     private void setSidePanelContent(){
