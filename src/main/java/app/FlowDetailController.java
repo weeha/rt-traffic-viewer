@@ -20,6 +20,8 @@ public class FlowDetailController implements Initializable {
     @FXML
     private JFXTextField confidence;
     @FXML
+    private JFXTextField relativeSpeed;
+    @FXML
     private JFXTextField trafficCondition;
     @FXML
     private JFXTextField distance;
@@ -37,6 +39,7 @@ public class FlowDetailController implements Initializable {
             averageSpeed.setText(flow.getAverageSpeed());
             travelTime.setText(flow.getTravelTime());
             confidence.setText(flow.getConfidence());
+            relativeSpeed.setText(flow.getRelativeSpeed());
             trafficCondition.setText(flow.getTrafficCondition());
             distance.setText(flow.getDistance());
             openLR.setText(flow.getRawString());
