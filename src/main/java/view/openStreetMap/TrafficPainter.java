@@ -16,11 +16,11 @@ import java.awt.geom.Point2D;
  */
 public class TrafficPainter implements Painter<JXMapViewer> {
 
-    private Traffic traffic;
-    private boolean antiAlias = true;
-    private final Color HEAVY_TRAFFIC = new Color(204,0,0, 128);
-    private final Color FREE_TRAFFIC = new Color(100,221,23, 128);
-    private final Color UNKNOWN = new Color(117,117,117, 128);
+    protected Traffic traffic;
+    protected boolean antiAlias = true;
+    protected final Color HEAVY_TRAFFIC = new Color(204,0,0, 128);
+    protected final Color FREE_TRAFFIC = new Color(100,221,23, 128);
+    protected final Color UNKNOWN = new Color(117,117,117, 128);
     protected final int WIDTH_FIRST = 4;
     protected final int WIDTH_SECOND = 2;
 
@@ -71,7 +71,7 @@ public class TrafficPainter implements Painter<JXMapViewer> {
      * @param map the map
      */
 
-    private void drawRoute(Graphics2D g, JXMapViewer map){
+    protected void drawRoute(Graphics2D g, JXMapViewer map){
 
         int lastX = 0;
         int lastY = 0;

@@ -26,6 +26,8 @@ public class TrafficViewer extends JXMapViewer {
     private final GeoPosition tum_campus = new GeoPosition(48.1486, 11.5687);
     private List<Traffic> incidents;
     private List<Traffic> flows;
+    private CompoundPainter<JXMapViewer> painter;
+    private TrafficSelectionPainter selectionPainter;
 
     public TrafficViewer(){
         super();
@@ -36,7 +38,7 @@ public class TrafficViewer extends JXMapViewer {
         this.setMouseListener();
         this.setZoom(7);
         this.setAddressLocation(tum_campus);
-        this.setSelectionViewer();
+        //this.setSelectionViewer();
     }
 
     public void resetFlows(){
@@ -86,7 +88,7 @@ public class TrafficViewer extends JXMapViewer {
             painters.add(new TrafficPainter(traffic));
         }
 
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        painter = new CompoundPainter<JXMapViewer>(painters);
         painter.addPainter(swingWaypointPainter);
         this.setOverlayPainter(painter);
         for (SwingWaypoint w : waypoints) {
@@ -140,8 +142,12 @@ public class TrafficViewer extends JXMapViewer {
         tileFactory.setThreadPoolSize(8);
     }
 
-    public void higlightTraffic(Traffic traffic){
-        this.setOverlayPainter(new TrafficSelectionPainter(traffic));
+    public void highlightTraffic(Traffic traffic){
+        painter.removePainter(selectionPainter);
+        selectionPainter = new TrafficSelectionPainter(traffic);
+        painter.addPainter(selectionPainter);
+        this.setOverlayPainter(painter);
+        this.repaint();
     }
 
 }

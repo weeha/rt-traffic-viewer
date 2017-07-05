@@ -209,7 +209,7 @@ public class MainController implements Initializable {
                 });
                 break;
         }
-        mapViewer.higlightTraffic(traffic);
+        mapViewer.highlightTraffic(traffic);
     }
 
     private void setSidePanelContent(){
