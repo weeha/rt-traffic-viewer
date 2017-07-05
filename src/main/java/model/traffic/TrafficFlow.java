@@ -1,9 +1,14 @@
 package model.traffic;
 
+import com.google.protobuf.ByteString;
+import openlr.binary.ByteArray;
+
 /**
  * Created by Florian Noack on 27.05.2017.
  */
 public class TrafficFlow extends Traffic{
+
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     private boolean roadClosure;
     private String travelTime = null;
@@ -61,5 +66,18 @@ public class TrafficFlow extends Traffic{
 
     public ProtobufTrafficFlowV5.TrafficFlow getTrafficFlow(){
         return this.pFLow;
+    }
+
+    @Override
+    public String getRawString(){
+        ByteArray bytes = new ByteArray(this.pFLow.getLocation().getOpenlr().toByteArray());
+        char[] hexChars = new char[bytes.size() * 2];
+        for ( int j = 0; j < bytes.size(); j++ ) {
+            int v = bytes.get(j) & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+
+        return(new String(hexChars));
     }
 }
