@@ -28,11 +28,11 @@ public final class ProtobufTrafficFlowV5 {
      */
     LONG_QUEUES_TRAFFIC(1),
     /**
-     * <code>FREE_TRAFFIC = 2;</code>
+     * <code>TRAFFIC_DARK_GREEN = 2;</code>
      */
     FREE_TRAFFIC(2),
     /**
-     * <code>HEAVY_TRAFFIC = 3;</code>
+     * <code>TRAFFIC_RED = 3;</code>
      */
     HEAVY_TRAFFIC(3),
     /**
@@ -62,11 +62,11 @@ public final class ProtobufTrafficFlowV5 {
      */
     public static final int LONG_QUEUES_TRAFFIC_VALUE = 1;
     /**
-     * <code>FREE_TRAFFIC = 2;</code>
+     * <code>TRAFFIC_DARK_GREEN = 2;</code>
      */
     public static final int FREE_TRAFFIC_VALUE = 2;
     /**
-     * <code>HEAVY_TRAFFIC = 3;</code>
+     * <code>TRAFFIC_RED = 3;</code>
      */
     public static final int HEAVY_TRAFFIC_VALUE = 3;
     /**
@@ -12732,7 +12732,7 @@ public final class ProtobufTrafficFlowV5 {
       "Meters\030\001 \001(\r\022#\n\005speed\030\002 \001(\0132\024.model.traf" +
       "fic.Speed\022\032\n\013roadClosure\030\003 \001(\010:\005false*\250\001" +
       "\n\020TrafficCondition\022\027\n\023LONG_QUEUES_TRAFFI",
-      "C\020\001\022\020\n\014FREE_TRAFFIC\020\002\022\021\n\rHEAVY_TRAFFIC\020\003" +
+      "C\020\001\022\020\n\014FREE_TRAFFIC\020\002\022\021\n\rTRAFFIC_RED\020\003" +
       "\022\020\n\014SLOW_TRAFFIC\020\004\022\023\n\017QUEUING_TRAFFIC\020\005\022" +
       "\026\n\022STATIONARY_TRAFFIC\020\006\022\n\n\006CLOSED\020\007\022\013\n\007U" +
       "NKNOWN\020\010"
