@@ -56,7 +56,27 @@ public class TrafficClient extends HttpClient{
                 handler.setData(responseString);
                 handler.process();
                 if(viewer != null){
-                    if(this instanceof FlowClient) {
+                    if(this instanceof FlowDetailedClient) {
+                        viewer.resetFlows();
+                        for (TrafficFlow f : ((FlowHandler)handler).getFlows()) {
+                            viewer.addTrafficFlow(f);
+                            if(f.getRelativeType() != null) {
+                                if (f.getRelativeType() == 1)
+                                    viewer.addWaypoint(new SwingWaypoint(f, MainController.darkGreenFlowIcon));
+                                else if (f.getRelativeType() == 2)
+                                    viewer.addWaypoint(new SwingWaypoint(f, MainController.greenFlowIcon));
+                                else if (f.getRelativeType() == 3)
+                                    viewer.addWaypoint(new SwingWaypoint(f, MainController.yellowFlowIcon));
+                                else if (f.getRelativeType() == 4)
+                                    viewer.addWaypoint(new SwingWaypoint(f, MainController.orangeFlowIcon));
+                                else if (f.getRelativeType() == 5)
+                                    viewer.addWaypoint(new SwingWaypoint(f, MainController.redFlowIcon));
+                            }else{
+                                viewer.addWaypoint(new SwingWaypoint(f, MainController.incidentIcon));
+                            }
+                        }
+                        viewer.showTrafficFlow();
+                    }else if(this instanceof FlowClient && !(this instanceof FlowDetailedClient)) {
                         viewer.resetFlows();
                         for (TrafficFlow f : ((FlowHandler)handler).getFlows()) {
                             viewer.addTrafficFlow(f);

@@ -75,6 +75,11 @@ public class MainController implements Initializable {
     public static Image incidentIcon;
     public static Image ffFlowIcon;
     public static Image nffFlowIcon;
+    public static Image darkGreenFlowIcon;
+    public static Image greenFlowIcon;
+    public static Image yellowFlowIcon;
+    public static Image orangeFlowIcon;
+    public static Image redFlowIcon;
     private static Tab incidents = null;
     private static Tab flows = null;
     private Tab settings = null;
@@ -96,8 +101,11 @@ public class MainController implements Initializable {
         this.createOptionsList();
         stackPaneHolder = root;
         this.incidentIcon = loadIcon(0);
-        this.ffFlowIcon = loadIcon(1);
-        this.nffFlowIcon = loadIcon(2);
+        this.darkGreenFlowIcon = loadIcon(1);
+        this.greenFlowIcon = loadIcon(2);
+        this.yellowFlowIcon = loadIcon(3);
+        this.orangeFlowIcon = loadIcon(4);
+        this.redFlowIcon = loadIcon(5);
         try {
             FXMLLoader flowDetailLoader = new FXMLLoader(getClass().getResource("/fxml/flowDetail.fxml"));
             flowDetailPane = (AnchorPane) flowDetailLoader.load();
@@ -158,9 +166,18 @@ public class MainController implements Initializable {
                     img = ImageIO.read(getClass().getResource("/png/ic_place_black_24dp.png"));
                     break;
                 case 1:
-                    img = ImageIO.read(getClass().getResource("/png/ic_info_green.png"));
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_dark_green.png"));
                     break;
                 case 2:
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_green.png"));
+                    break;
+                case 3:
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_yellow.png"));
+                    break;
+                case 4:
+                    img = ImageIO.read(getClass().getResource("/png/ic_info_orange.png"));
+                    break;
+                case 5:
                     img = ImageIO.read(getClass().getResource("/png/ic_info_red.png"));
                     break;
                 default:

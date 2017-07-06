@@ -28,6 +28,26 @@ public class TrafficFlow extends Traffic{
         }
     }
 
+    public Integer getRelativeType(){
+        if(getRelativeSpeedValue() != null){
+            float rSpeed = getRelativeSpeedValue();
+            if(rSpeed >= 0.8 && rSpeed <= 1.0)
+                return 1;
+            else if(rSpeed >= 0.6 && rSpeed < 0.8)
+                return 2;
+            else if(rSpeed >= 0.4 && rSpeed < 0.6)
+                return 3;
+            else if(rSpeed >= 0.2 && rSpeed < 0.4)
+                return 4;
+            else if(rSpeed >= 0.0 && rSpeed  < 0.2)
+                return 5;
+            else
+                return null;
+
+        }
+        return null;
+    }
+
     public void setTravelTime(String travelTime){
         this.travelTime = travelTime;
     }
