@@ -48,6 +48,10 @@ public class TrafficFlow extends Traffic{
         return (this.pFLow.getSpeed() == null) ? "" : Float.toString(this.pFLow.getSpeed().getRelativeSpeed());
     }
 
+    public Float getRelativeSpeedValue(){
+        return (this.pFLow.getSpeed() == null) ? null : this.pFLow.getSpeed().getRelativeSpeed();
+    }
+
     public void setTrafficCondition(String cond){
         trafficCondition = cond;
     }

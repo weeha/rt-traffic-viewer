@@ -22,12 +22,9 @@ public class TrafficSelectionPainter extends TrafficPainter{
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
         Color color = UNKNOWN;
         if(traffic instanceof TrafficFlow){
-            if(((TrafficFlow) traffic).getTrafficCondition() != null){
-                if(((TrafficFlow) traffic).getTrafficCondition().equals("FREE_FLOW")){
-                    color = FREE_TRAFFIC;
-                }
-                else{
-                    color = HEAVY_TRAFFIC;
+            if(traffic instanceof TrafficFlow){
+                if(((TrafficFlow) traffic).getRelativeSpeedValue() != null){
+                    color = getFlowColor();
                 }
             }
         }
