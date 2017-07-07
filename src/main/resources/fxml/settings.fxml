@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="settings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="304.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="settings" fx:controller="app.SettingsController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="304.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXToggleButton fx:id="liveMode" layoutX="26.0" layoutY="14.0" text="Live Mode" textFill="WHITE" toggleColor="#00e5ff" />
       <JFXTextField fx:id="trafficKeyField" focusColor="#00e5ff" layoutX="29.0" layoutY="156.0" prefHeight="25.0" prefWidth="203.0" promptText="Traffic Key" unFocusColor="#e0f7fa" />
