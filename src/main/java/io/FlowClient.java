@@ -17,6 +17,8 @@ public class FlowClient extends TrafficClient{
     @Override
     protected String generateFileString(String url){
 
+        if(this instanceof FlowDetailedClient)
+            return super.generateFileString(url);
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(MainController.DATE_FORMAT_NOW);
 
