@@ -77,7 +77,7 @@ public class TrafficFlow extends Traffic{
     }
 
     public String getTrafficCondition(){
-        return trafficCondition;
+        return (this.pFLow.getSpeed() == null) ? trafficCondition : this.pFLow.getSpeed().getTrafficCondition().name();
     }
 
     public void setRoadClosed(boolean closed){
