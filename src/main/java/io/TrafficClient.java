@@ -40,10 +40,13 @@ public class TrafficClient extends HttpClient{
                 response = client.execute(request);
                 HttpEntity entity = response.getEntity();
                 String responseString = EntityUtils.toString(entity, "ISO-8859-1");
-                if(store)
-                    FileUtils.writeStringToFile(new File(
-                            generateFileString(URL)),
-                            responseString);
+                if(store) {
+                    File file = new File(generateFileString(URL));
+                    FileUtils.writeStringToFile(file, responseString, "ISO-8859-1");
+                    //FileUtils.writeStringToFile(new File(
+                    //                generateFileString(URL)),
+                    //        responseString);
+                }
                 OpenLRFileHandler handler = null;
                 if(this instanceof FlowClient) {
                     if(URL.endsWith(".xml"))
@@ -53,13 +56,14 @@ public class TrafficClient extends HttpClient{
                 }
                 else
                     handler = new OpenLRXMLHandler();
+                System.out.println(responseString);
                 handler.setData(responseString);
                 handler.process();
                 if(viewer != null){
                     if(this instanceof FlowDetailedClient) {
                         viewer.resetFlows();
                         for (TrafficFlow f : ((FlowHandler)handler).getFlows()) {
-                            viewer.addTrafficFlow(f);
+                                viewer.addTrafficFlow(f);
                             if(f.getRelativeType() != null) {
                                 if (f.getRelativeType() == 1)
                                     viewer.addWaypoint(new SwingWaypoint(f, MainController.darkGreenFlowIcon));

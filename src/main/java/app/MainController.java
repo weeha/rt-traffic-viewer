@@ -117,7 +117,6 @@ public class MainController implements Initializable {
     }
 
     public static String getRoutingKey(){
-        System.out.println(routingKeyField.getText());
         return routingKeyField.getText().equals("") ? null : routingKeyField.getText();
     }
 
