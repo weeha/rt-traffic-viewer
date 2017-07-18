@@ -21,6 +21,7 @@ public class RoutingClient extends HttpClient{
     private final Traffic traffic;
 
     private static final String ROUTING_API = "https://api.tomtom.com/routing/1/calculateRoute/{0},{1}:{2},{3}?key={4}";
+    private static final String ROUTING_API_BASE = "https://api.tomtom.com/routing/1/calculateRoute/";
 
     public RoutingClient(Traffic traffic){
         this.traffic = traffic;
@@ -34,15 +35,16 @@ public class RoutingClient extends HttpClient{
     @Override
     public void run(){
         if(key != null){
-            for(int i = 0; i < traffic.getAllLRPs().size();){
+            for(int i = 0; i < traffic.getAllLRPs().size()-1;i++){
                 ILocationReferencePoint p1 = traffic.getAllLRPs().get(i);
                 ILocationReferencePoint p2 = traffic.getAllLRPs().get(i+1);
-                String url = MessageFormat.format(ROUTING_API,
-                        p1.getLatidude(),
-                        p1.getLongitude(),
-                        p2.getLatidude(),
-                        p2.getLongitude(),
-                        key);
+                String url = ROUTING_API_BASE;
+                url += p1.getLatidude() + ",";
+                url += p1.getLongitude() + ":";
+                url += p2.getLatidude() + ",";
+                url += p2.getLongitude() + "?key=";
+                url += key;
+                url += "&routeType=shortest";
                 System.out.println(url);
                 request = new HttpGet(url);
                 try{
@@ -51,8 +53,7 @@ public class RoutingClient extends HttpClient{
                     String responseString = EntityUtils.toString(entity, "UTF-8");
                     RouteXMLHandler handler = new RouteXMLHandler(responseString);
                     handler.process();
-                    for(GeoPosition g : handler.getCoordinates())
-                        System.out.println(g);
+                    traffic.setRoutingInformation(handler.getCoordinates());
                 }catch(IOException ie){}
             }
         }else{

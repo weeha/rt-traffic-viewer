@@ -83,7 +83,7 @@ public class MainController implements Initializable {
     private JFXToggleButton detailedFlow;
     private JFXToggleButton storeData;
     private JFXTextField trafficKeyField = null;
-    private JFXTextField routingKeyField = null;
+    private static JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
     private static Pane flowDetailPane = null;
     private static Pane incidentDetailPane = null;
@@ -114,6 +114,11 @@ public class MainController implements Initializable {
         }
         this.setSidePanelContent();
         checkForDataDir();
+    }
+
+    public static String getRoutingKey(){
+        System.out.println(routingKeyField.getText());
+        return routingKeyField.getText().equals("") ? null : routingKeyField.getText();
     }
 
     private void checkForDataDir(){

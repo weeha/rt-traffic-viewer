@@ -1,5 +1,7 @@
 package model.traffic;
 
+import app.MainController;
+import io.RoutingClient;
 import model.location.FirstLocationReferencePoint;
 import model.location.ILocationReferencePoint;
 import model.location.LastLocationReferencePoint;
@@ -8,6 +10,7 @@ import openlr.binary.data.AbstractLRP;
 import openlr.binary.data.FirstLRP;
 import openlr.binary.data.IntermediateLRP;
 import openlr.binary.data.RawBinaryData;
+import org.jxmapviewer.viewer.GeoPosition;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -29,6 +32,7 @@ public abstract class Traffic {
     private LastLocationReferencePoint lastLRP = null;
     private List<LocationReferencePointImpl> intermediatePoints;
     private List<LocationReferencePointImpl> lrps;
+    List<GeoPosition> routingInformation = null;
     private String rawString = "";
 
     public Traffic(){
@@ -167,5 +171,23 @@ public abstract class Traffic {
             result += "Intermediate LRP: \n" + point+ "\n";
         result += "Last LRP: \n" + lastLRP + "\n";
         return result;
+    }
+
+    public void calculateRoute(){
+        RoutingClient rClient = new RoutingClient(this);
+        rClient.setKey(MainController.getRoutingKey());
+        rClient.start();
+
+    }
+
+    public void setRoutingInformation(List<GeoPosition> routingInformation) {
+        if(this.routingInformation == null)
+            this.routingInformation = new ArrayList<GeoPosition>();
+        for(GeoPosition rInfo : routingInformation)
+            this.routingInformation.add(rInfo);
+    }
+
+    public List<GeoPosition> getRoutingInformation(){
+        return this.routingInformation;
     }
 }

@@ -1,10 +1,13 @@
 package view.openStreetMap;
 
+import model.location.LocationReferencePointImpl;
 import model.traffic.Traffic;
 import model.traffic.TrafficFlow;
 import org.jxmapviewer.JXMapViewer;
+import org.jxmapviewer.viewer.GeoPosition;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * Created by Florian Noack on 04.07.2017.
@@ -16,6 +19,7 @@ public class TrafficSelectionPainter extends TrafficPainter{
 
     public TrafficSelectionPainter(Traffic traffic){
         super(traffic);
+        traffic.calculateRoute();
     }
 
     @Override
@@ -48,5 +52,27 @@ public class TrafficSelectionPainter extends TrafficPainter{
         g.setStroke(new BasicStroke(10));
         drawRoute(g, map);
         g.dispose();
+    }
+
+    @Override
+    protected void drawRoute(Graphics2D g, JXMapViewer map){
+
+        int lastX = 0;
+        int lastY = 0;
+        boolean first = true;
+        if(traffic.getRoutingInformation() != null) {
+            for (GeoPosition pos : traffic.getRoutingInformation()) {
+                Point2D pt = map.getTileFactory().geoToPixel(pos, map.getZoom());
+                if (first) {
+                    first = false;
+                } else {
+                    g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
+                }
+                lastX = (int) pt.getX();
+                lastY = (int) pt.getY();
+            }
+        }else{
+            super.drawRoute(g, map);
+        }
     }
 }
