@@ -14,8 +14,8 @@ import java.awt.geom.Point2D;
  */
 public class TrafficSelectionPainter extends TrafficPainter{
 
-    protected final int WIDTH_FIRST = 15;
-    protected final int WIDTH_SECOND = 10;
+    protected final int WIDTH_FIRST = 6;
+    protected final int WIDTH_SECOND = 3;
 
     public TrafficSelectionPainter(Traffic traffic){
         super(traffic);
@@ -44,12 +44,12 @@ public class TrafficSelectionPainter extends TrafficPainter{
 
         // do the drawing
         g.setColor(color);
-        g.setStroke(new BasicStroke(15));
+        g.setStroke(new BasicStroke(WIDTH_FIRST));
         drawRoute(g, map);
         // do the drawing again
 
         g.setColor(color);
-        g.setStroke(new BasicStroke(10));
+        g.setStroke(new BasicStroke(WIDTH_SECOND));
         drawRoute(g, map);
         g.dispose();
     }

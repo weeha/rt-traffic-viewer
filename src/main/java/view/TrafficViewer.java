@@ -143,11 +143,23 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void highlightTraffic(Traffic traffic){
-        painter.removePainter(selectionPainter);
-        selectionPainter = new TrafficSelectionPainter(traffic);
-        painter.addPainter(selectionPainter);
+        for (Painter p : painter.getPainters()){
+            if(p instanceof TrafficPainter){
+                if(((TrafficPainter)p).getTraffic().equals(traffic)){
+                    painter.removePainter(p);
+                    selectionPainter = new TrafficSelectionPainter(traffic);
+                    painter.addPainter(selectionPainter);
+                    break;
+                }
+            }
+        }
+        //painter.removePainter(selectionPainter);
+        //selectionPainter = new TrafficSelectionPainter(traffic);
+        //painter.addPainter(selectionPainter);
+
         this.setOverlayPainter(painter);
         this.repaint();
+        this.revalidate();
     }
 
 }

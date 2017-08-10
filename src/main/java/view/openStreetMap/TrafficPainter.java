@@ -29,6 +29,10 @@ public class TrafficPainter implements Painter<JXMapViewer> {
         this.traffic = traffic;
     }
 
+    public Traffic getTraffic(){
+        return this.traffic;
+    }
+
     protected Color getFlowColor(){
         if(traffic instanceof TrafficFlow){
             if(((TrafficFlow) traffic).getRelativeSpeedValue() != null){

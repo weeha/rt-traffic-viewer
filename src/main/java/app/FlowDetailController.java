@@ -34,7 +34,6 @@ public class FlowDetailController implements Initializable {
     }
 
     public void setFlow(TrafficFlow flow){
-        System.out.println(flow);
         if(flow != null){
             averageSpeed.setText(flow.getAverageSpeed());
             travelTime.setText(flow.getTravelTime());

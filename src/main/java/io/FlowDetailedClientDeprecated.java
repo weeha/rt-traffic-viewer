@@ -114,7 +114,6 @@ public class FlowDetailedClientDeprecated extends TrafficClient{
             fileName += "flowType_ff_";
         if(url.contains("flowType=nff"))
             fileName += "flowType_nff_";
-        System.out.println(fileName + super.generateFileString(url) + ".proto");
         return fileName + super.generateFileString(url) + ".proto";
     }
 }

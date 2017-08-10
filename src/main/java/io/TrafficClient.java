@@ -56,7 +56,6 @@ public class TrafficClient extends HttpClient{
                 }
                 else
                     handler = new OpenLRXMLHandler();
-                System.out.println(responseString);
                 handler.setData(responseString);
                 handler.process();
                 if(viewer != null){
