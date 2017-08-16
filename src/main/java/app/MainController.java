@@ -82,6 +82,7 @@ public class MainController implements Initializable {
     private JFXTabPane tabPane = null;
     private JFXToggleButton detailedFlow;
     private JFXToggleButton storeData;
+    public static JFXToggleButton selectionState = null;
     private JFXTextField trafficKeyField = null;
     private static JFXTextField routingKeyField = null;
     private TrafficClient trafficClient;
@@ -420,6 +421,7 @@ public class MainController implements Initializable {
             JFXToggleButton liveButton = (JFXToggleButton)settings.lookup("#liveMode");
             detailedFlow = (JFXToggleButton)settings.lookup("#detailedFlow");
             storeData = (JFXToggleButton)settings.lookup("#storeData");
+            selectionState = (JFXToggleButton)settings.lookup("#selection");
             createLiveButton(liveButton);
             trafficKeyField = (JFXTextField)settings.lookup("#trafficKeyField");
             routingKeyField = (JFXTextField)settings.lookup("#routingKeyField");

@@ -1,5 +1,6 @@
 package view;
 
+import app.MainController;
 import model.traffic.Traffic;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
@@ -143,13 +144,16 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void highlightTraffic(Traffic traffic){
+        System.out.println(MainController.selectionState.isSelected());
         for (Painter p : painter.getPainters()){
             if(p instanceof TrafficPainter){
                 if(((TrafficPainter)p).getTraffic().equals(traffic)){
                     painter.removePainter(p);
                     selectionPainter = new TrafficSelectionPainter(traffic);
                     painter.addPainter(selectionPainter);
-                    break;
+                }else{
+                    if(MainController.selectionState.isSelected())
+                        painter.removePainter(p);
                 }
             }
         }
