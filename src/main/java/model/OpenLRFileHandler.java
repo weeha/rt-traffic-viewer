@@ -45,6 +45,8 @@ public class OpenLRFileHandler {
         }else if(data instanceof String){
             reader = new StringReader((String)data);
             inputData = data;
+        }else if(data instanceof List){
+            this.inputData = (List)data;
         }else{
             System.err.println("Unknown data format to process: " + data.getClass());
         }

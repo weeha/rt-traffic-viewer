@@ -1,14 +1,26 @@
 package model.traffic;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * Created by Florian Noack on 16.08.2017.
  */
 public class TrafficAnalysis{
 
-    public TrafficAnalysis(){
+    private Date date;
 
+    public TrafficAnalysis(Date date){
+        this.date = date;
+
+    }
+
+    public Date getDate(){
+        return this.date;
+    }
+
+    @Override
+    public String toString(){
+        return "Date:\t" + date + "\n";
     }
 
 }
