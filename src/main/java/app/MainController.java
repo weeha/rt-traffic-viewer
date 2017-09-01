@@ -446,6 +446,8 @@ public class MainController implements Initializable {
                     toolbarPopupList.setExpanded(false);
                     break;
                 case 1:
+                    //TODO: Analysis
+                case 2:
                     Platform.exit();
                     break;
                 default:

@@ -16,6 +16,15 @@
         </graphic>
     </Label>
     <Label>
+        Analyze
+        <graphic>
+            <StackPane styleClass="custom-jfx-list-view-icon-container">
+                <FontAwesomeIconView glyphName="BAR_CHART" size="1.5em"
+                                     styleClass="option-jfx-list-view-icon"/>
+            </StackPane>
+        </graphic>
+    </Label>
+    <Label>
         Exit
         <graphic>
             <StackPane styleClass="custom-jfx-list-view-icon-container">
