@@ -15,7 +15,7 @@
             </StackPane>
         </graphic>
     </Label>
-    <Label>
+    <Label fx:id="analyze">
         Analyze
         <graphic>
             <StackPane styleClass="custom-jfx-list-view-icon-container">

@@ -12,6 +12,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -50,6 +51,7 @@ public class MainController implements Initializable {
     private StackPane root;
     @FXML
     private StackPane sideMenu;
+    @FXML private AnchorPane anchorPane;
 
     private static final String INCIDENT_TAB = "Incidents";
     private static final String FLOW_TAB = "Traffic Flow";
@@ -78,8 +80,11 @@ public class MainController implements Initializable {
     public static Image redFlowIcon;
     private static Tab incidents = null;
     private static Tab flows = null;
+    private static Tab iAnalyzeTab = null;
+    private static Tab fAnalyzeTab = null;
     private Tab settings = null;
     private JFXTabPane tabPane = null;
+    private JFXTabPane analyzePane = null;
     private JFXToggleButton detailedFlow;
     private JFXToggleButton storeData;
     public static JFXToggleButton selectionState = null;
@@ -89,6 +94,8 @@ public class MainController implements Initializable {
     private TrafficClient trafficClient;
     private static Pane flowDetailPane = null;
     private static Pane incidentDetailPane = null;
+    private static Pane flowAnalyzePane = null;
+    private static Pane incidentAnalyzePane = null;
     private boolean apiSupport = false;
     private static FlowDetailController flowController = null;
     private static IncidentDetailController incidentController = null;
@@ -232,8 +239,41 @@ public class MainController implements Initializable {
         mapViewer.highlightTraffic(traffic);
     }
 
+    private void setAnalyzePanelContent(){
+        for(int i = 0; i < sideMenu.getChildren().size(); i++){
+            sideMenu.getChildren().remove(i);
+        }
+        sideMenu.requestLayout();
+        analyzePane = new JFXTabPane();
+        iAnalyzeTab = new Tab();
+        iAnalyzeTab.setText(INCIDENT_TAB);
+        incidentAnalyzePane = new Pane();
+        iAnalyzeTab.setContent(flowDetailPane);
+        iAnalyzeTab.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
+            @Override
+            public void handle(Event event) {
+
+            }
+        });
+        analyzePane.getTabs().add(iAnalyzeTab);
+
+        fAnalyzeTab = new Tab();
+        fAnalyzeTab.setText(FLOW_TAB);
+        flowAnalyzePane = new Pane();
+        Label noIncidentDataLabel = new Label("TEST!!!!!!!!!!!!!!");
+        noIncidentDataLabel.setTextFill(Color.web("#FFFFFF"));
+        fAnalyzeTab.setContent(noIncidentDataLabel);
+        analyzePane.getTabs().add(fAnalyzeTab);
+        sideMenu.getChildren().add(analyzePane);
+        sideMenu.requestLayout();
+
+    }
+
     private void setSidePanelContent(){
         if(sideMenu != null){
+            for(int i = 0; i < sideMenu.getChildren().size(); i++){
+                sideMenu.getChildren().remove(i);
+            }
             tabPane = new JFXTabPane();
             incidents = new Tab();
             incidents.setText(INCIDENT_TAB);
@@ -433,7 +473,7 @@ public class MainController implements Initializable {
         return settings;
     }
 
-    public static final class InputController {
+    public final class InputController {
         @FXML
         private JFXListView<?> toolbarPopupList;
 
@@ -442,17 +482,26 @@ public class MainController implements Initializable {
             switch(toolbarPopupList.getSelectionModel().getSelectedIndex()){
                 case 0:
                     showFileChooser();
-                    // make popup disappear after selection
-                    toolbarPopupList.setExpanded(false);
                     break;
                 case 1:
                     //TODO: Analysis
+                    Label analyzeLabel = (Label)toolbarPopupList.lookup("#analyze");
+
+                    if(analyzeLabel.getText().equals("Analyze")){
+                        setAnalyzePanelContent();
+                    }else{
+                        setSidePanelContent();
+                    }
+                    analyzeLabel.setText((analyzeLabel.getText().equals("Analyze") ? "Stop Analyze" : "Analyze"));
+
+                    break;
                 case 2:
                     Platform.exit();
                     break;
                 default:
                     break;
             }
+            toolbarPopupList.setExpanded(false);
         }
     }
 }
