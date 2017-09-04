@@ -143,8 +143,12 @@ public class TrafficViewer extends JXMapViewer {
         tileFactory.setThreadPoolSize(8);
     }
 
+    public void showTrafficOnMap(Traffic t){
+        selectionPainter = new TrafficSelectionPainter(t);
+        painter.addPainter(selectionPainter);
+    }
+
     public void highlightTraffic(Traffic traffic){
-        System.out.println(MainController.selectionState.isSelected());
         for (Painter p : painter.getPainters()){
             if(p instanceof TrafficPainter){
                 if(((TrafficPainter)p).getTraffic().equals(traffic)){

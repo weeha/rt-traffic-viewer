@@ -27,6 +27,10 @@ public class FlowAnalysis extends TrafficAnalysis{
         confidence = conf;
     }
 
+    public void setRawString(){
+
+    }
+
     public int getTravelTime(){
         return travelTime;
     }

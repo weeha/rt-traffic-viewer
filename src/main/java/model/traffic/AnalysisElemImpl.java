@@ -34,4 +34,9 @@ public abstract class AnalysisElemImpl extends Traffic implements AnalysisElem {
     public void addTrafficAnalysis(TrafficAnalysis analysis){
         trafficSituation.add(analysis);
     }
+
+    @Override
+    public String toString(){
+        return "[" + this.getFirstLRP() + ", " + this.getLastLRP() + "]";
+    }
 }

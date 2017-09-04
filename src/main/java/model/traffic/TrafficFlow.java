@@ -8,7 +8,7 @@ import openlr.binary.ByteArray;
  */
 public class TrafficFlow extends Traffic{
 
-    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    public final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     private boolean roadClosure;
     private String travelTime = null;

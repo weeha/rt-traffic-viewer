@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Florian Noack on 16.08.2017.
  */
-public class TrafficAnalysis{
+public abstract class TrafficAnalysis{
 
     private Date date;
 

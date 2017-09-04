@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="settings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="357.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.FlowDetailController">
+<AnchorPane fx:id="analysis" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="357.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AnalyseController">
    <children>
-      <Label fx:id="headline" layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="156.0" text="Traffic Flow" textFill="WHITE" />
-      <VBox layoutX="10.0" layoutY="10.0" maxHeight="467.0" maxWidth="500" prefHeight="467.0" prefWidth="286.0" spacing="50">
+      <VBox fx:id="box" layoutX="10.0" layoutY="10.0" maxHeight="539.0" maxWidth="500" prefHeight="539.0" prefWidth="286.0" spacing="50">
          <children>
             <Label fx:id="id" styleClass="title-label" />
-            <JFXButton text="Analyze" />
+            <JFXListView fx:id="trafficList" prefHeight="469.0" prefWidth="286.0" />
          </children>
       </VBox>
+      <JFXButton fx:id="selectionButton" layoutX="73.0" layoutY="560.0" style="-fx-background-color: #00e5ff;" text="Select Data" textFill="WHITE" />
+      <JFXButton fx:id="analyzeButton" layoutX="179.0" layoutY="560.0" style="-fx-background-color: #00e5ff;" text="Analyze" textFill="WHITE" />
    </children>
 </AnchorPane>

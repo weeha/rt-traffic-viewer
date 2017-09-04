@@ -26,6 +26,7 @@ import model.OpenLRXMLHandler;
 import model.traffic.Traffic;
 import model.traffic.TrafficFlow;
 import model.traffic.TrafficIncident;
+import view.AnalyzeCreator;
 import view.TrafficViewer;
 import view.openStreetMap.SwingWaypoint;
 import javax.imageio.ImageIO;
@@ -118,6 +119,9 @@ public class MainController implements Initializable {
             FXMLLoader incidentDetailLoader = new FXMLLoader(getClass().getResource("/fxml/incidentDetail.fxml"));
             incidentDetailPane = (AnchorPane) incidentDetailLoader.load();
             incidentController = incidentDetailLoader.<IncidentDetailController>getController();
+            FXMLLoader incidentAnalysisLoader = new FXMLLoader(getClass().getResource("/fxml/analysisMain.fxml"));
+            incidentAnalyzePane = (AnchorPane) incidentAnalysisLoader.load();
+            //incidentController = incidentDetailLoader.<IncidentDetailController>getController();
         }catch(IOException ie){
             ie.printStackTrace();
         }
@@ -247,14 +251,12 @@ public class MainController implements Initializable {
         analyzePane = new JFXTabPane();
         iAnalyzeTab = new Tab();
         iAnalyzeTab.setText(INCIDENT_TAB);
-        incidentAnalyzePane = new Pane();
-        iAnalyzeTab.setContent(flowDetailPane);
-        iAnalyzeTab.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
-            @Override
-            public void handle(Event event) {
+        //incidentAnalyzePane = new Pane();
+        //DatePicker datePicker = new DatePicker();
+        //flowDetailPane.setCo(incidentAnalyzePane);
+        AnalyzeCreator creator = new AnalyzeCreator();
+        iAnalyzeTab.setContent(incidentAnalyzePane);
 
-            }
-        });
         analyzePane.getTabs().add(iAnalyzeTab);
 
         fAnalyzeTab = new Tab();
@@ -422,7 +424,12 @@ public class MainController implements Initializable {
         }else{
             System.out.println("Unknown data format!");
         }
+    }
 
+    public static void highlightTraffic(Traffic traffic){
+        mapViewer.resetFlows();
+        mapViewer.resetIncidents();
+        mapViewer.showTrafficOnMap(traffic);
     }
 
     private void createLiveButton(final JFXToggleButton button){

@@ -51,6 +51,10 @@ public class AnalysisFactory {
         System.out.println(analysisList.size());
     }
 
+    public List<FlowAnalysisElemImpl> getAnalysisList(){
+        return this.analysisList;
+    }
+
     private int getUpdateIndex(com.google.protobuf.ByteString raw){
         for(FlowAnalysisElemImpl a : analysisList){
             if(a.matches(raw)){
