@@ -20,11 +20,12 @@ public class TrafficSelectionPainter extends TrafficPainter{
     public TrafficSelectionPainter(Traffic traffic){
         super(traffic);
         traffic.calculateRoute();
+        color = UNKNOWN;
     }
 
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
-        Color color = UNKNOWN;
+
         if(traffic instanceof TrafficFlow){
             if(traffic instanceof TrafficFlow){
                 if(((TrafficFlow) traffic).getRelativeSpeedValue() != null){
@@ -32,7 +33,6 @@ public class TrafficSelectionPainter extends TrafficPainter{
                 }
             }
         }
-
 
         g = (Graphics2D) g.create();
         // convert from viewport to world bitmap

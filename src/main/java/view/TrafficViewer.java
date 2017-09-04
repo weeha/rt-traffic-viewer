@@ -144,7 +144,9 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void showTrafficOnMap(Traffic t){
-        selectionPainter = new TrafficSelectionPainter(t);
+        for(Painter p : painter.getPainters())
+            painter.removePainter(p);
+        selectionPainter = new TrafficAnalysisPainter(t);
         painter.addPainter(selectionPainter);
     }
 

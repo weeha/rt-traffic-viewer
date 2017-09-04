@@ -9,17 +9,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.OpenLRAnalysisHandler;
 import model.traffic.FlowAnalysisElemImpl;
 import model.traffic.Traffic;
 import model.traffic.TrafficAnalysis;
+import view.Analysis.FlowAnalysisHolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.*;
 import java.util.ArrayList;
@@ -42,7 +48,7 @@ public class AnalyseController implements Initializable {
     JFXButton analyzeButton;
 
     private final String MAIN_COLOR = "#00e5ff";
-    private String analysePath = "C:\\Users\\fnoack\\Documents\\Flows";
+    private String analysePath = "";
 
     private JFXDatePicker datePicker = null;
     private JFXTimePicker startTime = null;
@@ -50,15 +56,17 @@ public class AnalyseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setAnalysisPath("Flows");
+        System.out.println(analysePath);
         datePicker = createDatePicker();
         startTime = createTimePicker(MAIN_COLOR);
         endTime = createTimePicker(MAIN_COLOR);
 
         box.getChildren().add(0, datePicker);
-        box.getChildren().add(1, createLabel("Start Time:"));
-        box.getChildren().add(2, startTime);
-        box.getChildren().add(3, createLabel("Start Time:"));
-        box.getChildren().add(4, endTime);
+        //box.getChildren().add(1, createLabel("Start Time:"));
+        box.getChildren().add(1, startTime);
+        //box.getChildren().add(3, createLabel("Start Time:"));
+        box.getChildren().add(2, endTime);
         trafficList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Traffic>() {
             @Override
             public void changed(ObservableValue<? extends Traffic> observable, Traffic oldValue, Traffic newValue) {
@@ -82,10 +90,26 @@ public class AnalyseController implements Initializable {
                 System.out.println(trafficList.getItems().size());
             }
         });
+        analyzeButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                Parent root;
+                try {
+                    root = FXMLLoader.load(getClass().getResource("/fxml/flowAnalysisDetail.fxml"));
+
+                            Stage stage = new Stage();
+                    stage.setTitle("My New Stage Title");
+                    stage.setScene(new Scene(root, 640, 860));
+                    stage.show();
+                }catch(IOException ie){
+                    ie.printStackTrace();
+                }
+            }
+        });
     }
 
     public void setAnalysisPath(String path){
-
+        analysePath = MainController.DATA_DIR + path;
     }
 
     private JFXTimePicker createTimePicker(String color){

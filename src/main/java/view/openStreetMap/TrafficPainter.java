@@ -24,6 +24,7 @@ public class TrafficPainter implements Painter<JXMapViewer> {
     protected final Color UNKNOWN = new Color(117,117,117, 128);
     protected final int WIDTH_FIRST = 4;
     protected final int WIDTH_SECOND = 2;
+    protected Color color;
 
     public TrafficPainter(Traffic traffic){
         this.traffic = traffic;
@@ -57,7 +58,7 @@ public class TrafficPainter implements Painter<JXMapViewer> {
 
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h){
-        Color color = UNKNOWN;
+        color = UNKNOWN;
         if(traffic instanceof TrafficFlow){
             if(((TrafficFlow) traffic).getRelativeSpeedValue() != null){
                 color = getFlowColor();

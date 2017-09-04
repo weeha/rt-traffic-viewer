@@ -37,6 +37,7 @@ public abstract class AnalysisElemImpl extends Traffic implements AnalysisElem {
 
     @Override
     public String toString(){
-        return "[" + this.getFirstLRP() + ", " + this.getLastLRP() + "]";
+        //return "[" + this.getFirstLRP() + ", " + this.getLastLRP() + "]";
+        return "AnalysisElem";
     }
 }
