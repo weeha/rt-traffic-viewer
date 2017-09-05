@@ -1,5 +1,6 @@
 package app;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,15 +25,22 @@ public class FlowAnalysisDetailController implements Initializable {
     private Tab travelTime;
     private Tab averageSpeed;
     private Tab relativeSpeed;
+    private Tab export;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         travelTime = new Tab("Travel Time");
         averageSpeed = new Tab("Average Speed");
         relativeSpeed = new Tab("Relative Speed");
+        export = new Tab("Export");
+        JFXButton exportButton = new JFXButton("Export");
+        exportButton.setStyle("-fx-background-color: #00e5ff;");
+        exportButton.setTextFill(Color.WHITE);
+        export.setContent(exportButton);
         setTab(travelTime);
         setTab(averageSpeed);
         setTab(relativeSpeed);
+        setTab(export);
     }
 
     private void setTab(Tab t){
