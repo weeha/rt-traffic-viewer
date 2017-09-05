@@ -100,6 +100,8 @@ public class MainController implements Initializable {
     private boolean apiSupport = false;
     private static FlowDetailController flowController = null;
     private static IncidentDetailController incidentController = null;
+    private static AnalyseController incidentAnalyseController = null;
+    private static AnalyseController flowAnalyseController = null;
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
@@ -121,7 +123,12 @@ public class MainController implements Initializable {
             incidentController = incidentDetailLoader.<IncidentDetailController>getController();
             FXMLLoader incidentAnalysisLoader = new FXMLLoader(getClass().getResource("/fxml/analysisMain.fxml"));
             incidentAnalyzePane = (AnchorPane) incidentAnalysisLoader.load();
-            //incidentController = incidentDetailLoader.<IncidentDetailController>getController();
+            incidentAnalyseController = incidentAnalysisLoader.<AnalyseController>getController();
+            incidentAnalyseController.setAnalysisPath("Incidents");
+            FXMLLoader flowAnalysisLoader = new FXMLLoader(getClass().getResource("/fxml/analysisMain.fxml"));
+            flowAnalyzePane = (AnchorPane) flowAnalysisLoader.load();
+            flowAnalyseController = flowAnalysisLoader.<AnalyseController>getController();
+            flowAnalyseController.setAnalysisPath("Flows");
         }catch(IOException ie){
             ie.printStackTrace();
         }
@@ -251,20 +258,15 @@ public class MainController implements Initializable {
         analyzePane = new JFXTabPane();
         iAnalyzeTab = new Tab();
         iAnalyzeTab.setText(INCIDENT_TAB);
-        //incidentAnalyzePane = new Pane();
-        //DatePicker datePicker = new DatePicker();
-        //flowDetailPane.setCo(incidentAnalyzePane);
-        AnalyzeCreator creator = new AnalyzeCreator();
         iAnalyzeTab.setContent(incidentAnalyzePane);
 
         analyzePane.getTabs().add(iAnalyzeTab);
 
         fAnalyzeTab = new Tab();
         fAnalyzeTab.setText(FLOW_TAB);
-        flowAnalyzePane = new Pane();
-        Label noIncidentDataLabel = new Label("TEST!!!!!!!!!!!!!!");
-        noIncidentDataLabel.setTextFill(Color.web("#FFFFFF"));
-        fAnalyzeTab.setContent(noIncidentDataLabel);
+
+
+        fAnalyzeTab.setContent(flowAnalyzePane);
         analyzePane.getTabs().add(fAnalyzeTab);
         sideMenu.getChildren().add(analyzePane);
         sideMenu.requestLayout();

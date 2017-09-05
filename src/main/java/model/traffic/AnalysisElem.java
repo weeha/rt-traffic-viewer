@@ -8,6 +8,6 @@ import java.util.List;
  */
 public interface AnalysisElem {
 
-    public List<TrafficAnalysis> getTraffic();
-    public List<TrafficAnalysis> getTraffic(Date start, Date end);
+    List<TrafficAnalysis> getTraffic();
+    List<TrafficAnalysis> getTraffic(Date start, Date end);
 }

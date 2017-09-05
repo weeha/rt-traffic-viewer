@@ -56,7 +56,7 @@ public class AnalyseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setAnalysisPath("Flows");
+
         System.out.println(analysePath);
         datePicker = createDatePicker();
         startTime = createTimePicker(MAIN_COLOR);
@@ -93,12 +93,15 @@ public class AnalyseController implements Initializable {
         analyzeButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                Parent root;
+                FXMLLoader loader;
                 try {
-                    root = FXMLLoader.load(getClass().getResource("/fxml/flowAnalysisDetail.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/fxml/flowAnalysisDetail.fxml"));
+                    Parent root = (Parent)loader.load();
 
                             Stage stage = new Stage();
-                    stage.setTitle("My New Stage Title");
+                    FlowAnalysisDetailController controller = (FlowAnalysisDetailController)loader.getController();
+                    controller.setAnalysis((FlowAnalysisElemImpl)trafficList.getSelectionModel().getSelectedItem());
+                    stage.setTitle("Analysis");
                     stage.setScene(new Scene(root, 640, 860));
                     stage.show();
                 }catch(IOException ie){

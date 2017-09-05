@@ -40,7 +40,7 @@ public class FlowAnalysis extends TrafficAnalysis{
     }
 
     public int getAverageSpeed(){
-        return travelTime;
+        return averageSpeed;
     }
 
     public void setAverageSpeed(int s){
