@@ -16,7 +16,7 @@
         </graphic>
     </Label>
     <Label fx:id="analyze">
-        Analyze
+        Analyse
         <graphic>
             <StackPane styleClass="custom-jfx-list-view-icon-container">
                 <FontAwesomeIconView glyphName="BAR_CHART" size="1.5em"
