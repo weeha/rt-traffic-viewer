@@ -60,6 +60,7 @@ public class MainController implements Initializable {
     public static final String DATA_DIR = System.getProperty("user.dir") + "\\data\\";
     public static final String INCIDENTS_DIR = DATA_DIR + "Incidents\\";
     public static final String FlOWS_DIR = DATA_DIR + "Flows\\";
+    public static final String EXCEL_DIR = DATA_DIR + "Excel\\";
     public static final String DATE_TIME_FORMAT_NOW = "yyyy_MM_dd_HH_mm_ss";
     public static final String DATE_FORMAT_NOW = "yyyy_MM_dd";
     public static String FLOWS_API ="https://traffic.tomtom.com/tsq/hdf/ITA-HDF-OPENLR/{0}/content.xml";
@@ -153,6 +154,10 @@ public class MainController implements Initializable {
             flowsDir.mkdirs();
         }
 
+        File excelDir = new File(EXCEL_DIR + sdf.format(cal.getTime()));
+        if(!excelDir.exists()){
+            excelDir.mkdirs();
+        }
     }
 
     private void createOptionsList(){

@@ -1,5 +1,7 @@
 package model.traffic;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 public abstract class AnalysisElemImpl extends Traffic implements AnalysisElem {
 
     private List<TrafficAnalysis> trafficSituation;
+    DateFormat df = new SimpleDateFormat("dd/MM/yyy");
+
 
     public AnalysisElemImpl(){
         super();
@@ -33,6 +37,10 @@ public abstract class AnalysisElemImpl extends Traffic implements AnalysisElem {
 
     public void addTrafficAnalysis(TrafficAnalysis analysis){
         trafficSituation.add(analysis);
+    }
+
+    public String getDateString(){
+        return trafficSituation.size() == 0 ? null : df.format(trafficSituation.get(0).getDate());
     }
 
     @Override

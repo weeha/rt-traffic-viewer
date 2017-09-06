@@ -36,12 +36,14 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             System.out.println(a.getAverageSpeed());
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getAverageSpeed()));
+            series.setName("Average Speed");
         }
     }
 
     private void createRelativeSpeed(List aList) {
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getRelativeSpeed()));
+            series.setName("Relative Speed");
         }
     }
 
@@ -49,6 +51,7 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             System.out.println(a.getTravelTime());
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getTravelTime()));
+            series.setName("Travel Time");
         }
     }
 }

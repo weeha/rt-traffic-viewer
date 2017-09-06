@@ -102,7 +102,7 @@ public class AnalyseController implements Initializable {
                     FlowAnalysisDetailController controller = (FlowAnalysisDetailController)loader.getController();
                     controller.setAnalysis((FlowAnalysisElemImpl)trafficList.getSelectionModel().getSelectedItem());
                     stage.setTitle("Analysis");
-                    stage.setScene(new Scene(root, 640, 860));
+                    stage.setScene(new Scene(root, 840, 460));
                     stage.show();
                 }catch(IOException ie){
                     ie.printStackTrace();

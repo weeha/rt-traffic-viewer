@@ -2,11 +2,14 @@ package app;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import model.AnalysisExporter;
 import model.traffic.FlowAnalysis;
 import model.traffic.FlowAnalysisElemImpl;
 import view.Analysis.FlowAnalysisChart;
@@ -26,6 +29,7 @@ public class FlowAnalysisDetailController implements Initializable {
     private Tab averageSpeed;
     private Tab relativeSpeed;
     private Tab export;
+    private FlowAnalysisElemImpl elem = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -37,6 +41,14 @@ public class FlowAnalysisDetailController implements Initializable {
         exportButton.setStyle("-fx-background-color: #00e5ff;");
         exportButton.setTextFill(Color.WHITE);
         export.setContent(exportButton);
+        exportButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                AnalysisExporter exporter = new AnalysisExporter(elem);
+                exporter.createExcel();
+                exporter.export();
+            }
+        });
         setTab(travelTime);
         setTab(averageSpeed);
         setTab(relativeSpeed);
@@ -48,6 +60,7 @@ public class FlowAnalysisDetailController implements Initializable {
     }
 
     public void setAnalysis(FlowAnalysisElemImpl analysis){
+        elem = analysis;
         final FlowAnalysisChart travelTimeChart = new FlowAnalysisChart();
         travelTimeChart.setYAxisLabel("Travel Time [seconds]");
         travelTimeChart.setTrafficAnalysis(analysis.getTraffic());
