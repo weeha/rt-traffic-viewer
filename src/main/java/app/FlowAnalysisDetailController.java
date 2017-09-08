@@ -28,6 +28,7 @@ public class FlowAnalysisDetailController implements Initializable {
     private Tab travelTime;
     private Tab averageSpeed;
     private Tab relativeSpeed;
+    private Tab confidence;
     private Tab export;
     private FlowAnalysisElemImpl elem = null;
 
@@ -36,6 +37,7 @@ public class FlowAnalysisDetailController implements Initializable {
         travelTime = new Tab("Travel Time");
         averageSpeed = new Tab("Average Speed");
         relativeSpeed = new Tab("Relative Speed");
+        confidence = new Tab("Confidence");
         export = new Tab("Export");
         JFXButton exportButton = new JFXButton("Export");
         exportButton.setStyle("-fx-background-color: #00e5ff;");
@@ -52,6 +54,7 @@ public class FlowAnalysisDetailController implements Initializable {
         setTab(travelTime);
         setTab(averageSpeed);
         setTab(relativeSpeed);
+        setTab(confidence);
         setTab(export);
     }
 
@@ -75,5 +78,10 @@ public class FlowAnalysisDetailController implements Initializable {
         relativeSpeedChart.setYAxisLabel("Relative Speed");
         relativeSpeedChart.setTrafficAnalysis(analysis.getTraffic());
         relativeSpeed.setContent(relativeSpeedChart);
+
+        final FlowAnalysisChart confidenceChart = new FlowAnalysisChart();
+        confidenceChart.setYAxisLabel("Confidence");
+        confidenceChart.setTrafficAnalysis(analysis.getTraffic());
+        confidence.setContent(confidenceChart);
     }
 }

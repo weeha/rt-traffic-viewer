@@ -25,8 +25,10 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
                 createTravelTime(aList);
             }else if(yAxis.equals("Relative Speed")){
                 createRelativeSpeed(aList);
-            } else if(yAxis.equals("Average Speed [km/h]")){
+            }else if(yAxis.equals("Average Speed [km/h]")){
                 createAverageSpeed(aList);
+            }else if(yAxis.equals("Confidence")){
+                createConfidence(aList);
             }
         }
         this.getData().add(series);
@@ -44,6 +46,13 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getRelativeSpeed()));
             series.setName("Relative Speed");
+        }
+    }
+
+    private void createConfidence(List aList) {
+        for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
+            series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getConfidence()));
+            series.setName("Confidence");
         }
     }
 
