@@ -20,6 +20,10 @@ public abstract class AnalysisElemImpl extends Traffic implements AnalysisElem {
         trafficSituation = new ArrayList<TrafficAnalysis>();
     }
 
+    public int getSituationSize(){
+        return trafficSituation.size();
+    }
+
     @Override
     public List<TrafficAnalysis> getTraffic() {
         return trafficSituation;

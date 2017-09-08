@@ -5,6 +5,7 @@ import model.location.LocationReferencePointImpl;
 import model.traffic.AnalysisElemImpl;
 import model.traffic.FlowAnalysis;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.Column;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -35,85 +36,90 @@ public class AnalysisExporter {
         if(analysis != null){
             workbook = new HSSFWorkbook();
             Sheet sheet = workbook.createSheet("Traffic Flow");
-            // Traffic Information  0
-            Row fLRP = sheet.createRow((short)0);
-            Cell fLRPLabel = fLRP.createCell(0);
-            fLRPLabel.setCellValue("FirstLRP");
-            Cell fLRPValue = fLRP.createCell(1);
-            fLRPValue.setCellValue(analysis.getFirstLRP().toString());
-
-            Row iLRP = sheet.createRow((short)1);
-            Cell iLRPLabel = iLRP.createCell(0);
-            iLRPLabel.setCellValue("IntermediateLRPs");
-            int iter = 1;
-            for(LocationReferencePointImpl i : analysis.getIntermediates()){
-                Cell iLRPValue = iLRP.createCell(iter);
-                iLRPValue.setCellValue(analysis.getLastLRP().toString());
-                iter++;
+            createRows(sheet, analysis.getSituationSize()+1);
+            int rowCounter = 0;
+            // row = sheet.createRow((short)rowCounter);
+            Row row = sheet.getRow(0);
+            for(int i = 0; i < 10; i++){
+                switch(i){
+                    case 0:
+                        row.createCell(i).setCellValue("FirstLRP");
+                        sheet.getRow(1).createCell(i).setCellValue(analysis.getFirstLRP().toString());
+                        break;
+                    case 1:
+                        row.createCell(i).setCellValue("IntermediateLRPs");
+                        int iter = 1;
+                        for(LocationReferencePointImpl l : analysis.getIntermediates()){
+                            sheet.getRow(iter).createCell(i).setCellValue(analysis.getIntermediates().get(iter-1).toString());
+                            iter++;
+                        }
+                        break;
+                    case 2:
+                        row.createCell(i).setCellValue("LastLRP");
+                        sheet.getRow(1).createCell(i).setCellValue(analysis.getLastLRP().toString());
+                        break;
+                    case 3:
+                        row.createCell(i).setCellValue("Date");
+                        sheet.getRow(1).createCell(i).setCellValue(analysis.getDateString());
+                        break;
+                    case 4:
+                        row.createCell(i).setCellValue("Travel Time");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(f.getTravelTime());
+                            iter++;
+                        }
+                        break;
+                    case 5:
+                        row.createCell(i).setCellValue("Average Speed");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(f.getAverageSpeed());
+                            iter++;
+                        }
+                        break;
+                    case 6:
+                        row.createCell(i).setCellValue("Relative Speed");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(f.getRelativeSpeed());
+                            iter++;
+                        }
+                        break;
+                    case 7:
+                        row.createCell(i).setCellValue("Traffic Condition");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(f.getTrafficCondition());
+                            iter++;
+                        }
+                        break;
+                    case 8:
+                        row.createCell(i).setCellValue("Confidence");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(f.getConfidence());
+                            iter++;
+                        }
+                        break;
+                    case 9:
+                        row.createCell(i).setCellValue("Time");
+                        iter = 1;
+                        for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
+                            sheet.getRow(iter).createCell(i).setCellValue(df.format(f.getDate()));
+                            iter++;
+                        }
+                        break;
+                }
             }
+        }
+    }
 
-            Row lLRP = sheet.createRow((short)2);
-            Cell lLRPLabel = lLRP.createCell(0);
-            lLRPLabel.setCellValue("LastLRP");
-            Cell lLRPValue = lLRP.createCell(1);
-            lLRPValue.setCellValue(analysis.getLastLRP().toString());
-
-            Row date = sheet.createRow((short)3);
-            Cell dateLabel = date.createCell(0);
-            dateLabel.setCellValue("LastLRP");
-            Cell dateValue = date.createCell(1);
-            dateValue.setCellValue(analysis.getDateString());
-
-            Row tTime = sheet.createRow((short)4);
-            Cell tTimeLabel = tTime.createCell(0);
-            tTimeLabel.setCellValue("Travel Time");
-            iter = 1;
-            for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
-                Cell tTimeValue = tTime.createCell(iter);
-                tTimeValue.setCellValue(f.getTravelTime());
-                iter++;
+    private void createRows(Sheet s, int amount){
+        if(s != null){
+            for (int i = 0; i < amount; i++){
+                s.createRow(i);
             }
-
-            Row aSpeed = sheet.createRow((short)5);
-            Cell aSpeedLabel = aSpeed.createCell(0);
-            aSpeedLabel.setCellValue("Average Speed");
-            iter = 1;
-            for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
-                Cell aSpeedeValue = aSpeed.createCell(iter);
-                aSpeedeValue.setCellValue(f.getAverageSpeed());
-                iter++;
-            }
-
-            Row rSpeed = sheet.createRow((short)6);
-            Cell rSpeedLabel = rSpeed.createCell(0);
-            rSpeedLabel.setCellValue("Relative Speed");
-            iter = 1;
-            for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
-                Cell rSpeedValue = rSpeed.createCell(iter);
-                rSpeedValue.setCellValue(f.getRelativeSpeed());
-                iter++;
-            }
-
-            Row cond = sheet.createRow((short)7);
-            Cell condLabel = cond.createCell(0);
-            condLabel.setCellValue("Traffic Condition");
-            iter = 1;
-            for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
-                Cell condValue = cond.createCell(iter);
-                condValue.setCellValue(f.getTrafficCondition());
-                iter++;
-            }
-
-            Row time = sheet.createRow((short)8);
-            Cell timeLabel = time.createCell(0);
-            timeLabel.setCellValue("Time");
-            iter = 1;
-            for(FlowAnalysis f : (List<FlowAnalysis>)(Object)analysis.getTraffic()){
-                Cell timeValue = time.createCell(iter);
-                timeValue.setCellValue(df.format(f.getDate()));
-                iter++;
-            }
-
         }
     }
 
