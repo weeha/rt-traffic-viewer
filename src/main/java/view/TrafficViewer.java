@@ -39,7 +39,6 @@ public class TrafficViewer extends JXMapViewer {
         this.setMouseListener();
         this.setZoom(7);
         this.setAddressLocation(tum_campus);
-        //this.setSelectionViewer();
     }
 
     public void resetFlows(){
@@ -144,10 +143,26 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void showTrafficOnMap(Traffic t){
+
         for(Painter p : painter.getPainters())
             painter.removePainter(p);
+
+        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+
         selectionPainter = new TrafficAnalysisPainter(t);
-        painter.addPainter(selectionPainter);
+        painters.add(selectionPainter);
+
+        addWaypoint(new SwingWaypoint(t.getFirstLRP().getGeoPosition(), MainController.startIcon));
+        addWaypoint(new SwingWaypoint(t.getLastLRP().getGeoPosition(), MainController.endIcon));
+        painter = new CompoundPainter<JXMapViewer>(painters);
+        WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
+        swingWaypointPainter.setWaypoints(waypoints);
+        painter.addPainter(swingWaypointPainter);
+        this.setOverlayPainter(painter);
+        for (SwingWaypoint w : waypoints) {
+            this.add(w.getButton());
+        }
+        this.repaint();
     }
 
     public void highlightTraffic(Traffic traffic){
@@ -163,9 +178,6 @@ public class TrafficViewer extends JXMapViewer {
                 }
             }
         }
-        //painter.removePainter(selectionPainter);
-        //selectionPainter = new TrafficSelectionPainter(traffic);
-        //painter.addPainter(selectionPainter);
 
         this.setOverlayPainter(painter);
         this.repaint();

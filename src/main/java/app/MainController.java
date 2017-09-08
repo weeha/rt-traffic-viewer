@@ -80,6 +80,8 @@ public class MainController implements Initializable {
     public static Image yellowFlowIcon;
     public static Image orangeFlowIcon;
     public static Image redFlowIcon;
+    public static Image startIcon;
+    public static Image endIcon;
     private static Tab incidents = null;
     private static Tab flows = null;
     private static Tab iAnalyzeTab = null;
@@ -93,7 +95,7 @@ public class MainController implements Initializable {
     private JFXSlider callIntervall = null;
     private JFXTextField trafficKeyField = null;
     private static JFXTextField routingKeyField = null;
-    private TrafficClient trafficClient;
+    private static TrafficClient trafficClient;
     private static Pane flowDetailPane = null;
     private static Pane incidentDetailPane = null;
     private static Pane flowAnalyzePane = null;
@@ -115,6 +117,8 @@ public class MainController implements Initializable {
         this.yellowFlowIcon = loadIcon(3);
         this.orangeFlowIcon = loadIcon(4);
         this.redFlowIcon = loadIcon(5);
+        this.startIcon = loadIcon(6);
+        this.endIcon = loadIcon(7);
         try {
             FXMLLoader flowDetailLoader = new FXMLLoader(getClass().getResource("/fxml/flowDetail.fxml"));
             flowDetailPane = (AnchorPane) flowDetailLoader.load();
@@ -204,6 +208,12 @@ public class MainController implements Initializable {
                     break;
                 case 5:
                     img = ImageIO.read(getClass().getResource("/png/ic_info_red.png"));
+                    break;
+                case 6:
+                    img = ImageIO.read(getClass().getResource("/png/dd-start.png"));
+                    break;
+                case 7:
+                    img = ImageIO.read(getClass().getResource("/png/dd-end.png"));
                     break;
                 default:
                     System.out.println("Unknown Icon requested...");
@@ -434,6 +444,7 @@ public class MainController implements Initializable {
     }
 
     public static void highlightTraffic(Traffic traffic){
+        //trafficClient.stop();
         mapViewer.resetFlows();
         mapViewer.resetIncidents();
         mapViewer.showTrafficOnMap(traffic);
