@@ -73,6 +73,7 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void showTrafficFlow(){
+        System.out.println(flows.size());
         paintRoutes(flows);
     }
 
@@ -110,7 +111,12 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void hideWaypoints(){
-        //todo
+        removeButtons();
+        incidents = new ArrayList<Traffic>();
+        flows = new ArrayList<Traffic>();
+        for(Painter p : painter.getPainters())
+            painter.removePainter(p);
+        this.repaint();
     }
 
     private void setSelectionViewer(){

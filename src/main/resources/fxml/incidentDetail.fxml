@@ -7,7 +7,6 @@
 
 <AnchorPane fx:id="settings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="357.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.IncidentDetailController">
     <children>
-        <Label fx:id="headline" layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="156.0" text="Traffic Incident" textFill="WHITE" />
         <VBox layoutX="10.0" layoutY="10.0" maxHeight="467.0" maxWidth="500" prefHeight="467.0" prefWidth="286.0" spacing="50">
             <children>
                 <JFXTextField fx:id="identifier" focusColor="#00e5ff" labelFloat="true" promptText="ID" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />

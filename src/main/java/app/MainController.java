@@ -266,6 +266,11 @@ public class MainController implements Initializable {
     }
 
     private void setAnalyzePanelContent(){
+        apiSupport = false;
+        mapViewer.hideWaypoints();
+        if(trafficClient != null){
+            trafficClient.stop();
+        }
         for(int i = 0; i < sideMenu.getChildren().size(); i++){
             sideMenu.getChildren().remove(i);
         }
@@ -510,7 +515,7 @@ public class MainController implements Initializable {
                     break;
                 case 1:
                     //TODO: Analysis
-                    Label analyzeLabel = (Label)toolbarPopupList.lookup("#analyze");
+                    Label analyzeLabel = (Label)toolbarPopupList.lookup("#analyse");
 
                     if(analyzeLabel.getText().equals("Analyse")){
                         setAnalyzePanelContent();

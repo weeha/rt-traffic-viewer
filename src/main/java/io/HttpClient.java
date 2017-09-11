@@ -53,6 +53,7 @@ public class HttpClient implements Runnable{
     }
 
     public void stop(){
+        System.out.println("Stopped traffic client " + this.URL);
         active = false;
     }
 
