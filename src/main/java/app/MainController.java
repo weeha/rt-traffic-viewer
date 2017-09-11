@@ -512,12 +512,12 @@ public class MainController implements Initializable {
                     //TODO: Analysis
                     Label analyzeLabel = (Label)toolbarPopupList.lookup("#analyze");
 
-                    if(analyzeLabel.getText().equals("Analyze")){
+                    if(analyzeLabel.getText().equals("Analyse")){
                         setAnalyzePanelContent();
                     }else{
                         setSidePanelContent();
                     }
-                    analyzeLabel.setText((analyzeLabel.getText().equals("Analyze") ? "Stop Analyze" : "Analyze"));
+                    analyzeLabel.setText((analyzeLabel.getText().equals("Analyse") ? "Stop Analyse" : "Analyse"));
 
                     break;
                 case 2:
