@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 public class IncidentDetailController implements Initializable {
 
     @FXML
+    private JFXTextField identifier;
+    @FXML
     private JFXTextField creationTime;
     @FXML
     private JFXTextField trafficType;
@@ -33,6 +35,7 @@ public class IncidentDetailController implements Initializable {
 
     public void setIncident(TrafficIncident incident){
         if(incident != null){
+            identifier.setText(incident.getIdentifier());
             creationTime.setText(incident.getCreationTime());
             trafficType.setText(incident.getTrafficType());
             averageSpeed.setText(incident.getAverageSpeed());
