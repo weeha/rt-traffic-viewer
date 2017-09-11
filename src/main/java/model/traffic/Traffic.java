@@ -190,4 +190,13 @@ public abstract class Traffic {
     public List<GeoPosition> getRoutingInformation(){
         return this.routingInformation;
     }
+
+    public String getIdentifier(){
+        String value = "";
+        value += firstLRP.getRawLat() + lastLRP.getRawLon();
+        for(LocationReferencePointImpl l : intermediatePoints)
+            value += l.getRawLat() + l.getRawLon();
+        value += lastLRP.getRawLat() + lastLRP.getRawLon();
+        return value;
+    }
 }

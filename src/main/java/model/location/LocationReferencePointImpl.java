@@ -1,8 +1,6 @@
 package model.location;
 
 import openlr.binary.data.AbstractLRP;
-import openlr.binary.data.IntermediateLRP;
-import openlr.binary.impl.LocationReferenceBinaryImpl;
 import org.jxmapviewer.viewer.GeoPosition;
 
 /**
@@ -26,7 +24,7 @@ public class LocationReferencePointImpl implements ILocationReferencePoint{
 
     public LocationReferencePointImpl(AbstractLRP lrp, ILocationReferencePoint prevLRP){
         this.lrp = lrp;
-        double lat = prevLRP.getLatidude() + (double)lrp.getLat() / 100000.0;
+        double lat = prevLRP.getLatitude() + (double)lrp.getLat() / 100000.0;
         double lon = prevLRP.getLongitude() + (double)lrp.getLon() / 100000.0;
         coord = new CoordinateValue(lat, lon, lrp.getLat(), lrp.getLon());
         //this.frc = new FRCValue(lrp.getAttrib1().getFrc());
@@ -53,12 +51,22 @@ public class LocationReferencePointImpl implements ILocationReferencePoint{
     }
 
     @Override
-    public double getLatidude() {
+    public double getLatitude() {
         return coord.getLatDeg();
     }
 
     @Override
     public String toString(){
         return coord.toString();
+    }
+
+    @Override
+    public int getRawLat(){
+        return coord.getLat();
+    }
+
+    @Override
+    public int getRawLon(){
+        return coord.getLon();
     }
 }

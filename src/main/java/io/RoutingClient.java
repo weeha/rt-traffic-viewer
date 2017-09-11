@@ -7,10 +7,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.jxmapviewer.viewer.GeoPosition;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 
 /**
  * Created by Florian Noack on 05.06.2017.
@@ -39,9 +37,9 @@ public class RoutingClient extends HttpClient{
                 ILocationReferencePoint p1 = traffic.getAllLRPs().get(i);
                 ILocationReferencePoint p2 = traffic.getAllLRPs().get(i+1);
                 String url = ROUTING_API_BASE;
-                url += p1.getLatidude() + ",";
+                url += p1.getLatitude() + ",";
                 url += p1.getLongitude() + ":";
-                url += p2.getLatidude() + ",";
+                url += p2.getLatitude() + ",";
                 url += p2.getLongitude() + "?key=";
                 url += key;
                 url += "&routeType=shortest";

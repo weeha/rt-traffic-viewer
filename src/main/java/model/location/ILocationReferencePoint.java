@@ -10,7 +10,9 @@ public interface ILocationReferencePoint {
 
     GeoPosition getGeoPosition();
     double getLongitude();
-    double getLatidude();
+    double getLatitude();
+    int getRawLat();
+    int getRawLon();
     AbstractLRP getLRP();
 
 }

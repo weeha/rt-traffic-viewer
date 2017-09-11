@@ -41,8 +41,6 @@ public class DetailController implements Initializable {
     @FXML
     private JFXTextField distance;
 
-    private GeoPosition coords = null;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

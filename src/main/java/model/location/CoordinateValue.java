@@ -42,6 +42,14 @@ public class CoordinateValue {
         return retVal;
     }
 
+    public final int getLon(){
+        return this.lon;
+    }
+
+    public final int getLat(){
+        return this.lat;
+    }
+
     @Override
     public String toString(){
         String result = "";

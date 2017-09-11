@@ -17,6 +17,10 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         super();
     }
 
+    public FlowAnalysisChart(String identifier) {
+        super(identifier);
+    }
+
     @Override
     public void setTrafficAnalysis(List aList) {
         String yAxis = this.getYAxis().getLabel();
@@ -38,21 +42,21 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             System.out.println(a.getAverageSpeed());
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getAverageSpeed()));
-            series.setName("Average Speed");
+            series.setName(label);
         }
     }
 
     private void createRelativeSpeed(List aList) {
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getRelativeSpeed()));
-            series.setName("Relative Speed");
+            series.setName(label);
         }
     }
 
     private void createConfidence(List aList) {
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getConfidence()));
-            series.setName("Confidence");
+            series.setName(label);
         }
     }
 
@@ -60,7 +64,7 @@ public class FlowAnalysisChart<X, Y> extends AnalysisChart{
         for(FlowAnalysis a : (List<FlowAnalysis>)(Object)aList){
             System.out.println(a.getTravelTime());
             series.getData().add(new XYChart.Data(ft.format(a.getDate()), a.getTravelTime()));
-            series.setName("Travel Time");
+            series.setName(label);
         }
     }
 }

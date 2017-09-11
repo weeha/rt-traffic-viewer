@@ -64,22 +64,23 @@ public class FlowAnalysisDetailController implements Initializable {
 
     public void setAnalysis(FlowAnalysisElemImpl analysis){
         elem = analysis;
-        final FlowAnalysisChart travelTimeChart = new FlowAnalysisChart();
+        final FlowAnalysisChart travelTimeChart = new FlowAnalysisChart(elem.getIdentifier());
         travelTimeChart.setYAxisLabel("Travel Time [seconds]");
         travelTimeChart.setTrafficAnalysis(analysis.getTraffic());
         travelTime.setContent(travelTimeChart);
 
-        final FlowAnalysisChart averageSpeedChart = new FlowAnalysisChart();
+        final FlowAnalysisChart averageSpeedChart = new FlowAnalysisChart(elem.getIdentifier());
         averageSpeedChart.setYAxisLabel("Average Speed [km/h]");
         averageSpeedChart.setTrafficAnalysis(analysis.getTraffic());
         averageSpeed.setContent(averageSpeedChart);
 
-        final FlowAnalysisChart relativeSpeedChart = new FlowAnalysisChart();
+        final FlowAnalysisChart relativeSpeedChart = new FlowAnalysisChart(elem.getIdentifier());
         relativeSpeedChart.setYAxisLabel("Relative Speed");
         relativeSpeedChart.setTrafficAnalysis(analysis.getTraffic());
+        relativeSpeedChart.setSeriesisLabel(elem.getIdentifier());
         relativeSpeed.setContent(relativeSpeedChart);
 
-        final FlowAnalysisChart confidenceChart = new FlowAnalysisChart();
+        final FlowAnalysisChart confidenceChart = new FlowAnalysisChart(elem.getIdentifier());
         confidenceChart.setYAxisLabel("Confidence");
         confidenceChart.setTrafficAnalysis(analysis.getTraffic());
         confidence.setContent(confidenceChart);

@@ -7,10 +7,9 @@
 
 <AnchorPane fx:id="settings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="568.0" prefWidth="357.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.FlowDetailController">
    <children>
-      <Label fx:id="headline" layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="156.0" text="Traffic Flow" textFill="WHITE" />
       <VBox layoutX="10.0" layoutY="10.0" maxHeight="467.0" maxWidth="500" prefHeight="467.0" prefWidth="286.0" spacing="50">
          <children>
-            <Label fx:id="id" styleClass="title-label" />
+            <JFXTextField fx:id="identifier" focusColor="#00e5ff" labelFloat="true" promptText="ID" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="averageSpeed" focusColor="#00e5ff" labelFloat="true" promptText="Average Speed (km/h)" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="travelTime" focusColor="#00e5ff" labelFloat="true" promptText="Travel Time (Seconds)" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="confidence" focusColor="#00e5ff" labelFloat="true" prefHeight="25.0" prefWidth="389.0" promptText="Confidence" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />

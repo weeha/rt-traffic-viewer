@@ -11,6 +11,8 @@ import java.util.List;
  */
 public abstract class AnalysisChart<X,Y> extends LineChart{
 
+    protected String label = "FlowAnalysis";
+
     protected XYChart.Series series;
     protected final SimpleDateFormat ft =
             new SimpleDateFormat("hh:mm");
@@ -19,6 +21,17 @@ public abstract class AnalysisChart<X,Y> extends LineChart{
         super(new CategoryAxis(), new NumberAxis());
         this.getXAxis().setLabel("Time [hh:mm]");
         series = new XYChart.Series();
+    }
+
+    public AnalysisChart(String identifier) {
+        super(new CategoryAxis(), new NumberAxis());
+        this.label = identifier;
+        this.getXAxis().setLabel("Time [hh:mm]");
+        series = new XYChart.Series();
+    }
+
+    public void setSeriesisLabel(String label){
+        this.label = label;
     }
 
     public void setYAxisLabel(String label){

@@ -3,6 +3,7 @@ package app;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import model.traffic.TrafficFlow;
 
 import java.net.URL;
@@ -13,6 +14,8 @@ import java.util.ResourceBundle;
  */
 public class FlowDetailController implements Initializable {
 
+    @FXML
+    private JFXTextField identifier;
     @FXML
     private JFXTextField averageSpeed;
     @FXML
@@ -35,6 +38,7 @@ public class FlowDetailController implements Initializable {
 
     public void setFlow(TrafficFlow flow){
         if(flow != null){
+            identifier.setText(flow.getIdentifier());
             averageSpeed.setText(flow.getAverageSpeed());
             travelTime.setText(flow.getTravelTime());
             confidence.setText(flow.getConfidence());
