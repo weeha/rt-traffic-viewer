@@ -45,6 +45,7 @@ public class Main extends Application {
         primaryStage.setTitle("RT Traffic Viewer");
         Scene scene = new Scene(root, 1024, 768);
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         final ObservableList<String> stylesheets = scene.getStylesheets();
         stylesheets.addAll(Main.class.getResource("/css/jfoenix-fonts.css").toExternalForm(),
                 Main.class.getResource("/css/jfoenix-design.css").toExternalForm(),

@@ -412,7 +412,7 @@ public class MainController implements Initializable {
                 handler = new OpenLRXMLHandler();
                 handler.setData(loader.getDataFile());
                 handler.process();
-                mapViewer.resetIncidents();
+                mapViewer.hideWaypoints();
                 for (TrafficIncident incident : ((OpenLRXMLHandler) handler).getIncidents()) {
                     mapViewer.addTrafficIncident(incident);
                     mapViewer.addWaypoint(new SwingWaypoint(incident, incidentIcon));
@@ -424,10 +424,23 @@ public class MainController implements Initializable {
                 handler = new OpenLRXMLFlowHandler();
                 handler.setData(loader.getDataFile());
                 handler.process();
-                mapViewer.resetFlows();
+                mapViewer.hideWaypoints();
                 for (TrafficFlow flow : ((OpenLRXMLFlowHandler) handler).getFlows()) {
                     mapViewer.addTrafficFlow(flow);
-                    mapViewer.addWaypoint(new SwingWaypoint(flow, incidentIcon));
+                    if(flow.getRelativeType() != null) {
+                        if (flow.getRelativeType() == 1)
+                            mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.darkGreenFlowIcon));
+                        else if (flow.getRelativeType() == 2)
+                            mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.greenFlowIcon));
+                        else if (flow.getRelativeType() == 3)
+                            mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.yellowFlowIcon));
+                        else if (flow.getRelativeType() == 4)
+                            mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.orangeFlowIcon));
+                        else if (flow.getRelativeType() == 5)
+                            mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.redFlowIcon));
+                    }else{
+                        mapViewer.addWaypoint(new SwingWaypoint(flow, MainController.incidentIcon));
+                    }
                 }
                 mapViewer.showTrafficFlow();
                 return;
@@ -514,7 +527,6 @@ public class MainController implements Initializable {
                     showFileChooser();
                     break;
                 case 1:
-                    //TODO: Analysis
                     Label analyzeLabel = (Label)toolbarPopupList.lookup("#analyse");
 
                     if(analyzeLabel.getText().equals("Analyse")){

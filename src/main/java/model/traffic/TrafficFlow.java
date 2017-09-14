@@ -14,6 +14,7 @@ public class TrafficFlow extends Traffic{
     private String travelTime = null;
     private String relativeSpeed = null;
     private String trafficCondition = null;
+    private String averageStops = null;
     private ProtobufTrafficFlowV5.TrafficFlow pFLow;
 
     public TrafficFlow(){
@@ -48,6 +49,14 @@ public class TrafficFlow extends Traffic{
         return null;
     }
 
+    public void setAverageStops(String s){
+        averageStops = s;
+    }
+
+    public String getAverageStops(){
+        return averageStops == null ? "" : averageStops;
+    }
+
     public void setTravelTime(String travelTime){
         this.travelTime = travelTime;
     }
@@ -57,6 +66,8 @@ public class TrafficFlow extends Traffic{
     }
 
     public String getConfidence(){
+        if(this.pFLow == null)
+            return null;
         return (this.pFLow.getSpeed() == null) ? "" : Integer.toString(this.pFLow.getSpeed().getConfidence());
     }
 
@@ -65,10 +76,14 @@ public class TrafficFlow extends Traffic{
     }
 
     public String getRelativeSpeed(){
+        if(this.pFLow == null)
+            return relativeSpeed;
         return (this.pFLow.getSpeed() == null) ? "" : Float.toString(this.pFLow.getSpeed().getRelativeSpeed());
     }
 
     public Float getRelativeSpeedValue(){
+        if(this.pFLow == null)
+            return relativeSpeed != null ? Float.valueOf(relativeSpeed) : null;
         return (this.pFLow.getSpeed() == null) ? null : this.pFLow.getSpeed().getRelativeSpeed();
     }
 
@@ -77,6 +92,8 @@ public class TrafficFlow extends Traffic{
     }
 
     public String getTrafficCondition(){
+        if(this.pFLow == null)
+            return trafficCondition;
         return (this.pFLow.getSpeed() == null) ? trafficCondition : this.pFLow.getSpeed().getTrafficCondition().name();
     }
 
@@ -94,6 +111,8 @@ public class TrafficFlow extends Traffic{
 
     @Override
     public String getRawString(){
+        if(this.pFLow == null)
+            return super.getRawString();
         ByteArray bytes = new ByteArray(this.pFLow.getLocation().getOpenlr().toByteArray());
         char[] hexChars = new char[bytes.size() * 2];
         for ( int j = 0; j < bytes.size(); j++ ) {

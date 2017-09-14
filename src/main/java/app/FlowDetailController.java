@@ -30,6 +30,8 @@ public class FlowDetailController implements Initializable {
     private JFXTextField distance;
     @FXML
     private JFXTextField openLR;
+    @FXML
+    private JFXTextField stops;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,6 +47,7 @@ public class FlowDetailController implements Initializable {
             relativeSpeed.setText(flow.getRelativeSpeed());
             trafficCondition.setText(flow.getTrafficCondition());
             distance.setText(flow.getDistance());
+            stops.setText(flow.getAverageStops());
             openLR.setText(flow.getRawString());
         }
 

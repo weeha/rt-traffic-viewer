@@ -15,6 +15,7 @@
             <JFXTextField fx:id="confidence" focusColor="#00e5ff" labelFloat="true" prefHeight="25.0" prefWidth="389.0" promptText="Confidence" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="relativeSpeed" focusColor="#00e5ff" labelFloat="true" promptText="Relative Speed" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="trafficCondition" focusColor="#00e5ff" labelFloat="true" promptText="Traffic Condition" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
+            <JFXTextField fx:id="stops" focusColor="#00e5ff" labelFloat="true" promptText="Average Stops" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="distance" focusColor="#00e5ff" labelFloat="true" promptText="Distance (Meters)" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
             <JFXTextField fx:id="openLR" focusColor="#00e5ff" labelFloat="true" promptText="OpenLR" style="-fx-text-fill: FFFFFF;" text="Placeholder" unFocusColor="#00e5ff" />
          </children>

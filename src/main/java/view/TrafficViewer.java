@@ -172,17 +172,23 @@ public class TrafficViewer extends JXMapViewer {
     }
 
     public void highlightTraffic(Traffic traffic){
+        boolean isAlive = false;
         for (Painter p : painter.getPainters()){
             if(p instanceof TrafficPainter){
                 if(((TrafficPainter)p).getTraffic().equals(traffic)){
                     painter.removePainter(p);
                     selectionPainter = new TrafficSelectionPainter(traffic);
                     painter.addPainter(selectionPainter);
+                    isAlive = true;
                 }else{
                     if(MainController.selectionState.isSelected())
                         painter.removePainter(p);
                 }
             }
+        }
+        if(!isAlive){
+            selectionPainter = new TrafficSelectionPainter(traffic);
+            painter.addPainter(selectionPainter);
         }
 
         this.setOverlayPainter(painter);

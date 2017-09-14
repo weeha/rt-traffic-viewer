@@ -42,6 +42,7 @@ public class OpenLRXMLFlowHandler extends FlowHandler{
             boolean relativeSpeed = false;
             boolean trafficCondition = false;
             boolean travelTime = false;
+            boolean aStops = false;
             try{
                 eventReader = factory.createXMLEventReader(reader);
                 while(eventReader.hasNext()){
@@ -62,6 +63,8 @@ public class OpenLRXMLFlowHandler extends FlowHandler{
                                 averageSpeed = true;
                             }else if(qName.equals("travelTime")){
                                 travelTime = true;
+                            }else if(qName.equals("averageNumberOfStops")){
+                                aStops = true;
                             }
                             break;
                         case XMLStreamConstants.CHARACTERS:
@@ -98,6 +101,11 @@ public class OpenLRXMLFlowHandler extends FlowHandler{
                                     flow.setTrafficCondition(characters.getData());
                                 }
                                 trafficCondition = false;
+                            }else if(aStops){
+                                if(flow != null) {
+                                    flow.setAverageStops(characters.getData());
+                                }
+                                aStops = false;
                             }
                             break;
                         case XMLStreamConstants.END_ELEMENT:
