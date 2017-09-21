@@ -1,11 +1,17 @@
 package model.traffic;
 
+import javax.swing.text.DateFormatter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
- * Created by flori on 04.05.2017.
+ * Created by Florian Noack on 04.05.2017.
  */
 public class TrafficIncident extends Traffic{
 
     private int averageNumberOfStops;
+    private Date recordCreationTime;
     private final String ID;
 
     public TrafficIncident(String id){
@@ -31,5 +37,18 @@ public class TrafficIncident extends Traffic{
         result += "ID: " + ID + "\n";
         result += "RAW-Data: " + getRawString() + "\n";
         return result + super.toString();
+    }
+
+    public void setRecordCreationTime(String recordCreationTime) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
+        try {
+            this.recordCreationTime = simpleDateFormat.parse(recordCreationTime);
+        }catch(ParseException pe){
+            pe.printStackTrace();
+        }
+    }
+
+    public Date getRecordCreationTime(){
+        return this.recordCreationTime;
     }
 }

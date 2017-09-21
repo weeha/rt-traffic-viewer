@@ -19,7 +19,7 @@ import java.util.List;
 public class OpenLRAnalysisHandler extends OpenLRFileHandler{
 
     private final List<AnalysisElemImpl> analysisList;
-    private final List<File> protoFiles;
+    protected final List<File> protoFiles;
     private AnalysisFactory factory;
     private Date startDate = null;
     private Date endDate = null;
@@ -36,15 +36,11 @@ public class OpenLRAnalysisHandler extends OpenLRFileHandler{
         endDate = d2;
     }
 
-    public void setProtoFiles(List<File> files){
-
-    }
-
     public List<FlowAnalysisElemImpl> getAnalysisList(){
         return factory.getAnalysisList();
     }
 
-    private boolean isWithinRange(Date testDate) {
+    protected boolean isWithinRange(Date testDate) {
         return !(testDate.before(startDate) || testDate.after(endDate));
     }
 

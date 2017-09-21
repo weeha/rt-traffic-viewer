@@ -44,6 +44,7 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
         boolean trafficType = false;
         boolean averageSpeed = false;
         boolean delayTime = false;
+        boolean recordCreationTime = false;
         if(reader != null){
             try{
                 eventReader = factory.createXMLEventReader(reader);
@@ -67,8 +68,9 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                                 averageSpeed = true;
                             }else if(qName.equals("delayTimeValue")){
                                 delayTime = true;
+                            }else if(qName.equals("situationRecordCreationTime")){
+                                recordCreationTime = true;
                             }
-
                             break;
                         case XMLStreamConstants.CHARACTERS:
                             Characters characters = event.asCharacters();
@@ -102,6 +104,11 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                             }else if(delayTime){
                                 if(incident != null) {
                                     incident.setDelayTime(characters.getData());
+                                }
+                                delayTime = false;
+                            }else if(recordCreationTime){
+                                if(incident != null) {
+                                    incident.setRecordCreationTime(characters.getData());
                                 }
                                 delayTime = false;
                             }
