@@ -44,11 +44,11 @@ public class IncidentAnalysisDetailController implements Initializable {
         if(size>0)
             vbox.getChildren().add(getHeadLabel("Start: " + df.format(selectedItem.getTraffic().get(0).getDate()) + "\tEnd: " + df.format(selectedItem.getTraffic().get(size-1).getDate())));
 
-        vbox.getChildren().add(getHeadLabel("Average Speed:"));
+        vbox.getChildren().add(getHeadLabel("Average Speed (km/h):"));
         for(Double e : selectedItem.getAverageSpeedAnalysis().keySet()){
             vbox.getChildren().add(getLabel("- " + e + "    : " + selectedItem.getAverageSpeedAnalysis().get(e) + " occurrences"));
         }
-        vbox.getChildren().add(getHeadLabel("Delay Time:"));
+        vbox.getChildren().add(getHeadLabel("Delay Time (seconds):"));
         for(Double e : selectedItem.getDelayTimeAnalysis().keySet()){
             vbox.getChildren().add(getLabel("- " + e + "    : " + selectedItem.getDelayTimeAnalysis().get(e) + " occurrences"));
         }
