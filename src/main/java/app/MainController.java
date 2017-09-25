@@ -134,6 +134,7 @@ public class MainController implements Initializable {
             flowAnalyzePane = (AnchorPane) flowAnalysisLoader.load();
             flowAnalyseController = flowAnalysisLoader.<AnalyseController>getController();
             flowAnalyseController.setAnalysisPath("Flows");
+
         }catch(IOException ie){
             ie.printStackTrace();
         }

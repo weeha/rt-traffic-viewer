@@ -1,8 +1,6 @@
 package model;
 
-import model.traffic.IncidentAnalysis;
-import model.traffic.IncidentAnalysisElemImpl;
-import model.traffic.TrafficIncident;
+import model.traffic.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,11 +23,16 @@ public class IncidentAnalysisHandler extends OpenLRAnalysisHandler{
         analysisList = new ArrayList<TrafficIncident>();
     }
 
+    public IncidentAnalysisHandler(List<File> files){
+        super(files);
+        analysisList = new ArrayList<TrafficIncident>();
+    }
+
     protected boolean isWithinRange(Date testDate) {
         return !(testDate.before(startDate) || testDate.after(endDate));
     }
 
-    public void setDateIntervall(Date d1, Date d2){
+    public void setDateInterval(Date d1, Date d2){
         startDate = d1;
         endDate = d2;
     }
@@ -44,8 +47,13 @@ public class IncidentAnalysisHandler extends OpenLRAnalysisHandler{
                 if (isWithinRange(i.getRecordCreationTime()))
                     analysisList.add(i);
             }
-
+            ((IncidentAnalysisFactory)factory).addIncidents(analysisList);
 
         }
+        System.out.println(analysisList.size());
+    }
+
+    public List<IncidentAnalysisElemImpl> getIncidentAnalysisList(){
+        return ((IncidentAnalysisFactory)factory).getIncidentAnalysisList();
     }
 }

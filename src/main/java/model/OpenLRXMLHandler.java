@@ -68,7 +68,7 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                                 averageSpeed = true;
                             }else if(qName.equals("delayTimeValue")){
                                 delayTime = true;
-                            }else if(qName.equals("situationRecordCreationTime")){
+                            }else if(qName.equals("situationRecordVersionTime")){
                                 recordCreationTime = true;
                             }
                             break;
@@ -110,7 +110,7 @@ public class OpenLRXMLHandler extends OpenLRFileHandler{
                                 if(incident != null) {
                                     incident.setRecordCreationTime(characters.getData());
                                 }
-                                delayTime = false;
+                                recordCreationTime = false;
                             }
                             break;
                         case XMLStreamConstants.END_ELEMENT:

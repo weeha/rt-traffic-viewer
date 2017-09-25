@@ -106,6 +106,18 @@ public abstract class Traffic {
         return this.firstLRP;
     }
 
+    public void setFirstLRP(FirstLocationReferencePoint f){
+        this.firstLRP = f;
+    }
+
+    public void setIntermediatePoints(List i){
+        this.intermediatePoints = i;
+    }
+
+    public void setLastLRP(LastLocationReferencePoint l){
+        this.lastLRP = l;
+    }
+
     public LastLocationReferencePoint getLastLRP(){
         return this.lastLRP;
     }

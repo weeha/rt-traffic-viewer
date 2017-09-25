@@ -7,24 +7,28 @@ import java.util.Date;
  */
 public class IncidentAnalysis extends TrafficAnalysis{
 
-    private int delayTime;
-    private int averageSpeed;
+    private Double delayTime = null;
+    private Double averageSpeed = null;
     private String trafficType = null;
 
     public IncidentAnalysis(Date date){
         super(date);
     }
 
-    public void setAverageSpeed(int speed){
+    public void setAverageSpeed(double speed){
         averageSpeed = speed;
     }
 
-    public int getAverageSpeed(){
+    public double getAverageSpeed(){
         return averageSpeed;
     }
 
-    public void setDelayTime(int time){
+    public void setDelayTime(double time){
         delayTime = time;
+    }
+
+    public double getDelayTime(){
+        return delayTime;
     }
 
     public void setTrafficType(String type){

@@ -3,6 +3,7 @@ package model.traffic;
 import javax.swing.text.DateFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -40,15 +41,23 @@ public class TrafficIncident extends Traffic{
     }
 
     public void setRecordCreationTime(String recordCreationTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
         try {
-            this.recordCreationTime = simpleDateFormat.parse(recordCreationTime);
-        }catch(ParseException pe){
+            Instant instant = Instant.parse(recordCreationTime);
+            this.recordCreationTime = Date.from(instant);
+        }catch(Exception pe){
             pe.printStackTrace();
         }
     }
 
     public Date getRecordCreationTime(){
         return this.recordCreationTime;
+    }
+
+    public static void main(String [] args){
+        TrafficIncident i= new TrafficIncident(null);
+        //i.setRecordCreationTime("2017-04-04T04:20:00Z");
+        Instant instant = Instant.parse("2017-04-04T04:20:00Z");
+        System.out.println(Date.from(instant));
     }
 }

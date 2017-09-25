@@ -1,9 +1,6 @@
 package model;
 
-import model.traffic.AnalysisFactory;
-import model.traffic.AnalysisElemImpl;
-import model.traffic.FlowAnalysisElemImpl;
-import model.traffic.ProtobufTrafficFlowV5;
+import model.traffic.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +17,7 @@ public class OpenLRAnalysisHandler extends OpenLRFileHandler{
 
     private final List<AnalysisElemImpl> analysisList;
     protected final List<File> protoFiles;
-    private AnalysisFactory factory;
+    protected AnalysisFactory factory;
     private Date startDate = null;
     private Date endDate = null;
 
@@ -28,10 +25,13 @@ public class OpenLRAnalysisHandler extends OpenLRFileHandler{
         super();
         protoFiles = files;
         analysisList = new ArrayList<AnalysisElemImpl>();
-        factory = new AnalysisFactory();
+        if(this instanceof IncidentAnalysisHandler)
+            factory = new IncidentAnalysisFactory();
+        else
+            factory = new AnalysisFactory();
     }
 
-    public void setDateIntervall(Date d1, Date d2){
+    public void setDateInterval(Date d1, Date d2){
         startDate = d1;
         endDate = d2;
     }

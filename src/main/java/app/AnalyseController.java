@@ -14,15 +14,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.IncidentAnalysisHandler;
 import model.OpenLRAnalysisHandler;
 import model.traffic.FlowAnalysisElemImpl;
+import model.traffic.IncidentAnalysisElemImpl;
 import model.traffic.Traffic;
-import model.traffic.TrafficAnalysis;
-import view.Analysis.FlowAnalysisHolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,11 +81,17 @@ public class AnalyseController implements Initializable {
                 Date startDate = Date.from(dTime1.atZone(ZoneId.systemDefault()).toInstant());
                 Date endDate = Date.from(dTime2.atZone(ZoneId.systemDefault()).toInstant());
                 final File folder = new File(analysePath);
-                OpenLRAnalysisHandler handler = new OpenLRAnalysisHandler(getFilesFromFolder(folder));
-                handler.setDateIntervall(startDate, endDate);
+                OpenLRAnalysisHandler handler = null;
+                if(analysePath.contains("Incidents"))
+                    handler = new IncidentAnalysisHandler(getFilesFromFolder(folder));
+                else
+                    handler = new OpenLRAnalysisHandler(getFilesFromFolder(folder));
+                handler.setDateInterval(startDate, endDate);
                 handler.process();
-                System.out.println(handler.getAnalysisList().size());
-                trafficList.getItems().setAll(handler.getAnalysisList());
+                if(analysePath.contains("Incidents"))
+                    trafficList.getItems().setAll(((IncidentAnalysisHandler)handler).getIncidentAnalysisList());
+                else
+                    trafficList.getItems().setAll(handler.getAnalysisList());
                 System.out.println(trafficList.getItems().size());
             }
         });
@@ -94,13 +99,21 @@ public class AnalyseController implements Initializable {
             @Override
             public void handle(ActionEvent event){
                 FXMLLoader loader;
+                Stage stage = new Stage();
+                Parent root = null;
                 try {
-                    loader = new FXMLLoader(getClass().getResource("/fxml/flowAnalysisDetail.fxml"));
-                    Parent root = (Parent)loader.load();
-
-                            Stage stage = new Stage();
-                    FlowAnalysisDetailController controller = (FlowAnalysisDetailController)loader.getController();
-                    controller.setAnalysis((FlowAnalysisElemImpl)trafficList.getSelectionModel().getSelectedItem());
+                    if(analysePath.contains("Incidents")){
+                        loader = new FXMLLoader(getClass().getResource("/fxml/incidentAnalysisDetail.fxml"));
+                        root = (Parent) loader.load();
+                        IncidentAnalysisDetailController controller = (IncidentAnalysisDetailController) loader.getController();
+                        controller.setAnalysis((IncidentAnalysisElemImpl) trafficList.getSelectionModel().getSelectedItem());
+                        System.out.println(((IncidentAnalysisElemImpl) trafficList.getSelectionModel().getSelectedItem()).getDelayTimeAnalysis());
+                    }else {
+                        loader = new FXMLLoader(getClass().getResource("/fxml/flowAnalysisDetail.fxml"));
+                        root = (Parent) loader.load();
+                        FlowAnalysisDetailController controller = (FlowAnalysisDetailController) loader.getController();
+                        controller.setAnalysis((FlowAnalysisElemImpl) trafficList.getSelectionModel().getSelectedItem());
+                    }
                     stage.setTitle("Analysis");
                     stage.setScene(new Scene(root, 840, 460));
                     stage.show();
