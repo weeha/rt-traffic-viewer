@@ -12,9 +12,7 @@ public class IncidentAnalysisElemImpl extends AnalysisElemImpl{
 
     public IncidentAnalysisElemImpl(TrafficIncident i){
         rawString = i.getRawString();
-        this.setFirstLRP(i.getFirstLRP());
-        this.setIntermediatePoints(i.getIntermediates());
-        this.setLastLRP(i.getLastLRP());
+        this.setRawData(i.getRawData());
     }
     public boolean matches(String rawBytes){
         return this.rawString.equals(rawBytes);

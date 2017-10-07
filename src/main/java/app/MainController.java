@@ -311,7 +311,8 @@ public class MainController implements Initializable {
                             String url = MessageFormat.format(INCIDENTS_API, trafficKeyField.getText());
                             trafficClient = new IncidentClient(url);
                             trafficClient.storeData(storeData.isSelected());
-                            trafficClient.setCallIntervall((int)callIntervall.getValue()*60000);
+                            //trafficClient.setCallIntervall((int)callIntervall.getValue()*60000);
+                            trafficClient.setCallIntervall(60000);
                             trafficClient.setMap(mapViewer);
                             trafficClient.start();
                         }else {
@@ -347,7 +348,8 @@ public class MainController implements Initializable {
                                     trafficClient = new FlowClient(url);
                                 }
                                 trafficClient.storeData(storeData.isSelected());
-                                trafficClient.setCallIntervall((int)callIntervall.getValue()*60000);
+                                //trafficClient.setCallIntervall((int)callIntervall.getValue()*60000);
+                                trafficClient.setCallIntervall(60000);
                                 trafficClient.setMap(mapViewer);
                                 trafficClient.start();
 
@@ -507,7 +509,7 @@ public class MainController implements Initializable {
             detailedFlow = (JFXToggleButton)settings.lookup("#detailedFlow");
             storeData = (JFXToggleButton)settings.lookup("#storeData");
             selectionState = (JFXToggleButton)settings.lookup("#selection");
-            callIntervall = (JFXSlider) settings.lookup("#callIntervall");
+            //callIntervall = (JFXSlider) settings.lookup("#callIntervall");
             createLiveButton(liveButton);
             trafficKeyField = (JFXTextField)settings.lookup("#trafficKeyField");
             routingKeyField = (JFXTextField)settings.lookup("#routingKeyField");
