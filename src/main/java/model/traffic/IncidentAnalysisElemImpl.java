@@ -15,7 +15,7 @@ public class IncidentAnalysisElemImpl extends AnalysisElemImpl{
         this.setRawData(i.getRawData());
     }
     public boolean matches(String rawBytes){
-        return this.rawString.equals(rawBytes);
+        return this.getRawString().equals(rawBytes);
     }
 
     public Map<Double,Integer> getDelayTimeAnalysis(){

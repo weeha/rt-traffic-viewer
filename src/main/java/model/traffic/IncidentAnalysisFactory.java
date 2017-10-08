@@ -27,6 +27,7 @@ public class IncidentAnalysisFactory extends AnalysisFactory{
                } else {
                    IncidentAnalysisElemImpl iAnalysis = new IncidentAnalysisElemImpl(i);
                    iAnalysis.addTrafficAnalysis(ia);
+                   iAnalysis.setRawAsString(i.getRawString());
                    analysisList.add(iAnalysis);
                }
            }catch(NullPointerException ne){
@@ -42,6 +43,7 @@ public class IncidentAnalysisFactory extends AnalysisFactory{
     private int getUpdateIndex(String raw){
         for(IncidentAnalysisElemImpl a : analysisList){
             if(a.matches(raw)){
+                System.out.println(a.getTraffic().size());
                 return analysisList.indexOf(a);
             }
         }

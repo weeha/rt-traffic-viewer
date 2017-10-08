@@ -39,8 +39,10 @@ public class IncidentAnalysisHandler extends OpenLRAnalysisHandler{
 
     @Override
     public void process(){
-        OpenLRXMLHandler handler = new OpenLRXMLHandler();
+        OpenLRXMLHandler handler;
         for(File f : protoFiles){
+            handler = new OpenLRXMLHandler();
+            analysisList = new ArrayList<TrafficIncident>();
             handler.setData(f);
             handler.process();
             for(TrafficIncident i : handler.getIncidents()){
@@ -50,7 +52,7 @@ public class IncidentAnalysisHandler extends OpenLRAnalysisHandler{
             ((IncidentAnalysisFactory)factory).addIncidents(analysisList);
 
         }
-        System.out.println(analysisList.size());
+        System.out.println(analysisList.size() + "Elements to analyse");
     }
 
     public List<IncidentAnalysisElemImpl> getIncidentAnalysisList(){

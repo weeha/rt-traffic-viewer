@@ -38,6 +38,7 @@ public class IncidentAnalysisDetailController implements Initializable {
     public void setAnalysis(IncidentAnalysisElemImpl selectedItem) {
 
         vbox.getChildren().add(getHeadLabel("Date: " + selectedItem.getDateString()));
+        vbox.getChildren().add(getHeadLabel("OpenLR: " + selectedItem.getRawString()));
         int size = selectedItem.getTraffic().size();
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         vbox.getChildren().add(getHeadLabel("Entries: " + selectedItem.getTraffic().size()));
